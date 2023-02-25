@@ -1,0 +1,6 @@
+[submodule "External/SimpleUI"]
+	path = External/SimpleUI
+	url = https://github.com/OSM-Made/SimpleUI
+[submodule "External/libjbc"]
+	path = External/libjbc
+	url = https://github.com/OSM-Made/ps4-libjbc

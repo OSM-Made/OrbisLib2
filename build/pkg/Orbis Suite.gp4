@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<psproject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" fmt="gp4" version="1000">
+  <volume>
+    <volume_type>pkg_ps4_app</volume_type>
+    <volume_ts>2021-12-07 23:57:09</volume_ts>
+    <package content_id="IV0000-ORBS00000_00-ORBISSUITE000000" passcode="00000000000000000000000000000000" storage_type="digital50" app_type="full" />
+    <chunk_info chunk_count="1" scenario_count="1">
+      <chunks>
+        <chunk id="0" layer_no="0" label="Chunk #0" />
+      </chunks>
+      <scenarios default_id="0">
+        <scenario id="0" type="sp" initial_chunk_count="1" label="Scenario #0">0</scenario>
+      </scenarios>
+    </chunk_info>
+  </volume>
+  <files img_no="0">
+    <file targ_path="eboot.bin" orig_path="eboot.bin" />
+    <file targ_path="Orbis Toolbox/Icons/icon_daemon.png" orig_path="Orbis Toolbox\Icons\icon_daemon.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_payload.png" orig_path="Orbis Toolbox\Icons\icon_payload.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_pkg.png" orig_path="Orbis Toolbox\Icons\icon_pkg.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_plugin.png" orig_path="Orbis Toolbox\Icons\icon_plugin.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_reboot.png" orig_path="Orbis Toolbox\Icons\icon_reboot.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_reload_ui.png" orig_path="Orbis Toolbox\Icons\icon_reload_ui.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_shutdown.png" orig_path="Orbis Toolbox\Icons\icon_shutdown.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_suspend.png" orig_path="Orbis Toolbox\Icons\icon_suspend.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_system_settings.png" orig_path="Orbis Toolbox\Icons\icon_system_settings.png" />
+    <file targ_path="Orbis Toolbox/Icons/icon_toolbox.png" orig_path="Orbis Toolbox\Icons\icon_toolbox.png" />
+    <file targ_path="sce_module/libc.prx" orig_path="sce_module\libc.prx" />
+    <file targ_path="sce_module/libSceFios2.prx" orig_path="sce_module\libSceFios2.prx" />
+    <file targ_path="sce_sys/icon0.png" orig_path="sce_sys\icon0.png" />
+    <file targ_path="sce_sys/param.sfo" orig_path="sce_sys\param.sfo" />
+    <file targ_path="sce_sys/pic0.png" orig_path="sce_sys\pic0.png" />
+    <file targ_path="sce_sys/pic1.png" orig_path="sce_sys\pic1.png" />
+    <file targ_path="Orbis Toolbox/OrbisToolbox-2.0.sprx" orig_path="Orbis Toolbox\OrbisToolbox-2.0.sprx" />
+    <file targ_path="Daemons/ORBS30000/sce_module/libc.prx" orig_path="Daemons\ORBS30000\sce_module\libc.prx" />
+    <file targ_path="Daemons/ORBS30000/sce_module/libSceFios2.prx" orig_path="Daemons\ORBS30000\sce_module\libSceFios2.prx" />
+    <file targ_path="Daemons/ORBS30000/sce_sys/icon0.png" orig_path="Daemons\ORBS30000\sce_sys\icon0.png" />
+    <file targ_path="Daemons/ORBS30000/sce_sys/param" orig_path="Daemons\ORBS30000\sce_sys\param" />
+    <file targ_path="Daemons/ORBS30000/eboot.bin" orig_path="Daemons\ORBS30000\eboot.bin" />
+    <file targ_path="Orbis Suite/OrbisLibGeneralHelper.sprx" orig_path="Orbis Suite\OrbisLibGeneralHelper.sprx" />
+  </files>
+  <rootdir>
+    <dir targ_name="Orbis Toolbox">
+      <dir targ_name="Icons" />
+    </dir>
+    <dir targ_name="sce_module" />
+    <dir targ_name="sce_sys" />
+    <dir targ_name="Daemons">
+      <dir targ_name="ORBS30000">
+        <dir targ_name="sce_module" />
+        <dir targ_name="sce_sys" />
+      </dir>
+    </dir>
+    <dir targ_name="Orbis Suite" />
+  </rootdir>
+</psproject>

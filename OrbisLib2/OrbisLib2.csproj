@@ -35,13 +35,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Drawing">
+      <HintPath>..\External\SimpleUI\SimpleUI\bin\Release\net6.0-windows\Microsoft.Expression.Drawing.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleUI">
-      <HintPath>..\..\..\External\SimpleUI\SimpleUI\bin\Release\net6.0-windows\SimpleUI.dll</HintPath>
+      <HintPath>..\External\SimpleUI\SimpleUI\bin\Release\net6.0-windows\SimpleUI.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y $(ProjectDir)$(OutDir)$(ProjectName).dll $(SolutionDir)Windows\Executables\" />
+    <Exec Command="xcopy /y $(ProjectDir)$(OutDir)$(ProjectName).dll $(SolutionDir)build\" />
   </Target>
 
 </Project>
