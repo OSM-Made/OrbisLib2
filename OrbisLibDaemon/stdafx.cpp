@@ -1,5 +1,5 @@
 // stdafx.cpp : source file that includes just the standard includes
-// OrbisToolbox.pch will be the pre-compiled header
+// OrbisLibDaemon.pch will be the pre-compiled header
 
 #include "stdafx.h"
 
