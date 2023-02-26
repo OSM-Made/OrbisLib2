@@ -1,6 +1,7 @@
 #pragma once
 
 bool LoadModules();
+bool Jailbreak();
 void klog(const char* fmt, ...);
 void Notify(const char* MessageFMT, ...);
 void NotifyCustom(const char* IconURI, const char* MessageFMT, ...);

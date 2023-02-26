@@ -3,12 +3,12 @@
 int main(int argc, char** arg)
 {
 	// Jailbreak our current process.
-	//if (!Jailbreak())
-	//{
-	//	Notify("Failed to jailbreak Process...");
-	//	ExitGraceful();
-	//	return 0;
-	//}
+	if (!Jailbreak())
+	{
+		Notify("Failed to jailbreak Process...");
+		ExitGraceful();
+		return 0;
+	}
 
 	// Load internal system modules.
 	if (!LoadModules())
@@ -21,7 +21,7 @@ int main(int argc, char** arg)
 	// Call cleanup on exit.
 
 	// Copy back up of sflash so we can read it and not break things :)
-	//CopySflash();
+	CopySflash();
 
 	// Set the Name of this process so it shows up as something other than eboot.bin.
 	sceKernelSetProcessName("OrbisLibAPI");

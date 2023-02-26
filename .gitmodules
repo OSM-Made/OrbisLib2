@@ -4,3 +4,6 @@
 [submodule "External/StubMaker"]
 	path = External/StubMaker
 	url = https://github.com/OSM-Made/StubMaker/
+[submodule "External/libGoldHEN"]
+	path = External/libGoldHEN
+	url = https://github.com/OSM-Made/libGoldHEN

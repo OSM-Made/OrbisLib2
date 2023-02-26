@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "GoldHEN.h"
 #include "Utilities.h"
 
 bool LoadModules()
@@ -103,6 +104,16 @@ bool LoadModules()
 
 	klog("LoadModules(): Success!\n");
 	return true;
+}
+
+bool Jailbreak()
+{
+	// Load the prx.
+	sceKernelLoadStartModule("/app0/libGoldHEN.sprx", 0, 0, 0, 0, 0);
+
+	// Jailbreak the prx.
+	jailbreak_backup bk;
+	return (sys_sdk_jailbreak(&bk) == 0);
 }
 
 void klog(const char* fmt, ...)
