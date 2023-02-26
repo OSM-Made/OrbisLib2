@@ -1,9 +1,25 @@
 #pragma once
-#define PACKET_VERSION 5
+#define PACKET_VERSION 4
 
 struct InitialPacket
 {
 	char PacketMagic[12];
 	int PacketVersion;
 	int Command;
+};
+
+enum APIResults
+{
+	API_OK = 1,
+
+	API_ERROR_COULDNT_CONNECT,
+	API_ERROR_NOT_CONNECTED,
+	API_ERROR_NOT_ATTACHED,
+	API_ERROR_LOST_PROC,
+	API_ERROR_GENERAL,
+	API_ERROR_INVALID_ADDRESS,
+
+	//Debugger
+	API_ERROR_PROC_RUNNING,
+	API_ERROR_DEBUG_TO_ATTACHED,
 };
