@@ -70,7 +70,8 @@ bool LoadModules()
 	}
 
 	// Start up user service.
-	res = sceUserServiceInitialize(nullptr);
+	SceUserServiceInitializeParams userParam = { SCE_KERNEL_PRIO_FIFO_HIGHEST };
+	res = sceUserServiceInitialize(&userParam);
 	if (res != 0)
 	{
 		klog("LoadModules(): sceUserServiceInitialize failed (%llX)\n", res);

@@ -74,7 +74,7 @@ bool Sockets::SendLargeData(SceNetId Sock, unsigned char* data, size_t dataLen)
 
 		if (res < 0)
 		{
-			klog("SendLargeData() Error: %llX(%llX)\n", res, *sceNetErrnoLoc());
+			//klog("SendLargeData() Error: %llX(%llX)\n", res, *sceNetErrnoLoc());
 			return false;
 		}
 
@@ -98,7 +98,7 @@ bool Sockets::RecvLargeData(SceNetId Sock, unsigned char* data, size_t dataLen)
 
 		if (res < 0)
 		{
-			klog("RecvLargeData() Error: %llX(%llX)\n", res, *sceNetErrnoLoc());
+			//klog("RecvLargeData() Error: %llX(%llX)\n", res, *sceNetErrnoLoc());
 			return false;
 		}
 
