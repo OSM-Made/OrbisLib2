@@ -83,6 +83,7 @@ del temp.txt</Command>
     <ClInclude Include="APIPackets.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Events.h" />
+    <ClInclude Include="Flash.h" />
     <ClInclude Include="Monitor.h" />
     <ClInclude Include="SocketListener.h" />
     <ClInclude Include="Sockets.h" />
@@ -95,6 +96,7 @@ del temp.txt</Command>
   <ItemGroup>
     <ClCompile Include="API.cpp" />
     <ClCompile Include="Events.cpp" />
+    <ClCompile Include="Flash.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monitor.cpp" />
     <ClCompile Include="SocketListener.cpp" />

@@ -247,18 +247,24 @@ int GetProcessList(std::vector<kinfo_proc>& ProcessList)
 		return -1;
 
 	// Resize our vector to accommodate.
-	ProcessList.resize(length / sizeof(kinfo_proc));
+	try
+	{
+		ProcessList.resize(length / sizeof(kinfo_proc));
+	}
+	catch (const std::bad_alloc&)
+	{
+		return -1;
+	}
 
 	// Retrive the processes.
 	if (sysctl(name, 3, ProcessList.data(), &length, nullptr, 0) < 0)
 		return -1;
 
-	// Remove duplicates.
-	ProcessList.erase(std::unique(ProcessList.begin(), ProcessList.end(), [](kinfo_proc const& a, kinfo_proc const& b)
-		{
-			sceKernelGetProcessName(a.pid, (char*)a.name);
-			return a.pid == b.pid;
-		}), ProcessList.end());
+	// Fix names.
+	for (auto& proc : ProcessList)
+	{
+		sceKernelGetProcessName(proc.pid, (char*)proc.name);
+	}
 
 	return 0;
 }
