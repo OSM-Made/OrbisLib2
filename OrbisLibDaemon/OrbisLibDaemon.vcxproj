@@ -51,7 +51,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>-lkernel_stub_weak;-lScePad_stub_weak;-lSceRtc_stub_weak;-lSceUserService_stub_weak;-lSceSystemService_stub_weak;-lSceNet_stub_weak;-lkernel_gen_stub_weak;-lSceLibcInternal_gen_stub_weak;-lSceLncUtil_gen_stub_weak;-lSceSysmodule_gen_stub_weak;-lSceAppInstUtil_gen_stub_weak;-lSceShellCoreUtil_gen_stub_weak;-lSceSysCore_gen_stub_weak;-lSceSystemStateMgr_gen_stub_weak;-lGoldHEN_stub_weak;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>-lkernel_stub_weak;-lScePad_stub_weak;-lSceRtc_stub_weak;-lSceUserService_stub_weak;-lSceSystemService_stub_weak;-lSceNet_stub_weak;-lSceNetCtl_stub_weak;-lkernel_gen_stub_weak;-lSceLibcInternal_gen_stub_weak;-lSceLncUtil_gen_stub_weak;-lSceSysmodule_gen_stub_weak;-lSceAppInstUtil_gen_stub_weak;-lSceShellCoreUtil_gen_stub_weak;-lSceSysCore_gen_stub_weak;-lSceSystemStateMgr_gen_stub_weak;-lSceNet_gen_stub_weak;-lGoldHEN_stub_weak;%(AdditionalDependencies)</AdditionalDependencies>
       <Addressing Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">NonAslr</Addressing>
       <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/StubMaker;$(SolutionDir)/External/libGoldHEN/ORBIS_Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -80,11 +80,14 @@ del temp.txt</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="API.h" />
+    <ClInclude Include="APIPackets.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="Monitor.h" />
+    <ClInclude Include="SocketListener.h" />
     <ClInclude Include="Sockets.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Target.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Version.h" />
@@ -94,11 +97,13 @@ del temp.txt</Command>
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monitor.cpp" />
+    <ClCompile Include="SocketListener.cpp" />
     <ClCompile Include="Sockets.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Target.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>

@@ -11,6 +11,8 @@
 #include <user_service.h>
 #include <system_service.h>
 #include <kernel.h>
+#include <map>
+#include <memory>
 
 // Custom linked dependancies.
 #include "KernelExt.h"
