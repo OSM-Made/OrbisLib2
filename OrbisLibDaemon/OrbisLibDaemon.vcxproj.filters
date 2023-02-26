@@ -15,6 +15,12 @@
     <Filter Include="Header Files\Utilities">
       <UniqueIdentifier>{b06b87f8-af79-4025-9f70-962110b59c06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\API">
+      <UniqueIdentifier>{0598c453-3b95-48ce-8305-8b620916a605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\API">
+      <UniqueIdentifier>{89cfb9e6-19d3-4518-8fa8-6a887dca6676}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -32,6 +38,18 @@
     <ClInclude Include="Version.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="API.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Monitor.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +66,15 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="API.cpp">
+      <Filter>Source Files\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Source Files\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Monitor.cpp">
+      <Filter>Source Files\API</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

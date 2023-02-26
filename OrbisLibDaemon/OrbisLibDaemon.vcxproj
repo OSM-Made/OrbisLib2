@@ -79,6 +79,10 @@ del temp.txt</Command>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="API.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Events.h" />
+    <ClInclude Include="Monitor.h" />
     <ClInclude Include="Sockets.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadPool.h" />
@@ -86,7 +90,10 @@ del temp.txt</Command>
     <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="API.cpp" />
+    <ClCompile Include="Events.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Monitor.cpp" />
     <ClCompile Include="Sockets.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">Create</PrecompiledHeader>

@@ -1,5 +1,10 @@
 #include "stdafx.h"
 
+void Terminate()
+{
+	klog("Good bye friends\n");
+}
+
 int main(int argc, char** arg)
 {
 	// Jailbreak our current process.
@@ -19,6 +24,7 @@ int main(int argc, char** arg)
 	}
 
 	// Call cleanup on exit.
+	atexit(Terminate);
 
 	// Copy back up of sflash so we can read it and not break things :)
 	CopySflash();
