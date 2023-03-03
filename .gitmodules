@@ -7,3 +7,9 @@
 [submodule "External/libGoldHEN"]
 	path = External/libGoldHEN
 	url = https://github.com/OSM-Made/libGoldHEN
+[submodule "External/OrbisKernelDriver"]
+	path = External/OrbisKernelDriver
+	url = https://github.com/OSM-Made/OrbisKernelDriver
+[submodule "External/libKernelInterface"]
+	path = External/libKernelInterface
+	url = https://github.com/OSM-Made/libKernelInterface

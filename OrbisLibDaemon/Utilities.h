@@ -32,7 +32,9 @@ bool LoadSymbol(SceKernelModule handle, const char* symbol, void** funcOut);
 void ExitGraceful();
 bool CopySflash();
 int getMacAddress(int ifName_Num, char* strOut, size_t strlen);
-extern "C" int syscall(int num, ...);
 int GetProcessList(std::vector<kinfo_proc>& ProcessList);
 bool LinkDir(const char* Dir, const char* LinkedDir);
+
 bool LoadToolbox();
+bool LoadKDriver();
+bool UnloadKDriver();

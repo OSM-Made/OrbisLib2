@@ -21,6 +21,7 @@
 #include "SysCoreUtil.h"
 #include "LncUtil.h"
 
+#include "ASM.h"
 #include "Version.h"
 #include "Config.h"
 #include "Utilities.h"

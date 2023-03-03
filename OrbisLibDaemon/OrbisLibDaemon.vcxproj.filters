@@ -36,6 +36,12 @@
     <Filter Include="Source Files\Utilities\PSUtils">
       <UniqueIdentifier>{ca6193ec-12b5-49e8-adc6-3435bd065c34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities\HDE64">
+      <UniqueIdentifier>{c4018d0f-ccb9-4926-a133-09debc054894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\HDE64">
+      <UniqueIdentifier>{fb932df9-2977-4c31-81da-ccbb49bc4933}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -98,6 +104,15 @@
     <ClInclude Include="PtraceDefs.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="ASM.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="table64.h">
+      <Filter>Header Files\Utilities\HDE64</Filter>
+    </ClInclude>
+    <ClInclude Include="hde64.h">
+      <Filter>Header Files\Utilities\HDE64</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -144,6 +159,12 @@
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Source Files\API\CmdGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="ASM.s">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="hde64.cpp">
+      <Filter>Source Files\Utilities\HDE64</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

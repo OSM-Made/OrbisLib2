@@ -270,25 +270,6 @@ int GetProcessList(std::vector<kinfo_proc>& ProcessList)
 	return 0;
 }
 
-__asm__(
-	".att_syntax prefix\n"
-	".globl syscall\n"
-	"syscall:\n"
-	"  movq $0, %rax\n"
-	"  movq %rcx, %r10\n"
-	"  syscall\n"
-	"  jb err\n"
-	"  retq\n"
-	"err:\n"
-	"  pushq %rax\n"
-	"  callq __error\n"
-	"  popq %rcx\n"
-	"  movl %ecx, 0(%rax)\n"
-	"  movq $0xFFFFFFFFFFFFFFFF, %rax\n"
-	"  movq $0xFFFFFFFFFFFFFFFF, %rdx\n"
-	"  retq\n"
-);
-
 static void build_iovec(iovec** iov, int* iovlen, const char* name, const void* val, size_t len) {
 	int i;
 

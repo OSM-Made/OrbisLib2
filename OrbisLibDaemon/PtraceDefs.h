@@ -1,5 +1,35 @@
 #pragma once
 
+struct reg
+{
+    uint64_t r_r15;
+    uint64_t r_r14;
+    uint64_t r_r13;
+    uint64_t r_r12;
+    uint64_t r_r11;
+    uint64_t r_r10;
+    uint64_t r_r9;
+    uint64_t r_r8;
+    uint64_t r_rdi;
+    uint64_t r_rsi;
+    uint64_t r_rbp;
+    uint64_t r_rbx;
+    uint64_t r_rdx;
+    uint64_t r_rcx;
+    uint64_t r_rax;
+    uint32_t r_trapno;
+    uint16_t r_fs;
+    uint16_t r_gs;
+    uint32_t r_err;
+    uint16_t r_es;
+    uint16_t r_ds;
+    uint64_t r_rip;
+    uint64_t r_cs;
+    uint64_t r_rflags;
+    uint64_t r_rsp;
+    uint64_t r_ss;
+};
+
 // Updated with BSD header.
 #define PT_TRACE_ME     0       /* child declares it's being traced */
 #define PT_READ_I       1       /* read word in child's I space */

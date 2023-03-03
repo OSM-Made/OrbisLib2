@@ -28,17 +28,30 @@ int main(int argc, char** arg)
 	sceKernelSetProcessName("OrbisLibAPI");
 
 	// Start up the thread pool.
-	ThreadPool::Init(10);
+	//ThreadPool::Init(10);
 
 	// Log the loaded version string.
 	klog("\n%s\n\n", ORBISLIB_BUILDSTRING);
 
 	// Start up the API.
-	API::Init();
+	//API::Init();
 
 	// Blocking run the system monitor.
-	Monitor::Run();
+	//Monitor::Run();
 
-	exit(0);
+	sceKernelLoadStartModule("/mnt/sandbox/ORBS30000_000/app0/libKernelInterface.sprx", 0, 0, 0, 0, 0);
+	std::vector<kinfo_proc> ProcList;
+	GetProcessList(ProcList);
+	auto proc = std::find_if(ProcList.begin(), ProcList.end(), [](kinfo_proc a) -> bool { return !strcmp(a.name, "eboot.bin"); });
+	if (proc != ProcList.end())
+	{
+		
+	}
+
+	//sceKernelSleep(5);
+
+	//UnloadKDriver();
+
+	ExitGraceful();
 	return 0;
 }

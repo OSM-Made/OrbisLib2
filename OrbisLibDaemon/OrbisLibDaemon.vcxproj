@@ -51,9 +51,9 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>-lkernel_stub_weak;-lScePad_stub_weak;-lSceRtc_stub_weak;-lSceUserService_stub_weak;-lSceSystemService_stub_weak;-lSceNet_stub_weak;-lSceNetCtl_stub_weak;-lkernel_gen_stub_weak;-lSceLibcInternal_gen_stub_weak;-lSceLncUtil_gen_stub_weak;-lSceSysmodule_gen_stub_weak;-lSceAppInstUtil_gen_stub_weak;-lSceShellCoreUtil_gen_stub_weak;-lSceSysCore_gen_stub_weak;-lSceSystemStateMgr_gen_stub_weak;-lSceUserService_gen_stub_weak;-lSceSystemService_gen_stub_weak;-lSceNet_gen_stub_weak;-lGoldHEN_stub_weak;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>-lkernel_stub_weak;-lScePad_stub_weak;-lSceRtc_stub_weak;-lSceUserService_stub_weak;-lSceSystemService_stub_weak;-lSceNet_stub_weak;-lSceNetCtl_stub_weak;-lkernel_gen_stub_weak;-lSceLibcInternal_gen_stub_weak;-lSceLncUtil_gen_stub_weak;-lSceSysmodule_gen_stub_weak;-lSceAppInstUtil_gen_stub_weak;-lSceShellCoreUtil_gen_stub_weak;-lSceSysCore_gen_stub_weak;-lSceSystemStateMgr_gen_stub_weak;-lSceUserService_gen_stub_weak;-lSceSystemService_gen_stub_weak;-lSceNet_gen_stub_weak;-lGoldHEN_stub_weak;-lKernelInterface_stub_weak;%(AdditionalDependencies)</AdditionalDependencies>
       <Addressing Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">NonAslr</Addressing>
-      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/StubMaker;$(SolutionDir)/External/libGoldHEN/ORBIS_Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libKernelInterface/ORBIS_Debug;$(SolutionDir)/External/StubMaker;$(SolutionDir)/External/libGoldHEN/ORBIS_Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>"C:\Python27\python.exe" $(SolutionDir)\$(ProjectName)\make_fself.py  $(OutputPath)$(ProjectName).elf  $(OutputPath)eboot.bin --paid 0x3800000000010003 --auth-info 000000000000000000000000001C004000FF000000000080000000000000000000000000000000000000008000400040000000000000008000000000000000080040FFFF000000F000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -69,7 +69,7 @@ del temp.txt</Command>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">_DEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <GenerateDebugInformation Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">true</GenerateDebugInformation>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/StubMaker/include;$(SolutionDir)/External/libGoldHEN/libGoldHEN;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libKernelInterface/libKernelInterface;$(SolutionDir)/External/StubMaker/include;$(SolutionDir)/External/libGoldHEN/libGoldHEN;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CppExceptions Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">true</CppExceptions>
     </ClCompile>
     <ClCompile>
@@ -77,14 +77,19 @@ del temp.txt</Command>
       <OptimizationLevel Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">Level2</OptimizationLevel>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">Use</PrecompiledHeader>
     </ClCompile>
+    <PreLinkEvent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)$(ProjectName)\buildASM.bat $(SolutionDir)$(ProjectName)\ $(SolutionDir)$(ProjectName)\$(IntermediateOutputPath)</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="API.h" />
     <ClInclude Include="APIPackets.h" />
+    <ClInclude Include="ASM.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="Flash.h" />
+    <ClInclude Include="hde64.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="Monitor.h" />
     <ClInclude Include="ProcessMonitor.h" />
@@ -94,6 +99,7 @@ del temp.txt</Command>
     <ClInclude Include="Sockets.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="table64.h" />
     <ClInclude Include="Target.h" />
     <ClInclude Include="TargetPackets.h" />
     <ClInclude Include="ThreadPool.h" />
@@ -102,9 +108,11 @@ del temp.txt</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="API.cpp" />
+    <ClCompile Include="ASM.s" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="Flash.cpp" />
+    <ClCompile Include="hde64.cpp" />
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monitor.cpp" />

@@ -4,7 +4,6 @@
 class Debug
 {
 public:
-	
 	static void Attach(SceNetId sock);
 	static void Detach(SceNetId Sock);
 	static void Current(SceNetId sock);
