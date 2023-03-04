@@ -61,6 +61,6 @@ namespace OrbisLib2.Common
         /// <summary>
         /// The version of the packets used to communicate with the Target Console.
         /// </summary>
-        public static readonly int PacketVersion = 4;
+        public static readonly int PacketVersion = 5;
     }
 }

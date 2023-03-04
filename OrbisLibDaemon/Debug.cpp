@@ -105,10 +105,10 @@ void Debug::Attach(SceNetId sock)
 	}
 
 	// Check the satus of the general helper.
-	//if (!IpcGeneral::TestConnection(pid))
-	//{
-	//	LoadProcHelper(pid);
-	//}
+	if (!IpcGeneral::TestConnection(pid))
+	{
+		LoadProcHelper(pid);
+	}
 }
 
 void Debug::Detach(SceNetId sock)
@@ -152,7 +152,7 @@ void Debug::RWMemory(SceNetId s, bool write)
 		return;
 
 	auto packet = Sockets::RecieveType<RWPacket>(s);
-	auto buffer = std::make_unique<unsigned char>(packet->Length);
+	auto buffer = std::make_unique<unsigned char[]>(packet->Length);
 
 	// TODO: Might be a good idea to make sure we are landing in the right memory regions. Should be good to check the vmmap and the library list.
 	//		 Pretty sure we can use the syscall from the kernel context and specify the debug proc to achieve the same. 

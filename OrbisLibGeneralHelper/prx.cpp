@@ -2,9 +2,8 @@
 #include "Sockets.h"
 #include "LocalSocketListener.h"
 #include <IpcGeneralCommon.h>
-#include <KernelExt.h>
 
-LocalSocketListener* LocalListener = nullptr;
+std::shared_ptr<LocalSocketListener> LocalListener;
 
 void LoadUnloadLib(int Command, SceNetId Sock)
 {
@@ -71,20 +70,20 @@ extern "C"
     int __cdecl module_start(size_t argc, const void* args)
     {
 		klog("Helping with %d\n", getpid());
+		
+		char serverAddress[0x200];
+		snprintf(serverAddress, sizeof(serverAddress), GENERAL_IPC_ADDR, getpid());
 
-		//char serverAddress[0x200];
-		//snprintf(serverAddress, sizeof(serverAddress), GENERAL_IPC_ADDR, getpid());
-		//
-		//LocalListener = new LocalSocketListener(ListenerClientThread, nullptr, serverAddress);
-		//
-		//klog("Helper Init Complete.\n");
+		LocalListener = std::make_shared<LocalSocketListener>(ListenerClientThread, nullptr, serverAddress);
+		
+		klog("Helper Init Complete.\n");
 
         return 0;
     }
 
     int __cdecl module_stop(size_t argc, const void* args)
     {
-		//delete LocalListener;
+		LocalListener.reset();
 
         return 0;
     }
