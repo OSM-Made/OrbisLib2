@@ -63,14 +63,17 @@ echo cd "/system/vsh/app/ORBS30000/"&gt;&gt; temp.txt
 echo send $(OutputPath)eboot.bin&gt;&gt; temp.txt
 echo quit&gt;&gt; temp.txt
 ftp -A -s:temp.txt
-del temp.txt</Command>
+del temp.txt
+</Command>
     </PostBuildEvent>
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">_DEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <GenerateDebugInformation Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">true</GenerateDebugInformation>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libKernelInterface/libKernelInterface;$(SolutionDir)/External/StubMaker/include;$(SolutionDir)/External/libGoldHEN/libGoldHEN;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libKernelInterface/libKernelInterface;$(SolutionDir)/External/StubMaker/include;$(SolutionDir)/External/libGoldHEN/libGoldHEN;$(SolutionDir)/Misc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CppExceptions Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">true</CppExceptions>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">true</MultiProcessorCompilation>
+      <ProcessorNumber Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">32</ProcessorNumber>
     </ClCompile>
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">NDEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
@@ -80,6 +83,9 @@ del temp.txt</Command>
     <PreLinkEvent>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)$(ProjectName)\buildASM.bat $(SolutionDir)$(ProjectName)\ $(SolutionDir)$(ProjectName)\$(IntermediateOutputPath)</Command>
     </PreLinkEvent>
+    <PreBuildEvent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">call "$(SolutionDir)\Misc\Increment.bat" "Version.h" "ORBISLIB_BUILDVERSION" </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="API.h" />
@@ -87,10 +93,14 @@ del temp.txt</Command>
     <ClInclude Include="ASM.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="DebugPackets.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="Flash.h" />
     <ClInclude Include="hde64.h" />
+    <ClInclude Include="IpcGeneral.h" />
+    <ClInclude Include="IpcShellUI.h" />
     <ClInclude Include="Library.h" />
+    <ClInclude Include="LibraryPackets.h" />
     <ClInclude Include="Monitor.h" />
     <ClInclude Include="ProcessMonitor.h" />
     <ClInclude Include="PtraceDefs.h" />
@@ -113,6 +123,8 @@ del temp.txt</Command>
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="Flash.cpp" />
     <ClCompile Include="hde64.cpp" />
+    <ClCompile Include="IpcGeneral.cpp" />
+    <ClCompile Include="IpcShellUI.cpp" />
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Monitor.cpp" />

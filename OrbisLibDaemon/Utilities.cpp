@@ -2,6 +2,7 @@
 #include <GoldHEN.h>
 #include <NetExt.h>
 #include "Utilities.h"
+#include <KernelInterface.h>
 
 bool LoadModules()
 {
@@ -347,4 +348,37 @@ bool LoadToolbox()
 		Notify("Failed to load Orbis Toolbox!");
 		return false;
 	}
+}
+
+bool LoadProcHelper(int pid)
+{
+	// Get the proc name.
+	char processName[32];
+	sceKernelGetProcessName(pid, processName);
+
+	// Get the library list.
+	OrbisLiraryInfo libraries[256];
+	int actualCount = GetLibraries(pid, &libraries[0], 256);
+
+	// Unload if it is already loaded.
+	for (int i = 0; i < actualCount; i++)
+	{
+		if (strstr(libraries[i].Path, "OrbisLibGeneralHelper"))
+		{
+			sys_sdk_proc_prx_unload(processName, libraries[i].Handle);
+			break;
+		}
+	}
+
+	// Load the helper library.
+	int handle = sys_sdk_proc_prx_load(processName, (char*)HelperPrxPath);
+	
+	if (handle < 0)
+	{
+		klog("Failed to load Helper PRX! %llX\n", handle);
+		return false;
+	}
+
+	klog("Helper PRX has loaded with the handle of %d\n", handle);
+	return true;
 }

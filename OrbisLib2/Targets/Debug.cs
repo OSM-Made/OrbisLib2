@@ -1,23 +1,11 @@
 ﻿using OrbisLib2.Common.API;
 using OrbisLib2.Common.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Linq;
 using System.Net.Sockets;
-using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
-using static SQLite.SQLite3;
 
 namespace OrbisLib2.Targets
 {
-    public record SegmentInfo(ulong Address, uint Size, int Protection);
-
-    public record LibraryInfo(long Handle, string Path, SegmentInfo[] Segments);
+    public record LibraryInfo(long Handle, string Path, ulong MapBase, ulong TextSize, ulong MapSize, ulong DataBase, ulong dataSize);
 
     public class Debug
     {
@@ -50,7 +38,6 @@ namespace OrbisLib2.Targets
             return result == APIResults.API_OK;
         }
 
-        // TODO: We probably want to detach when our program is exiting.
         public bool Detach()
         {
             if(!IsDebugging)
@@ -167,7 +154,7 @@ namespace OrbisLib2.Targets
                     var libraryCount = Sock.RecvInt32();
 
                     // Recieve all of the arrary as one large packet.
-                    var dataSize = libraryCount * Marshal.SizeOf(typeof(LibraryPacket));
+                    var dataSize = libraryCount * Marshal.SizeOf(typeof(DbgLibraryInfo));
                     var data = new byte[dataSize];
                     Sock.RecvLarge(data);
 
@@ -178,19 +165,9 @@ namespace OrbisLib2.Targets
                     for (int i = 0; i < libraryCount; i++)
                     {
                         // Marshal each part of the buffer to a struct.
-                        var Packet = new LibraryPacket();
-                        Packet = (LibraryPacket)Marshal.PtrToStructure(IntPtr.Add(ptr, i * Marshal.SizeOf(typeof(LibraryPacket))), typeof(LibraryPacket));
-
-                        if (Packet.SegmentCount > 4 || Packet.SegmentCount < 0)
-                            Packet.SegmentCount = 4;
-
-                        var segments = new SegmentInfo[Packet.SegmentCount];
-                        for (int j = 0; j < Packet.SegmentCount; j++)
-                        {
-                            segments[j] = new SegmentInfo(Packet.Segments[j].baseAddr, Packet.Segments[j].size, Packet.Segments[j].prot);
-                        }
-
-                        libraryList.Add(new LibraryInfo(Packet.Handle, Packet.Path, segments));
+                        var Packet = new DbgLibraryInfo();
+                        Packet = (DbgLibraryInfo)Marshal.PtrToStructure(IntPtr.Add(ptr, i * Marshal.SizeOf(typeof(DbgLibraryInfo))), typeof(DbgLibraryInfo));
+                        libraryList.Add(new LibraryInfo(Packet.Handle, Packet.Path, Packet.MapBase, Packet.MapSize, Packet.TextSize, Packet.DataBase, Packet.TextSize));
                     }
 
                     Marshal.FreeHGlobal(ptr);

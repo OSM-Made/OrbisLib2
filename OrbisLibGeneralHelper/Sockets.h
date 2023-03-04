@@ -8,6 +8,7 @@ typedef struct SceNetSockaddrUn
 } SceNetSockaddrUn;
 
 #define SCE_NET_AF_LOCAL 1
+#define SUN_LEN(s) (2+strlen((s)->sun_path))
 
 class Sockets
 {

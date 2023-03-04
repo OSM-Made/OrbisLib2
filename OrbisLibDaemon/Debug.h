@@ -4,15 +4,21 @@
 class Debug
 {
 public:
+	static bool IsDebugging;
+	static int CurrentPID;
+
 	static void Attach(SceNetId sock);
 	static void Detach(SceNetId Sock);
 	static void Current(SceNetId sock);
+	static void RWMemory(SceNetId Sock, bool write);
 
 private:
 	static std::mutex DebugMtx;
-	static bool IsDebugging;
-	static int CurrentPID;
 	static std::shared_ptr<ProcessMonitor> DebuggeeMonitor;
 
 	static bool TryDetach(int pid);
+
+	// Process Events
+	static void OnExit();
+	static void OnException(int status);
 };

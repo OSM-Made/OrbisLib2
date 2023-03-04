@@ -2,6 +2,8 @@
 #include "Monitor.h"
 #include "API.h"
 #include "ProcessMonitor.h"
+#include <KernelInterface.h>
+#include "GoldHEN.h"
 
 int main(int argc, char** arg)
 {
@@ -38,16 +40,7 @@ int main(int argc, char** arg)
 
 	// Blocking run the system monitor.
 	//Monitor::Run();
-
-	sceKernelLoadStartModule("/mnt/sandbox/ORBS30000_000/app0/libKernelInterface.sprx", 0, 0, 0, 0, 0);
-	std::vector<kinfo_proc> ProcList;
-	GetProcessList(ProcList);
-	auto proc = std::find_if(ProcList.begin(), ProcList.end(), [](kinfo_proc a) -> bool { return !strcmp(a.name, "eboot.bin"); });
-	if (proc != ProcList.end())
-	{
-		
-	}
-
+ 
 	//sceKernelSleep(5);
 
 	//UnloadKDriver();

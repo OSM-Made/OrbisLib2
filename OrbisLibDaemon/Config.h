@@ -1,5 +1,6 @@
 #pragma once
 
+#define HelperPrxPath "/data/Orbis Suite/OrbisLibGeneralHelper.sprx"
 #define API_PORT 6900
 #define EVENT_PORT 6901
 
@@ -83,21 +84,7 @@ enum APICommands
 };
 
 constexpr const char* CommandList[] = {
-	"Invalid Command",
-
-	/* ####### Proc functions ####### */
-	"PROC_START",
-
-	"API_PROC_GET_LIST",
-	"API_PROC_LOAD_ELF",
-	"API_PROC_CALL", /* RPC Call. */
-
-	"PROC_END",
-	/* ############################## */
-
 	/* ####### Apps functions ####### */
-	"APP_START",
-
 	"API_APPS_GET_LIST",
 	"API_APPS_GET_INFO_STR",
 	"API_APPS_STATUS",
@@ -109,12 +96,7 @@ constexpr const char* CommandList[] = {
 	"API_APPS_SET_VISIBILITY",
 	"API_APPS_GET_VISIBILITY",
 
-	"APP_END",
-	/* ############################## */
-
 	/* ##### Debugger functions ##### */
-	"DBG_START",
-
 	"API_DBG_ATTACH", /* Debugger attach to target */
 	"API_DBG_DETACH", /* Debugger detach from target */
 	"API_DBG_GET_CURRENT",
@@ -161,22 +143,12 @@ constexpr const char* CommandList[] = {
 	"API_DBG_WATCHPOINT_GETINFO",
 	"API_DBG_WATCHPOINT_LIST",
 
-	"DBG_END",
-	/* ############################## */
-
 	/* ###### Kernel functions ###### */
-	"KERN_START",
-
 	"API_KERN_BASE",
 	"API_KERN_READ",
 	"API_KERN_WRITE",
 
-	"KERN_END",
-	/* ############################## */
-
 	/* ###### Target functions ###### */
-	"TARGET_START",
-
 	"API_TARGET_INFO",
 	"API_TARGET_RESTMODE",
 	"API_TARGET_SHUTDOWN",
@@ -184,11 +156,6 @@ constexpr const char* CommandList[] = {
 	"API_TARGET_NOTIFY",
 	"API_TARGET_BUZZER",
 	"API_TARGET_SET_LED",
-	"API_TARGET_DUMP_PROC",
 	"API_TARGET_SET_SETTINGS",
-	"API_TARGET_GETFILE",
-
-	"TARGET_END",
-	/* ############################## */
-
+	"API_TARGET_GET_PROC_LIST",
 };

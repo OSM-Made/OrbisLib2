@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Common.h"
 #include "Sockets.h"
 
 SceNetId Sockets::ConnectLocal(char* address, int timeOutSeconds)

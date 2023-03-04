@@ -37,12 +37,8 @@ void ProcessMonitor::WatchThread(int pid)
 			int signal = WSTOPSIG(status);
 			klog("Process %d has recieved the signal %d\n", pid, signal);
 
-			switch (signal)
-			{
-			case SIGSTOP:
-				klog("SIGSTOP\n");
-				break;
-			}
+			if (OnException != nullptr)
+				OnException(status);
 		}
 
 		sceKernelSleep(1);

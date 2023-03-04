@@ -7,7 +7,7 @@ public:
 	~ProcessMonitor();
 
 	std::function<void()> OnExit;
-
+	std::function<void(int)> OnException;
 private:
 	bool ShouldRun;
 

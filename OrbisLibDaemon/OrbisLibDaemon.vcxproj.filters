@@ -42,6 +42,12 @@
     <Filter Include="Source Files\Utilities\HDE64">
       <UniqueIdentifier>{fb932df9-2977-4c31-81da-ccbb49bc4933}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\IPC">
+      <UniqueIdentifier>{6f8a789a-6fab-4ba3-b7b0-e15f23b223ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IPC">
+      <UniqueIdentifier>{f46864a3-07e5-4295-9832-687cdcd9fc5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -113,6 +119,18 @@
     <ClInclude Include="hde64.h">
       <Filter>Header Files\Utilities\HDE64</Filter>
     </ClInclude>
+    <ClInclude Include="DebugPackets.h">
+      <Filter>Header Files\API\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="LibraryPackets.h">
+      <Filter>Header Files\API\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="IpcGeneral.h">
+      <Filter>Header Files\IPC</Filter>
+    </ClInclude>
+    <ClInclude Include="IpcShellUI.h">
+      <Filter>Header Files\IPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -165,6 +183,12 @@
     </ClCompile>
     <ClCompile Include="hde64.cpp">
       <Filter>Source Files\Utilities\HDE64</Filter>
+    </ClCompile>
+    <ClCompile Include="IpcShellUI.cpp">
+      <Filter>Source Files\IPC</Filter>
+    </ClCompile>
+    <ClCompile Include="IpcGeneral.cpp">
+      <Filter>Source Files\IPC</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

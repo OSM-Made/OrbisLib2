@@ -37,7 +37,7 @@ namespace OrbisLib2.Dialog
         {
             Task.Run(() =>
             {
-                var procList = TargetManager.SelectedTarget.Process.GetList();
+                var procList = TargetManager.SelectedTarget.GetList();
 
                 if(procList != null && procList.Count > 0)
                 {

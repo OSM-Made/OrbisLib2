@@ -1,5 +1,6 @@
 ﻿using OrbisLib2.Common.API;
 using OrbisLib2.Common.Database;
+using OrbisLib2.Common.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace OrbisLib2.Targets
 {
+    public record ProcInfo(int AppId, int ProcessId, string Name, string TitleId);
+
     public class Target
     {
         private int _SavedTargetId = 0;
@@ -82,7 +85,6 @@ namespace OrbisLib2.Targets
 
         public Debug Debug;
         public Payload Payload;
-        public Process Process;
         public FTP FTP;
         public Application Application;
 
@@ -92,7 +94,6 @@ namespace OrbisLib2.Targets
 
             Debug = new Debug(this);
             Payload = new Payload(this);
-            Process = new Process(this);
             FTP = new FTP(this);
             Application = new Application(this);
         }
@@ -172,6 +173,29 @@ namespace OrbisLib2.Targets
             });
 
             return result == APIResults.API_OK;
+        }
+
+        public List<ProcInfo> GetList()
+        {
+            var list = new List<ProcInfo>();
+
+            API.SendCommand(this, 4, APICommands.API_TARGET_GET_PROC_LIST, (Socket Sock, APIResults Result) =>
+            {
+                var processCount = Sock.RecvInt32();
+
+                for (int i = 0; i < processCount; i++)
+                {
+                    var Packet = new ProcPacket();
+                    if (!API.RecieveNextPacket(Sock, ref Packet))
+                    {
+                        continue;
+                    }
+
+                    list.Add(new ProcInfo(Packet.AppId, Packet.ProcessId, Packet.Name, Packet.TitleId));
+                }
+            });
+
+            return list;
         }
     }
 }

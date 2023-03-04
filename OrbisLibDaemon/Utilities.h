@@ -36,5 +36,4 @@ int GetProcessList(std::vector<kinfo_proc>& ProcessList);
 bool LinkDir(const char* Dir, const char* LinkedDir);
 
 bool LoadToolbox();
-bool LoadKDriver();
-bool UnloadKDriver();
+bool LoadProcHelper(int pid);
