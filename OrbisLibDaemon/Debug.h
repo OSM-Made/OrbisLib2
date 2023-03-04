@@ -7,6 +7,7 @@ public:
 	static bool IsDebugging;
 	static int CurrentPID;
 
+	static bool CheckDebug(SceNetId s);
 	static void Attach(SceNetId sock);
 	static void Detach(SceNetId Sock);
 	static void Current(SceNetId sock);

@@ -9,17 +9,7 @@ SceNetId IpcGeneral::Connect(int pid)
 	snprintf(fullPath, sizeof(fullPath), GENERAL_IPC_ADDR, pid);
 
 	// Try to connect to the IPC sock.
-	auto sock = Sockets::ConnectLocal(fullPath, 5);
-
-	// Attempt to reload the helper.
-	if (!sock)
-	{
-		klog("Attempting to reload helper...\n");
-
-		LoadProcHelper(pid);
-	}
-
-	return sock;
+	return Sockets::ConnectLocal(fullPath, 5);
 }
 
 bool IpcGeneral::SendCommand(SceNetId Sock, int Command)
@@ -68,7 +58,7 @@ bool IpcGeneral::TestConnection(int pid)
 		return false;
 	}
 
-	// Get the library count.
+	// Get the library status.
 	int status = 0;
 	if (!Sockets::RecvInt(sock, &status))
 	{

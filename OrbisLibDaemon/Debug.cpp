@@ -13,6 +13,18 @@ bool Debug::IsDebugging;
 int Debug::CurrentPID;
 std::shared_ptr<ProcessMonitor> Debug::DebuggeeMonitor;
 
+bool Debug::CheckDebug(SceNetId s)
+{
+	if (!IsDebugging || CurrentPID == -1)
+	{
+		Sockets::SendInt(s, 0);
+		return false;
+	}
+
+	Sockets::SendInt(s, 1);
+	return true;
+}
+
 void Debug::Attach(SceNetId sock)
 {
 	auto pid = 0;
@@ -43,18 +55,19 @@ void Debug::Attach(SceNetId sock)
 		int res = ptrace(PT_ATTACH, pid, nullptr, 0);
 		if (res != 0)
 		{
-			klog("Attach(): ptrace(PT_ATTACH) failed with error %llX\n", res);
+			klog("Attach(): ptrace(PT_ATTACH) failed with error %llX %s\n", __error(), strerror(errno));
 			Sockets::SendInt(sock, 0);
 			return;
 		}
 
-		sceKernelUsleep(500);
+		// Wait till the process haults.
+		waitpid(pid, NULL, 0);
 
 		// Attaching by default will stop execution of the remote process. Lets continue it now.
 		res = ptrace(PT_CONTINUE, pid, (void*)1, 0);
 		if (res != 0)
 		{
-			klog("Attach(): ptrace(PT_CONTINUE) failed with error %llX\n", res);
+			klog("Attach(): ptrace(PT_CONTINUE) failed with error %llX %s\n", __error(), strerror(errno));
 			Sockets::SendInt(sock, 0);
 			return;
 		}
@@ -92,10 +105,10 @@ void Debug::Attach(SceNetId sock)
 	}
 
 	// Check the satus of the general helper.
-	if (!IpcGeneral::TestConnection(pid))
-	{
-		LoadProcHelper(pid);
-	}
+	//if (!IpcGeneral::TestConnection(pid))
+	//{
+	//	LoadProcHelper(pid);
+	//}
 }
 
 void Debug::Detach(SceNetId sock)
@@ -135,10 +148,8 @@ void Debug::Current(SceNetId sock)
 
 void Debug::RWMemory(SceNetId s, bool write)
 {
-	if (!IsDebugging || CurrentPID == -1)
-	{
+	if (!CheckDebug(s))
 		return;
-	}
 
 	auto packet = Sockets::RecieveType<RWPacket>(s);
 	auto buffer = std::make_unique<unsigned char>(packet->Length);
@@ -159,6 +170,9 @@ void Debug::RWMemory(SceNetId s, bool write)
 		if (!ReadWriteMemory(CurrentPID, (void*)packet->Address, (void*)buffer.get(), packet->Length, true))
 		{
 			klog("Debug::RWMemory(): Failed to write memory to process %i at %llX\n", CurrentPID, packet->Address);
+
+			Sockets::SendInt(s, 0);
+
 			return;
 		}
 
@@ -168,7 +182,7 @@ void Debug::RWMemory(SceNetId s, bool write)
 	{
 		if (!ReadWriteMemory(CurrentPID, (void*)packet->Address, (void*)buffer.get(), packet->Length, false))
 		{
-			klog("Debug::RWMemory(): Failed to write memory to process %i at %llX\n", CurrentPID, packet->Address);
+			klog("Debug::RWMemory(): Failed to read memory to process %i at %llX\n", CurrentPID, packet->Address);
 
 			Sockets::SendInt(s, 0);
 
@@ -237,7 +251,7 @@ bool Debug::TryDetach(int pid)
 	{
 		// Check if proc is dead anyway and just detach.
 
-		klog("DetachProcess(): ptrace(PT_DETACH) failed with error %llX\n", res);
+		klog("DetachProcess(): ptrace(PT_DETACH) failed with error %llX %s\n", __error(), strerror(errno));
 		return false;
 	}
 

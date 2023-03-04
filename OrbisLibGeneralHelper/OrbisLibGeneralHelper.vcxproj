@@ -58,7 +58,7 @@
 del "$(OutputPath)$(ProjectName).prx"
 echo open 1.1.0.15 2121&gt; temp.txt
 echo cd "/data/Orbis Suite/"&gt;&gt; temp.txt
-echo send $(OutputPath)$(ProjectName).sprx&gt;&gt; temp.txt
+echo send "$(OutputPath)$(ProjectName).sprx"&gt;&gt; temp.txt
 echo quit&gt;&gt; temp.txt
 ftp -A -s:temp.txt
 del temp.txt</Command>
