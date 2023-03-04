@@ -59,7 +59,7 @@ int main(int argc, char** arg)
 		klog("Failed to load Daemon.\n");
 	}
 #else
-	sceLncUtilLaunchApp("ORBS30000", nullptr, &appParam);
+	// sceLncUtilLaunchApp("ORBS30000", nullptr, &appParam);
 #endif // DEBUG
 
 	ExitGraceful();

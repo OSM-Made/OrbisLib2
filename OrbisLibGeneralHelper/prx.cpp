@@ -72,19 +72,19 @@ extern "C"
     {
 		klog("Helping with %d\n", getpid());
 
-		char serverAddress[0x200];
-		snprintf(serverAddress, sizeof(serverAddress), GENERAL_IPC_ADDR, getpid());
-
-		LocalListener = new LocalSocketListener(ListenerClientThread, nullptr, serverAddress);
-
-		klog("Helper Init Complete.\n");
+		//char serverAddress[0x200];
+		//snprintf(serverAddress, sizeof(serverAddress), GENERAL_IPC_ADDR, getpid());
+		//
+		//LocalListener = new LocalSocketListener(ListenerClientThread, nullptr, serverAddress);
+		//
+		//klog("Helper Init Complete.\n");
 
         return 0;
     }
 
     int __cdecl module_stop(size_t argc, const void* args)
     {
-		delete LocalListener;
+		//delete LocalListener;
 
         return 0;
     }

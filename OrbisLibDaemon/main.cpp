@@ -30,20 +30,16 @@ int main(int argc, char** arg)
 	sceKernelSetProcessName("OrbisLibAPI");
 
 	// Start up the thread pool.
-	//ThreadPool::Init(10);
+	ThreadPool::Init(10);
 
 	// Log the loaded version string.
 	klog("\n%s\n\n", ORBISLIB_BUILDSTRING);
 
 	// Start up the API.
-	//API::Init();
+	API::Init();
 
 	// Blocking run the system monitor.
-	//Monitor::Run();
- 
-	//sceKernelSleep(5);
-
-	//UnloadKDriver();
+	Monitor::Run();
 
 	ExitGraceful();
 	return 0;

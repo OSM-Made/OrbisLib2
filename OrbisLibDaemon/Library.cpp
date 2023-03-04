@@ -7,10 +7,8 @@
 
 void Library::LoadLibrary(SceNetId s)
 {
-	if (!Debug::IsDebugging || Debug::CurrentPID == -1)
-	{
+	if (!Debug::CheckDebug(s))
 		return;
-	}
 
 	auto packet = Sockets::RecieveType<SPRXPacket>(s);
 
@@ -24,10 +22,8 @@ void Library::LoadLibrary(SceNetId s)
 
 void Library::UnloadLibrary(SceNetId s)
 {
-	if (!Debug::IsDebugging || Debug::CurrentPID == -1)
-	{
+	if (!Debug::CheckDebug(s))
 		return;
-	}
 
 	auto packet = Sockets::RecieveType<SPRXPacket>(s);
 
@@ -40,10 +36,8 @@ void Library::UnloadLibrary(SceNetId s)
 
 void Library::ReloadLibrary(SceNetId s)
 {
-	if (!Debug::IsDebugging || Debug::CurrentPID == -1)
-	{
+	if (!Debug::CheckDebug(s))
 		return;
-	}
 
 	auto packet = Sockets::RecieveType<SPRXPacket>(s);
 
@@ -68,17 +62,15 @@ void Library::ReloadLibrary(SceNetId s)
 
 void Library::GetLibraryList(SceNetId s)
 {
-	if (!Debug::IsDebugging || Debug::CurrentPID == -1)
-	{
+	if (!Debug::CheckDebug(s))
 		return;
-	}
 
-	OrbisLibraryInfo libraries[256];
-	int actualCount = GetLibraries(Debug::CurrentPID, &libraries[0], 256);
+	auto libraries = std::make_unique<OrbisLibraryInfo[]>(256);
+	int actualCount = GetLibraries(Debug::CurrentPID, libraries.get(), 256);
 
 	// Send the data size.
 	Sockets::SendInt(s, actualCount);
 
 	// Send the list to host.
-	Sockets::SendLargeData(s, (unsigned char*)&libraries[0], actualCount * sizeof(OrbisLibraryInfo));
+	Sockets::SendLargeData(s, (unsigned char*)libraries.get(), actualCount * sizeof(OrbisLibraryInfo));
 }

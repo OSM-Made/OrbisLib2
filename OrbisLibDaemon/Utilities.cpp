@@ -61,6 +61,13 @@ bool LoadModules()
 		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_BGFT (%llX)\n", res);
 		return false;
 	}
+
+	res = sceKernelLoadStartModule("/mnt/sandbox/ORBS30000_000/app0/libKernelInterface.sprx", 0, 0, 0, 0, 0);
+	if (res < 0)
+	{
+		klog("LoadModules(): Failed to load kernel interface (%llX)\n", res);
+		return false;
+	}
 	
 	// Start up networking interface
 	res = sceNetInit();
@@ -357,9 +364,9 @@ bool LoadProcHelper(int pid)
 	sceKernelGetProcessName(pid, processName);
 
 	// Get the library list.
-	OrbisLiraryInfo libraries[256];
-	int actualCount = GetLibraries(pid, &libraries[0], 256);
-
+	OrbisLibraryInfo libraries[256];
+	int actualCount = GetLibraries(pid, libraries, 256);
+	
 	// Unload if it is already loaded.
 	for (int i = 0; i < actualCount; i++)
 	{
