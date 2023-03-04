@@ -363,6 +363,9 @@ bool LoadProcHelper(int pid)
 	char processName[32];
 	sceKernelGetProcessName(pid, processName);
 
+	SceAppInfo info;
+	sceKernelGetAppInfo(pid, &info);
+
 	// Get the library list.
 	OrbisLibraryInfo libraries[256];
 	int actualCount = GetLibraries(pid, libraries, 256);
@@ -378,7 +381,7 @@ bool LoadProcHelper(int pid)
 	}
 
 	// Load the helper library.
-	int handle = sys_sdk_proc_prx_load(processName, (char*)HelperPrxPath);
+	int handle = sys_sdk_proc_prx_load(processName, (char*)(strstr(info.TitleId, "CUSA") ? HelperPrxPath : HelperPrxPathSys));
 	
 	if (handle < 0)
 	{

@@ -1,6 +1,7 @@
 #pragma once
 
 #define HelperPrxPath "/data/Orbis Suite/OrbisLibGeneralHelper.sprx"
+#define HelperPrxPathSys "/data/Orbis Suite/OrbisLibGeneralHelper_sys.sprx"
 #define API_PORT 6900
 #define EVENT_PORT 6901
 #define PACKET_VERSION 5
@@ -86,7 +87,8 @@ enum APICommands
 
 constexpr const char* CommandList[] = {
 	/* ####### Apps functions ####### */
-	"API_APPS_GET_LIST",
+	"API_APPS_CHECK_VER",
+	"API_APPS_GET_DB",
 	"API_APPS_GET_INFO_STR",
 	"API_APPS_STATUS",
 	"API_APPS_START",

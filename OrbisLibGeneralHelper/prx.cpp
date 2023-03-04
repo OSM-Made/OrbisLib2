@@ -83,7 +83,7 @@ extern "C"
 
     int __cdecl module_stop(size_t argc, const void* args)
     {
-		LocalListener.reset();
+		//LocalListener.reset();
 
         return 0;
     }

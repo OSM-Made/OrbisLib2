@@ -9,6 +9,10 @@
       <Configuration>Release</Configuration>
       <Platform>ORBIS</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="System|ORBIS">
+      <Configuration>System</Configuration>
+      <Platform>ORBIS</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4D525585-D4C1-4062-904F-2D0BB496F626}</ProjectGuid>
@@ -25,6 +29,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='System|ORBIS'">
+    <PlatformToolset>Clang</PlatformToolset>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(DebuggerFlavor)'=='ORBISDebugger'" Label="OverrideDebuggerDefaults">
@@ -48,17 +56,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">
     <OutDir>$(SolutionDir)build\pkg\Orbis Suite\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">
+    <OutDir>$(SolutionDir)build\pkg\Orbis Suite\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='System|ORBIS'">
+    <OutDir>$(SolutionDir)build\pkg\Orbis Suite\</OutDir>
+    <TargetName>$(ProjectName)_sys</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>-lc_stub_weak;-lkernel_stub_weak;-lSceNet_stub_weak;-lSceUserService_stub_weak;-lkernel_gen_stub_weak;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>-lSceLibcInternal_gen_stub_weak;-lkernel_stub_weak;-lSceNet_stub_weak;-lSceUserService_stub_weak;-lkernel_sys_gen_stub_weak;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libGoldHEN/ORBIS_Debug;$(SolutionDir)/External/StubMaker;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='System|ORBIS'">$(SolutionDir)/External/libGoldHEN/ORBIS_Debug;$(SolutionDir)/External/StubMaker;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='System|ORBIS'">-v %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>"C:\Python27\python.exe" $(SolutionDir)\$(ProjectName)\make_fself.py  "$(OutputPath)$(ProjectName).prx"  "$(OutputPath)$(ProjectName).sprx"
-del "$(OutputPath)$(ProjectName).prx"
+      <Command>"C:\Python27\python.exe" $(SolutionDir)\$(ProjectName)\make_fself.py  "$(OutputPath)$(TargetName).prx"  "$(OutputPath)$(TargetName).sprx"
+del "$(OutputPath)$(TargetName).prx"
 echo open 1.1.0.15 2121&gt; temp.txt
 echo cd "/data/Orbis Suite/"&gt;&gt; temp.txt
-echo send "$(OutputPath)$(ProjectName).sprx"&gt;&gt; temp.txt
+echo send "$(OutputPath)$(TargetName).sprx"&gt;&gt; temp.txt
 echo quit&gt;&gt; temp.txt
 ftp -A -s:temp.txt
 del temp.txt</Command>
@@ -73,6 +90,10 @@ del temp.txt</Command>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">NDEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <OptimizationLevel Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">Level2</OptimizationLevel>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">NotUsing</PrecompiledHeader>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">$(SolutionDir)/External/libGoldHEN/libGoldHEN;$(SolutionDir)/Misc;$(SolutionDir)/External/StubMaker/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='System|ORBIS'">$(SolutionDir)/External/StubMaker/include;$(SolutionDir)/External/libGoldHEN/libGoldHEN;$(SolutionDir)/Misc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

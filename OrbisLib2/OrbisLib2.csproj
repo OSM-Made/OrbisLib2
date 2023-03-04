@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>annotations</Nullable>
 	<UseWPF>true</UseWPF>
+	<Configurations>Debug;Release;System</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

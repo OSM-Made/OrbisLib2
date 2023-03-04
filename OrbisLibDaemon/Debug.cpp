@@ -128,8 +128,6 @@ void Debug::Detach(SceNetId sock)
 		{
 			klog("Failed to detach from %d\n", CurrentPID);
 			Sockets::SendInt(sock, 0);
-
-			// TODO: if proc dead detach or release.
 		}
 	}
 }
@@ -250,6 +248,17 @@ bool Debug::TryDetach(int pid)
 	if (res != 0)
 	{
 		// Check if proc is dead anyway and just detach.
+		std::vector<kinfo_proc> procList;
+		GetProcessList(procList);
+
+		if (std::find_if(procList.begin(), procList.end(), [=](const kinfo_proc& arg) { return arg.pid == pid; }) == procList.end())
+		{
+			// Reset vars.
+			IsDebugging = false;
+			CurrentPID = -1;
+
+			return true;
+		}
 
 		klog("DetachProcess(): ptrace(PT_DETACH) failed with error %llX %s\n", __error(), strerror(errno));
 		return false;

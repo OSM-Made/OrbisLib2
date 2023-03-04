@@ -23,6 +23,9 @@ int main(int argc, char** arg)
 		return 0;
 	}
 
+	// Load the toolbox.
+	LoadToolbox();
+
 	// Copy back up of sflash so we can read it and not break things :)
 	CopySflash();
 
