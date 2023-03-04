@@ -1,5 +1,4 @@
 #pragma once
-#define PACKET_VERSION 4
 
 struct InitialPacket
 {

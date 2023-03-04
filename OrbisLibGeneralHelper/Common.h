@@ -13,5 +13,6 @@
 #include <kernel.h>
 #include <map>
 #include <memory>
+#include <KernelExt.h>
 
 #include "Utilities.h"
