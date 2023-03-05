@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include <UserServiceExt.h>
 
+#define DEBUG
+
 int main(int argc, char** arg)
 {
 	// Jailbreak our current process.
@@ -46,7 +48,7 @@ int main(int argc, char** arg)
 
 	LaunchAppParam appParam;
 	appParam.size = sizeof(LaunchAppParam);
-	sceUserServiceGetForegroundUser(&appParam.userId);
+	//sceUserServiceGetForegroundUser(&appParam.userId);
 	appParam.enableCrashReport = 0;
 	appParam.checkFlag = 0;
 	appParam.appAttr = 0;
@@ -59,7 +61,7 @@ int main(int argc, char** arg)
 		klog("Failed to load Daemon.\n");
 	}
 #else
-	// sceLncUtilLaunchApp("ORBS30000", nullptr, &appParam);
+	sceLncUtilLaunchApp("ORBS30000", nullptr, &appParam);
 #endif // DEBUG
 
 	ExitGraceful();

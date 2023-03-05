@@ -37,6 +37,9 @@
     <file targ_path="Daemons/ORBS30000/eboot.bin" orig_path="Daemons\ORBS30000\eboot.bin" />
     <file targ_path="Orbis Suite/OrbisLibGeneralHelper.sprx" orig_path="Orbis Suite\OrbisLibGeneralHelper.sprx" />
     <file targ_path="Daemons/ORBS30000/libGoldHEN.sprx" orig_path="Daemons\ORBS30000\libGoldHEN.sprx" />
+    <file targ_path="libGoldHEN.sprx" orig_path="libGoldHEN.sprx" />
+    <file targ_path="Orbis Suite/OrbisLibGeneralHelper_sys.sprx" orig_path="Orbis Suite\OrbisLibGeneralHelper_sys.sprx" />
+    <file targ_path="Daemons/ORBS30000/libKernelInterface.sprx" orig_path="Daemons\ORBS30000\libKernelInterface.sprx" />
   </files>
   <rootdir>
     <dir targ_name="Orbis Toolbox">

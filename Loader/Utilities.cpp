@@ -232,9 +232,10 @@ void InstallDaemon(const char* Daemon, const char* libs[], int libCount)
 
 	for (int i = 0; i < libCount; i++)
 	{
+		klog("Copying Library %s\n", libs[i]);
 		char LibraryFromPath[0x100], LibraryPath[0x100];
-		sprintf(LibraryFromPath, "%s%s/%s.sprx", DAEMONGETPATH, Daemon, libs[i]);
-		sprintf(LibraryPath, "%s%s/%s.sprx", DAEMONPATH, Daemon, libs[i]);
+		sprintf(LibraryFromPath, "%s%s/%s", DAEMONGETPATH, Daemon, libs[i]);
+		sprintf(LibraryPath, "%s%s/%s", DAEMONPATH, Daemon, libs[i]);
 		CopyFile(LibraryFromPath, LibraryPath);
 	}
 
