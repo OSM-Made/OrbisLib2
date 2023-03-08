@@ -1,13 +1,7 @@
 ﻿using OrbisLib2.Common.API;
 using OrbisLib2.Common.Database;
 using OrbisLib2.Common.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrbisLib2.Targets
 {
