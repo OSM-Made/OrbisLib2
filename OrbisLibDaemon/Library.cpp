@@ -4,6 +4,7 @@
 #include <KernelInterface.h>
 #include "LibraryPackets.h"
 #include "IpcGeneral.h"
+#include <GoldHEN.h>
 
 void Library::LoadLibrary(SceNetId s)
 {
@@ -12,9 +13,12 @@ void Library::LoadLibrary(SceNetId s)
 
 	auto packet = Sockets::RecieveType<SPRXPacket>(s);
 
+	// Get Process name.
+	char processName[32];
+	sceKernelGetProcessName(Debug::CurrentPID, processName);
+
 	// Load the library.
-	int handle = 0;
-	IpcGeneral::LoadLibrary(Debug::CurrentPID, packet->Path, &handle);
+	auto handle = sys_sdk_proc_prx_load(processName, packet->Path);
 
 	// Send the result.
 	Sockets::SendInt(s, handle);
@@ -27,8 +31,12 @@ void Library::UnloadLibrary(SceNetId s)
 
 	auto packet = Sockets::RecieveType<SPRXPacket>(s);
 
+	// Get Process name.
+	char processName[32];
+	sceKernelGetProcessName(Debug::CurrentPID, processName);
+
 	// Unload the library.
-	auto result = IpcGeneral::UnLoadLibrary(Debug::CurrentPID, packet->Handle);
+	auto result = sys_sdk_proc_prx_unload(processName, packet->Handle);
 
 	// Send the result.
 	Sockets::SendInt(s, result);
@@ -41,8 +49,12 @@ void Library::ReloadLibrary(SceNetId s)
 
 	auto packet = Sockets::RecieveType<SPRXPacket>(s);
 
+	// Get Process name.
+	char processName[32];
+	sceKernelGetProcessName(Debug::CurrentPID, processName);
+
 	// Unload the library.
-	auto result = IpcGeneral::UnLoadLibrary(Debug::CurrentPID, packet->Handle);
+	auto result = sys_sdk_proc_prx_unload(processName, packet->Handle);
 	if (result != 0)
 	{
 		klog("Failed to unload %d\n", packet->Handle);
@@ -53,8 +65,7 @@ void Library::ReloadLibrary(SceNetId s)
 	}
 
 	// Load the library.
-	int handle = 0;
-	IpcGeneral::LoadLibrary(Debug::CurrentPID, packet->Path, &handle);
+	auto handle = sys_sdk_proc_prx_load(processName, packet->Path);
 
 	// Send the result.
 	Sockets::SendInt(s, handle);

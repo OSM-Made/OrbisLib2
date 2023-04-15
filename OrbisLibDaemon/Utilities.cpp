@@ -340,13 +340,14 @@ bool LinkDir(const char* Dir, const char* LinkedDir)
 
 bool LoadToolbox()
 {
-	// Mount data & hostapp into ShellUI sandbox
-	LinkDir("/data/", "/mnt/sandbox/NPXS20001_000/data");
-	LinkDir("/hostapp/", "/mnt/sandbox/NPXS20001_000/hostapp");
-
 	auto handle = sys_sdk_proc_prx_load((char*)"SceShellUI", (char*)"/user/data/Orbis Toolbox/OrbisToolbox-2.0.sprx");
 	if (handle > 0) {
 		klog("Orbis Toolbox loaded! %d\n", handle);
+
+		// Mount data & hostapp into ShellUI sandbox
+		LinkDir("/data/", "/mnt/sandbox/NPXS20001_000/data");
+		LinkDir("/hostapp/", "/mnt/sandbox/NPXS20001_000/hostapp");
+
 		return true;
 	}
 	else

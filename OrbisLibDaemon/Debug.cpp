@@ -103,12 +103,6 @@ void Debug::Attach(SceNetId sock)
 		// Mount data into sandbox
 		LinkDir("/data/", sandBoxPath);
 	}
-
-	// Check the satus of the general helper.
-	if (!IpcGeneral::TestConnection(pid))
-	{
-		LoadProcHelper(pid);
-	}
 }
 
 void Debug::Detach(SceNetId sock)

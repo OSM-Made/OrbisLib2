@@ -97,8 +97,8 @@ void API::ListenerCallback(void* tdParam, SceNetId s, SceNetInAddr sin_addr)
 	// Check if the command exists in the map
 	if (it != API::APICommands.end())
 	{
-		if (packet->Command != API_TARGET_INFO && packet->Command != API_DBG_GET_CURRENT)
-			klog("Executing Command %d (%s)\n", packet->Command, CommandList[packet->Command]);
+		//if (packet->Command != API_TARGET_INFO && packet->Command != API_DBG_GET_CURRENT)
+		//	klog("Executing Command %d (%s)\n", packet->Command, CommandList[packet->Command]);
 
 		// Call the command function with the given argument
 		it->second(s);

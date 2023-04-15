@@ -65,7 +65,7 @@
     <PostBuildEvent>
       <Command>"C:\Python27\python.exe" $(SolutionDir)\$(ProjectName)\make_fself.py  $(OutputPath)$(ProjectName).elf  $(OutputPath)eboot.bin --paid 0x3800000000010003 --auth-info 000000000000000000000000001C004000FF000000000080000000000000000000000000000000000000008000400040000000000000008000000000000000080040FFFF000000F000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 del $(OutputPath)$(ProjectName).elf
-echo open 1.1.0.15 2121&gt; temp.txt
+echo open 1.1.0.14 2121&gt; temp.txt
 echo cd "/system/vsh/app/ORBS30000/"&gt;&gt; temp.txt
 echo send $(OutputPath)eboot.bin&gt;&gt; temp.txt
 echo quit&gt;&gt; temp.txt
