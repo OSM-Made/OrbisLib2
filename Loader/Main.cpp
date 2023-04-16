@@ -48,7 +48,7 @@ int main(int argc, char** arg)
 
 	LaunchAppParam appParam;
 	appParam.size = sizeof(LaunchAppParam);
-	//sceUserServiceGetForegroundUser(&appParam.userId);
+	sceUserServiceGetForegroundUser(&appParam.userId);
 	appParam.enableCrashReport = 0;
 	appParam.checkFlag = 0;
 	appParam.appAttr = 0;

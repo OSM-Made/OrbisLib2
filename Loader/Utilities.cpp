@@ -270,7 +270,4 @@ void InstallOrbisSuite()
 	klog("[Orbis Suite] Making Directories...\n");
 	MakeDir("/data/Orbis Suite");
 	MakeDir("/data/Orbis Suite/IPC");
-
-	klog("[Orbis Suite] Writing Files...\n");
-	CopyFile("/mnt/sandbox/ORBS00000_000/app0/Orbis Suite/OrbisLibGeneralHelper.sprx", "/data/Orbis Suite/OrbisLibGeneralHelper.sprx");
 }
