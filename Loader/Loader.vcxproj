@@ -57,7 +57,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>-lkernel_stub_weak;-lScePad_stub_weak;-lSceRtc_stub_weak;-lSceUserService_stub_weak;-lGoldHEN_stub_weak;-lkernel_gen_stub_weak;-lSceLibcInternal_gen_stub_weak;-lSceLncUtil_gen_stub_weak;-lSceSysmodule_gen_stub_weak;-lSceUserService_gen_stub_weak;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>-lkernel_stub_weak;-lScePad_stub_weak;-lSceRtc_stub_weak;-lSceUserService_stub_weak;-lkernel_gen_stub_weak;-lSceLibcInternal_gen_stub_weak;-lSceLncUtil_gen_stub_weak;-lSceSysmodule_gen_stub_weak;-lSceUserService_gen_stub_weak;-lGoldHEN;%(AdditionalDependencies)</AdditionalDependencies>
       <Addressing Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">NonAslr</Addressing>
       <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libGoldHEN/ORBIS_Debug;$(SolutionDir)/External/StubMaker;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">--required-files $(SolutionDir)$(ProjectName)\$(IntermediateOutputPath)\ASM.o %(AdditionalOptions)</AdditionalOptions>

@@ -21,15 +21,11 @@ int main(int argc, char** arg)
 		return 0;
 	}
 
-	//MakeDirs
-	MakeDir("/data/Orbis Suite");
-	MakeDir("/data/Orbis Suite/IPC");
-
 	// Set RW on the system directory.
 	mount_large_fs("/dev/da0x4.crypt", "/system", "exfatfs", "511", MNT_UPDATE);
 
 	// Install all the things! :D
-	const char* LibList[] = { "libGoldHEN.sprx", "libKernelInterface.sprx" };
+	const char* LibList[] = { "libKernelInterface.sprx" };
 	InstallDaemon("ORBS30000", LibList, 2); // Orbis Lib
 	InstallOrbisToolbox();
 	InstallOrbisSuite();
