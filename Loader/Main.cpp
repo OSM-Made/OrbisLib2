@@ -26,7 +26,7 @@ int main(int argc, char** arg)
 
 	// Install all the things! :D
 	const char* LibList[] = { "libKernelInterface.sprx" };
-	InstallDaemon("ORBS30000", LibList, 2); // Orbis Lib
+	InstallDaemon("ORBS30000", LibList, 1); // Orbis Lib
 	InstallOrbisToolbox();
 	InstallOrbisSuite();
 
