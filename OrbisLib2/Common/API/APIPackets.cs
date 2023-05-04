@@ -79,6 +79,7 @@ namespace OrbisLib2.Common.API
         API_TARGET_SET_LED,
         API_TARGET_SET_SETTINGS,
         API_TARGET_GET_PROC_LIST,
+        API_TARGET_SEND_FILE,
     }
 
     public enum APIResults : int

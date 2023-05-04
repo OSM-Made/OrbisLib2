@@ -41,19 +41,19 @@ namespace OrbisLib2.General
                 "{0} B",
                 "{0:f1} KB",
                 "{0:f1} MB",
-                "{0:f1} GB"
+                "{0:N2} GB"
             };
 
             double num = numberOfBytes;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < typeStrings.Length; i++)
             {
-                if (num <= 10240.0 || i >= 3)
+                if (num <= 10000.0 || i >= 3)
                 {
                     return string.Format(typeStrings[i], num);
                 }
-                num /= 1024.0;
+                num /= 1000.0;
             }
-            return "";
+            return "N/A";
         }
     }
 }

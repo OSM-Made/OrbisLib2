@@ -131,6 +131,15 @@
     <ClInclude Include="IpcShellUI.h">
       <Filter>Header Files\IPC</Filter>
     </ClInclude>
+    <ClInclude Include="Apps.h">
+      <Filter>Header Files\API\CmdGroups</Filter>
+    </ClInclude>
+    <ClInclude Include="AppDatabase.h">
+      <Filter>Header Files\Utilities\PSUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="AppPackets.h">
+      <Filter>Header Files\API\Packets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -189,6 +198,12 @@
     </ClCompile>
     <ClCompile Include="IpcGeneral.cpp">
       <Filter>Source Files\IPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Apps.cpp">
+      <Filter>Source Files\API\CmdGroups</Filter>
+    </ClCompile>
+    <ClCompile Include="AppDatabase.cpp">
+      <Filter>Source Files\Utilities\PSUtils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

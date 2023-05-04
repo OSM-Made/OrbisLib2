@@ -6,6 +6,7 @@
 #include "Debug.h"
 #include "System.h"
 #include "Library.h"
+#include "Apps.h"
 
 std::unique_ptr<SocketListener> API::Listener;
 
@@ -13,17 +14,17 @@ std::unique_ptr<SocketListener> API::Listener;
 const std::map<int, std::function<void(SceNetId s)>> API::APICommands =
 {
 	// Apps Commands
-	//API_APPS_CHECK_VER,
-	//API_APPS_GET_DB,
-	//API_APPS_GET_INFO_STR,
-	//API_APPS_STATUS,
-	//API_APPS_START,
-	//API_APPS_STOP,
-	//API_APPS_SUSPEND,
-	//API_APPS_RESUME,
-	//API_APPS_DELETE,
-	//API_APPS_SET_VISIBILITY,
-	//API_APPS_GET_VISIBILITY,
+	{ API_APPS_CHECK_VER, Apps::CheckVersion },
+	{ API_APPS_GET_DB, Apps::GetDB },
+	{ API_APPS_GET_INFO_STR, Apps::GetAppInfoString },
+	{ API_APPS_STATUS, Apps::SendAppStatus },
+	{ API_APPS_START, Apps::StartApp },
+	{ API_APPS_STOP, Apps::KillApp },
+	{ API_APPS_SUSPEND, Apps::SuspendApp },
+	{ API_APPS_RESUME, Apps::ResumeApp },
+	{ API_APPS_DELETE, Apps::DeleteApp },
+	{ API_APPS_SET_VISIBILITY, Apps::SetVisibility },
+	{ API_APPS_GET_VISIBILITY, Apps::GetVisibility },
 
 	// Debug Commands
 	{ API_DBG_ATTACH, Debug::Attach },
@@ -62,6 +63,7 @@ const std::map<int, std::function<void(SceNetId s)>> API::APICommands =
 	{ API_TARGET_SET_LED, Target::SetConsoleLED },
 	{ API_TARGET_SET_SETTINGS, Target::SetSettings },
 	{ API_TARGET_GET_PROC_LIST, Target::ProcList },
+	{ API_TARGET_SEND_FILE, Target::SendFile },
 };
 
 void API::ListenerCallback(void* tdParam, SceNetId s, SceNetInAddr sin_addr)

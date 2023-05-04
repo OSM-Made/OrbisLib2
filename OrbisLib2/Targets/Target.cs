@@ -2,6 +2,7 @@
 using OrbisLib2.Common.Database;
 using OrbisLib2.Common.Helpers;
 using System.Net.Sockets;
+using System.Text;
 
 namespace OrbisLib2.Targets
 {
@@ -190,6 +191,23 @@ namespace OrbisLib2.Targets
             });
 
             return list;
+        }
+
+        public byte[] GetFile(string filePath)
+        {
+            int bytesRecieved = 0;
+            var file = new byte[0];
+            API.SendCommand(this, 4, APICommands.API_TARGET_SEND_FILE, (Socket Sock, APIResults Result) =>
+            {
+                var bytes = Encoding.ASCII.GetBytes(filePath.PadRight(10, '\0')).Take(0x200).ToArray();
+                Sock.Send(bytes);
+
+                var fileSize = Sock.RecvInt32();
+                file = new byte[fileSize];
+                bytesRecieved = Sock.RecvLarge(file);
+            });
+
+            return bytesRecieved > 0 ? file : new byte[0];
         }
     }
 }

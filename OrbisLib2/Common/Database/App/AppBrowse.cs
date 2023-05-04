@@ -39,7 +39,7 @@ namespace OrbisLib2.Common.Database.App
         public string Category { get; set; } = "";
 
         [Column("contentSize")]
-        public int ContentSize { get; set; } = 0;
+        public long ContentSize { get; set; } = 0;
 
         [Column("installDate")]
         public string InstallDate { get; set; } = "";

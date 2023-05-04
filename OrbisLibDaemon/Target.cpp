@@ -155,3 +155,40 @@ void Target::ProcList(SceNetId sock)
 		sceNetSend(sock, packet.get(), sizeof(ProcPacket), 0);
 	}
 }
+
+void Target::SendFile(SceNetId Sock)
+{
+	char filePath[0x200];
+	memset(filePath, 0, sizeof(filePath));
+	sceNetRecv(Sock, filePath, sizeof(filePath), 0);
+
+	//Open file descriptors 
+	auto fd = sceKernelOpen(filePath, SCE_KERNEL_O_RDONLY, 0);
+	if (fd <= 0)
+	{
+		klog("Failed to open file \"%s\".\n", filePath);
+		return;
+	}
+
+	//Get File size
+	SceKernelStat stats;
+	sceKernelFstat(fd, &stats);
+
+	if (stats.st_size == 0)
+	{
+		klog("Failed to get size of file \"%s\"..\n", filePath);
+		return;
+	}
+
+	//Allocate space to read data.
+	auto FileData = (unsigned char*)malloc(stats.st_size);
+
+	//ReadFile.
+	sceKernelRead(fd, FileData, stats.st_size);
+	sceKernelClose(fd);
+
+	Sockets::SendInt(Sock, stats.st_size);
+	Sockets::SendLargeData(Sock, FileData, stats.st_size);
+
+	free(FileData);
+}

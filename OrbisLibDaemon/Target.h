@@ -9,6 +9,7 @@ public:
 	static void SetConsoleLED(SceNetId sock);
 	static void SetSettings(SceNetId Sock);
 	static void ProcList(SceNetId sock);
+	static void SendFile(SceNetId Sock);
 
 private:
 
