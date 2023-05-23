@@ -2,6 +2,7 @@
 #include "ThreadPool.h"
 #include "SocketListener.h"
 #include <sys/select.h>
+#include <libnetctl.h>
 
 void SocketListener::ListenThread(uint64_t port)
 {
@@ -11,18 +12,22 @@ void SocketListener::ListenThread(uint64_t port)
 	addr.sin_port = sceNetHtons(port); // Our desired listen port
 
 	// Make new TCP Socket
-	auto serverSocket = sceNetSocket("Listener Socket", SCE_NET_AF_INET, SCE_NET_SOCK_STREAM, SCE_NET_IPPROTO_TCP);
+	ServerSocket = sceNetSocket("Listener Socket", SCE_NET_AF_INET, SCE_NET_SOCK_STREAM, SCE_NET_IPPROTO_TCP);
 
 	// Set Sending and reciving time out to 2s
 	int sock_timeout = 2000000;
-	sceNetSetsockopt(serverSocket, SCE_NET_SOL_SOCKET, SCE_NET_SO_SNDTIMEO, &sock_timeout, sizeof(sock_timeout));
-	sceNetSetsockopt(serverSocket, SCE_NET_SOL_SOCKET, SCE_NET_SO_RCVTIMEO, &sock_timeout, sizeof(sock_timeout));
+	sceNetSetsockopt(ServerSocket, SCE_NET_SOL_SOCKET, SCE_NET_SO_SNDTIMEO, &sock_timeout, sizeof(sock_timeout));
+	sceNetSetsockopt(ServerSocket, SCE_NET_SOL_SOCKET, SCE_NET_SO_RCVTIMEO, &sock_timeout, sizeof(sock_timeout));
 
 	// Make sure every time we can rebind to the port.
 	int reusePort = 1;
-	sceNetSetsockopt(serverSocket, SCE_NET_SOL_SOCKET, SCE_NET_SO_REUSEPORT, &reusePort, sizeof(reusePort));
+	sceNetSetsockopt(ServerSocket, SCE_NET_SOL_SOCKET, SCE_NET_SO_REUSEPORT, &reusePort, sizeof(reusePort));
 
-	auto bindError = sceNetBind(serverSocket, (SceNetSockaddr*)&addr, sizeof(addr));
+	// Set the server socket to non-blocking mode
+	int flags = sceKernelFcntl(ServerSocket, F_GETFL, 0);
+	sceKernelFcntl(ServerSocket, F_SETFL, flags | O_NONBLOCK);
+
+	auto bindError = sceNetBind(ServerSocket, (SceNetSockaddr*)&addr, sizeof(addr));
 	if (bindError != 0)
 	{
 		klog("Failed to bind Listener to port %i\nError: %X", port, bindError);
@@ -30,7 +35,7 @@ void SocketListener::ListenThread(uint64_t port)
 		goto Cleanup;
 	}
 
-	if (sceNetListen(serverSocket, 100) != 0)
+	if (sceNetListen(ServerSocket, 100) != 0)
 	{
 		klog("Failed to start listening on Socket.\n");
 
@@ -42,13 +47,13 @@ void SocketListener::ListenThread(uint64_t port)
 		fd_set set;
 		struct timeval timeout;
 		FD_ZERO(&set); /* clear the set */
-		FD_SET(serverSocket, &set); /* add our file descriptor to the set */
+		FD_SET(ServerSocket, &set); /* add our file descriptor to the set */
 
 		timeout.tv_sec = 2;
 		timeout.tv_usec = 0;
 
 		// Wait for incoming connections.
-		auto rv = select((int)serverSocket + 1, &set, NULL, NULL, &timeout);
+		auto rv = select((int)ServerSocket + 1, &set, NULL, NULL, &timeout);
 		if (rv == -1)
 		{
 			goto Cleanup;
@@ -57,6 +62,7 @@ void SocketListener::ListenThread(uint64_t port)
 		{
 			if (!ServerRunning)
 				goto Cleanup;
+
 			continue;
 		}
 		else
@@ -66,7 +72,7 @@ void SocketListener::ListenThread(uint64_t port)
 
 			SceNetSockaddrIn ClientAddr = { 0 };
 			SceNetSocklen_t addrlen = sizeof(SceNetSockaddrIn);
-			auto ClientSocket = sceNetAccept(serverSocket, (SceNetSockaddr*)&ClientAddr, &addrlen);
+			auto ClientSocket = sceNetAccept(ServerSocket, (SceNetSockaddr*)&ClientAddr, &addrlen);
 
 			if (ClientSocket != -1)
 			{
@@ -76,7 +82,7 @@ void SocketListener::ListenThread(uint64_t port)
 					{
 						auto sock = ClientSocket;
 						auto addr = ClientAddr.sin_addr;
-
+				
 						ClientCallBack(tdParam, sock, addr);
 						sceNetSocketClose(sock);
 					});
@@ -91,7 +97,7 @@ Cleanup:
 	klog("Listener Thread Exiting!\n");
 
 	// Clean up.
-	sceNetSocketClose(serverSocket);
+	sceNetSocketClose(ServerSocket);
 }
 
 SocketListener::SocketListener(void(*ClientCallBack)(void* tdParam, SceNetId Sock, SceNetInAddr sin_addr), void* tdParam, unsigned short Port)
@@ -100,10 +106,60 @@ SocketListener::SocketListener(void(*ClientCallBack)(void* tdParam, SceNetId Soc
 	this->tdParam = tdParam;
 	ServerRunning = true;
 
+	sceNetCtlRegisterCallback([](int eventType, void* arg)
+		{
+			auto listener = (SocketListener*)arg;
+			if (!listener->ServerRunning)
+			{
+				klog("Listener: Network Connection Lost.\n");
+
+				listener->ServerRunning = false;
+				sceNetSocketClose(listener->ServerSocket);
+			}
+		}, this, &CallbackId);
+
 	ThreadPool::QueueJob([=] { ListenThread(Port); });
+
+	ThreadPool::QueueJob([=]
+		{
+			while (true)
+			{
+				int state = 0;
+				sceNetCtlGetState(&state);
+
+				switch (state)
+				{
+				default:
+				case SCE_NET_CTL_STATE_DISCONNECTED:
+
+					if (ServerRunning)
+					{
+						klog("Listener: Network Connection Lost.\n");
+						ServerRunning = false;
+						sceNetSocketClose(ServerSocket);
+					}
+
+					break;
+
+				case SCE_NET_CTL_STATE_IPOBTAINED:
+
+					if (!ServerRunning)
+					{
+						klog("Listener: Network Connection Online.\n");
+						ServerRunning = true;
+						ThreadPool::QueueJob([=] { ListenThread(Port); });
+					}
+
+					break;
+				}
+
+				sceKernelSleep(1);
+			}
+		});
 }
 
 SocketListener::~SocketListener()
 {
 	ServerRunning = false;
+	sceNetCtlUnregisterCallback(CallbackId);
 }

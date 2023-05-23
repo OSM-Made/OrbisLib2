@@ -3,6 +3,7 @@
 #include <NetExt.h>
 #include "Utilities.h"
 #include <KernelInterface.h>
+#include <libnetctl.h>
 
 bool LoadModules()
 {
@@ -107,6 +108,13 @@ bool LoadModules()
 	if (res != 0)
 	{
 		klog("LoadModules(): sceAppInstUtilInitialize failed (%llX)\n", res);
+		return false;
+	}
+
+	res = sceNetCtlInit();
+	if (res != 0)
+	{
+		klog("LoadModules(): sceNetCtlInit failed (%llX)\n", res);
 		return false;
 	}
 

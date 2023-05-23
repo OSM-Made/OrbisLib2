@@ -6,6 +6,8 @@ private:
 	void(*ClientCallBack)(void* tdParam, SceNetId Sock, SceNetInAddr sin_addr);
 	bool ServerRunning;
 	void* tdParam;
+	SceNetId ServerSocket;
+	int CallbackId;
 
 	void ListenThread(uint64_t port);
 
