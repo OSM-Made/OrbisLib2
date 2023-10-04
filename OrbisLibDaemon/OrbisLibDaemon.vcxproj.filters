@@ -36,17 +36,17 @@
     <Filter Include="Source Files\Utilities\PSUtils">
       <UniqueIdentifier>{ca6193ec-12b5-49e8-adc6-3435bd065c34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utilities\HDE64">
-      <UniqueIdentifier>{c4018d0f-ccb9-4926-a133-09debc054894}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utilities\HDE64">
-      <UniqueIdentifier>{fb932df9-2977-4c31-81da-ccbb49bc4933}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\IPC">
       <UniqueIdentifier>{6f8a789a-6fab-4ba3-b7b0-e15f23b223ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\IPC">
       <UniqueIdentifier>{f46864a3-07e5-4295-9832-687cdcd9fc5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\API\Proto">
+      <UniqueIdentifier>{fc16373e-a251-4464-be3f-39299f17efe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\API\Proto">
+      <UniqueIdentifier>{d7aa3bd5-c1da-4e23-b0b8-d9ca48b89cea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -113,12 +113,6 @@
     <ClInclude Include="ASM.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="table64.h">
-      <Filter>Header Files\Utilities\HDE64</Filter>
-    </ClInclude>
-    <ClInclude Include="hde64.h">
-      <Filter>Header Files\Utilities\HDE64</Filter>
-    </ClInclude>
     <ClInclude Include="DebugPackets.h">
       <Filter>Header Files\API\Packets</Filter>
     </ClInclude>
@@ -139,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="AppPackets.h">
       <Filter>Header Files\API\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="APIPackets.pb.h">
+      <Filter>Header Files\API\Proto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,9 +187,6 @@
     <ClCompile Include="ASM.s">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="hde64.cpp">
-      <Filter>Source Files\Utilities\HDE64</Filter>
-    </ClCompile>
     <ClCompile Include="IpcShellUI.cpp">
       <Filter>Source Files\IPC</Filter>
     </ClCompile>
@@ -205,5 +199,13 @@
     <ClCompile Include="AppDatabase.cpp">
       <Filter>Source Files\Utilities\PSUtils</Filter>
     </ClCompile>
+    <ClCompile Include="APIPackets.pb.cc">
+      <Filter>Source Files\API\Proto</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="APIPackets.proto">
+      <Filter>Source Files\API\Proto</Filter>
+    </None>
   </ItemGroup>
 </Project>

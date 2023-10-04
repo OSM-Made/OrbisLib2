@@ -59,33 +59,6 @@ namespace OrbisLib2.Common.Helpers
         }
 
         /// <summary>
-        /// Sends an object and its size to the socket.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="obj">The object we would like to send. (Must be serializable.)</param>
-        public static void SendObject(this Socket s, object obj)
-        {
-            var Data = Helper.ObjectToByteArray(obj);
-            s.Send(BitConverter.GetBytes(Data.Length), sizeof(int), SocketFlags.None);
-            s.Send(Data);
-        }
-
-        /// <summary>
-        /// Recieve an object from a socket.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns>Returns the object we would like to receive.</returns>
-        public static object RecvObject(this Socket s)
-        {
-            var ObjectSize = s.RecvInt32();
-
-            var ObjectData = new byte[ObjectSize];
-            s.Receive(ObjectData);
-
-            return Helper.ByteArrayToObject(ObjectData);
-        }
-
-        /// <summary>
         /// Sends an int32 over socket.
         /// </summary>
         /// <param name="s"></param>
@@ -191,6 +164,38 @@ namespace OrbisLib2.Common.Helpers
             s.EndConnect(result);
 
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static byte[] ReceiveSize(this Socket s)
+        {
+            // First we get the size of the request packet.
+            var packetSize = s.RecvInt32();
+
+            // Allocate space and recieve the data.
+            var packet = new byte[packetSize];
+            s.RecvLarge(packet);
+
+            // return the result
+            return packet;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="data"></param>
+        public static void SendSize(this Socket s, byte[] data)
+        {
+            // Send the size.
+            s.SendInt32(data.Length);
+
+            // Send the data now.
+            s.SendLarge(data);
         }
     }
 }

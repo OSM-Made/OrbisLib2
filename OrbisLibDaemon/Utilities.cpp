@@ -49,12 +49,12 @@ bool LoadModules()
 		return false;
 	}
 	
-	res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_HTTP);
-	if (res != 0)
-	{
-		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_HTTP (%llX)\n", res);
-		return false;
-	}
+	//res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_HTTP);
+	//if (res != 0)
+	//{
+	//	klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_HTTP (%llX)\n", res);
+	//	return false;
+	//}
 	
 	res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_BGFT);
 	if (res != 0)

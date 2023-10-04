@@ -5,7 +5,10 @@
 
 int main(int argc, char** arg)
 {
+	klog("Hello from OrbisLib Loader\n");
+
 	// Jailbreak our current process.
+	klog("Jailbreaking our process.\n");
 	if (!Jailbreak())
 	{
 		Notify("Failed to jailbreak Process...");
@@ -14,6 +17,7 @@ int main(int argc, char** arg)
 	}
 
 	// Load internal system modules.
+	klog("Loading modules.\n");
 	if (!LoadModules())
 	{
 		Notify("Failed to Load Modules...");
@@ -22,6 +26,7 @@ int main(int argc, char** arg)
 	}
 
 	// Set RW on the system directory.
+	klog("Mounting System as R/W.\n");
 	mount_large_fs("/dev/da0x4.crypt", "/system", "exfatfs", "511", MNT_UPDATE);
 
 	// Install all the things! :D

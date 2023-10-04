@@ -1,15 +1,11 @@
 ﻿using OrbisLib2.Common.API;
 using OrbisLib2.Common.Database.App;
 using OrbisLib2.Common.Helpers;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Drawing;
 using System.IO;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Controls;
-using static SQLite.SQLite3;
+using System.Windows;
 
 namespace OrbisLib2.Targets
 {
@@ -52,57 +48,65 @@ namespace OrbisLib2.Targets
             return @$"{targetFolder}\app.db";
         }
 
-        public bool IsOutOfDate()
+        public ResultState IsOutOfDate(out bool IsOutOfDate)
         {
             var databasePath = GetAppDBPath();
 
             if (!File.Exists(databasePath))
             {
-                return true;
+                IsOutOfDate = true;
+                return new ResultState { Succeeded = true };
             }
 
-            var currentAppVersion = AppBrowseVersion.GetAppBrowseVersion(databasePath);
-
-            bool result = false;
-            API.SendCommand(Target, 5, APICommands.API_APPS_CHECK_VER, (Socket Sock, APIResults Result) =>
+            var tempIsOutOfDate = false;
+            var result = API.SendCommand(Target, 5, APICommand.ApiAppsCheckVer, (Socket Sock, ResultState Result) =>
             {
                 // Send the current app version.
-                Sock.SendInt32(currentAppVersion);
+                Sock.SendInt32(AppBrowseVersion.GetAppBrowseVersion(databasePath));
 
                 // Get the state from API.
-                result = Sock.RecvInt32() == 1;
+                tempIsOutOfDate = Sock.RecvInt32() == 1;
             });
 
+            IsOutOfDate = tempIsOutOfDate;
             return result;
         }
 
-        public void UpdateLocalDB()
+        public ResultState UpdateLocalDB()
         {
-            if(IsOutOfDate())
+            bool isOutOfDate;
+            var result = IsOutOfDate(out isOutOfDate);
+
+            // If the out of date check failed we need to abort.
+            if (!result.Succeeded)
+                return result;
+
+            // If the DB is up to date we have nothing to do here, lets get out of here!
+            if (!isOutOfDate)
+                return new ResultState { Succeeded = true };
+
+            return API.SendCommand(Target, 5, APICommand.ApiAppsGetDb, (Socket Sock, ResultState Result) =>
             {
-                API.SendCommand(Target, 5, APICommands.API_APPS_GET_DB, (Socket Sock, APIResults Result) =>
+                var fileSize = Sock.RecvInt32();
+                var newDatabaseBytes = new byte[fileSize];
+                if (Sock.RecvLarge(newDatabaseBytes) < fileSize)
+                    return;
+
+                var databasePath = GetAppDBPath();
+                var oldDatabasePath = @$"{databasePath}.old";
+
+                // If we already have a db back it up.
+                if (File.Exists(databasePath))
                 {
-                    var fileSize = Sock.RecvInt32();
-                    var newDatabaseBytes = new byte[fileSize];
-                    if (Sock.RecvLarge(newDatabaseBytes) < fileSize)
-                        return;
+                    File.Copy(databasePath, oldDatabasePath, true);
 
-                    var databasePath = GetAppDBPath();
-                    var oldDatabasePath = @$"{databasePath}.old";
+                    // Remove the last db
+                    File.Delete(databasePath);
+                }
 
-                    // If we already have a db back it up.
-                    if (File.Exists(databasePath))
-                    {
-                        File.Copy(databasePath, oldDatabasePath, true);
-
-                        // Remove the last db
-                        File.Delete(databasePath);
-                    }
-
-                    // Write the new DB.
-                    File.WriteAllBytes(databasePath, newDatabaseBytes);
-                });
-            }
+                // Write the new DB.
+                File.WriteAllBytes(databasePath, newDatabaseBytes);
+            });
         }
 
         public List<AppBrowse> GetAppList()
@@ -133,182 +137,121 @@ namespace OrbisLib2.Targets
             return AppInfo.GetStringFromAppInfo(databasePath, TitleId, Key);
         }
 
-        public AppState GetAppState(string TitleId)
+        public ResultState GetAppState(string TitleId, out AppState State)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
             {
-                Console.WriteLine($"Invaild titleId format {TitleId}");
-                return AppState.STATE_ERROR;
+                State = AppState.StateNotRunning;
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
             }
 
-            AppState result = AppState.STATE_ERROR;
-            API.SendCommand(Target, 5, APICommands.API_APPS_STATUS, (Socket Sock, APIResults Result) => 
+            var tempAppState = AppState.StateNotRunning;
+            var result = API.SendCommand(Target, 5, APICommand.ApiAppsStatus, (Socket Sock, ResultState Result) => 
             {
-                // Send the titleId of the app.
-                var bytes = Encoding.ASCII.GetBytes(TitleId.PadRight(10, '\0')).Take(10).ToArray();
-                Sock.Send(bytes);
+                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
                 // Get the state from API.
-                result = (AppState)Sock.RecvInt32();
+                if (Result.Succeeded)
+                    tempAppState = (AppState)Sock.RecvInt32();
             });
 
+            State = tempAppState;
             return result;
         }
 
-        public bool Start(string TitleId)
+        public ResultState Start(string TitleId)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
-            {
-                Console.WriteLine($"Invaild titleId format {TitleId}");
-                return false;
-            }
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            int result = 0;
-            API.SendCommand(Target, 5, APICommands.API_APPS_START, (Socket Sock, APIResults Result) => 
+            return API.SendCommand(Target, 5, APICommand.ApiAppsStart, (Socket Sock, ResultState Result) => 
             {
-                // Send the titleId of the app.
-                var bytes = Encoding.ASCII.GetBytes(TitleId.PadRight(10, '\0')).Take(10).ToArray();
-                Sock.Send(bytes);
-
-                // Get the state from API.
-                result = Sock.RecvInt32();
+                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
-
-            return (result == 1);
         }
 
-        public bool Stop(string TitleId)
+        public ResultState Stop(string TitleId)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
-            {
-                Console.WriteLine($"Invaild titleId format {TitleId}");
-                return false;
-            }
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            int result = 0;
-            API.SendCommand(Target, 5, APICommands.API_APPS_STOP, (Socket Sock, APIResults Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsStop, (Socket Sock, ResultState Result) =>
             {
-                // Send the titleId of the app.
-                var bytes = Encoding.ASCII.GetBytes(TitleId.PadRight(10, '\0')).Take(10).ToArray();
-                Sock.Send(bytes);
-
-                // Get the state from API.
-                result = Sock.RecvInt32();
+                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
-
-            return (result == 1);
         }
 
-        public bool Suspend(string TitleId)
+        public ResultState Suspend(string TitleId)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
-            {
-                Console.WriteLine($"Invaild titleId format {TitleId}");
-                return false;
-            }
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            int result = 0;
-            API.SendCommand(Target, 5, APICommands.API_APPS_SUSPEND, (Socket Sock, APIResults Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsSuspend, (Socket Sock, ResultState Result) =>
             {
-                // Send the titleId of the app.
-                var bytes = Encoding.ASCII.GetBytes(TitleId.PadRight(10, '\0')).Take(10).ToArray();
-                Sock.Send(bytes);
-
-                // Get the state from API.
-                result = Sock.RecvInt32();
+                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
-
-            return (result == 1);
         }
 
-        public bool Resume(string TitleId)
+        public ResultState Resume(string TitleId)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
-            {
-                Console.WriteLine($"Invaild titleId format {TitleId}");
-                return false;
-            }
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            int result = 0;
-            API.SendCommand(Target, 5, APICommands.API_APPS_RESUME, (Socket Sock, APIResults Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsResume, (Socket Sock, ResultState Result) =>
             {
-                // Send the titleId of the app.
-                var bytes = Encoding.ASCII.GetBytes(TitleId.PadRight(10, '\0')).Take(10).ToArray();
-                Sock.Send(bytes);
-
-                // Get the state from API.
-                result = Sock.RecvInt32();
+                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
-
-            return (result == 1);
         }
 
-        public bool Delete(string TitleId)
+        public ResultState Delete(string TitleId)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
-            {
-                Console.WriteLine($"Invaild titleId format {TitleId}");
-                return false;
-            }
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            int result = 0;
-            API.SendCommand(Target, 5, APICommands.API_APPS_DELETE, (Socket Sock, APIResults Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsDelete, (Socket Sock, ResultState Result) =>
             {
-                // Send the titleId of the app.
-                var bytes = Encoding.ASCII.GetBytes(TitleId.PadRight(10, '\0')).Take(10).ToArray();
-                Sock.Send(bytes);
-
-                // Get the state from API.
-                result = Sock.RecvInt32();
+                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
-
-            return (result == 1);
         }
 
-        public bool SetVisibility(string TitleId, VisibilityType Visibility)
+        public ResultState SetVisibility(string TitleId, VisibilityType Visibility)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
+
+            return API.SendCommand(Target, 5, APICommand.ApiAppsSetVisibility, (Socket Sock, ResultState Result) =>
             {
-                Console.WriteLine($"Invaild titleId format {TitleId}");
-                return false;
-            }
+                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
-            int result = 0;
-            API.SendCommand(Target, 5, APICommands.API_APPS_SET_VISIBILITY, (Socket Sock, APIResults Result) =>
-            {
-                // Send the titleId of the app.
-                var bytes = Encoding.ASCII.GetBytes(TitleId.PadRight(10, '\0')).Take(10).ToArray();
-                Sock.Send(bytes);
+                if (Result.Succeeded)
+                {
+                    // Send the visibility state.
+                    Sock.SendInt32((int)Visibility);
 
-                // Send the visibility state.
-                Sock.SendInt32((int)Visibility);
-
-                // Get the state from API.
-                result = Sock.RecvInt32();
+                    Result = API.GetState(Sock);
+                }
             });
-
-            return (result == 1);
         }
 
-        public VisibilityType GetVisibility(string TitleId)
+        public ResultState GetVisibility(string TitleId, out VisibilityType Type)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
             {
-                Console.WriteLine($"Invaild titleId format {TitleId}");
-                return VisibilityType.VT_NONE;
+                Type = VisibilityType.VT_NONE;
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
             }
 
-            VisibilityType result = VisibilityType.VT_NONE;
-            API.SendCommand(Target, 5, APICommands.API_APPS_GET_VISIBILITY, (Socket Sock, APIResults Result) =>
+            var tempType = VisibilityType.VT_NONE;
+            var result = API.SendCommand(Target, 5, APICommand.ApiAppsGetVisibility, (Socket Sock, ResultState Result) =>
             {
-                // Send the titleId of the app.
-                var bytes = Encoding.ASCII.GetBytes(TitleId.PadRight(10, '\0')).Take(10).ToArray();
-                Sock.Send(bytes);
+                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
                 // Get the state from API.
-                result = (VisibilityType)Sock.RecvInt32();
+                if (Result.Succeeded)
+                    tempType = (VisibilityType)Sock.RecvInt32();
             });
 
+            Type = tempType;
             return result;
         }
     }

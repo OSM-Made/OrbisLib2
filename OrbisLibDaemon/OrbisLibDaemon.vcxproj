@@ -16,6 +16,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A39FC9BA-130E-4993-9D80-46564A892EE4}</ProjectGuid>
+    <OrbisSdkVersion>7.500</OrbisSdkVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'" Label="Configuration">
@@ -58,9 +59,9 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>-lkernel_stub_weak;-lScePad_stub_weak;-lSceRtc_stub_weak;-lSceUserService_stub_weak;-lSceSystemService_stub_weak;-lSceNet_stub_weak;-lSceNetCtl_stub_weak;-lkernel_gen_stub_weak;-lSceLibcInternal_gen_stub_weak;-lSceLncUtil_gen_stub_weak;-lSceSysmodule_gen_stub_weak;-lSceAppInstUtil_gen_stub_weak;-lSceShellCoreUtil_gen_stub_weak;-lSceSysCore_gen_stub_weak;-lSceSystemStateMgr_gen_stub_weak;-lSceUserService_gen_stub_weak;-lSceSystemService_gen_stub_weak;-lSceNet_gen_stub_weak;-lKernelInterface_stub_weak;-lGoldHEN;-lSQLite;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>-lSceLibcInternal_gen_stub_weak;-lkernel_stub_weak;-lkernel_gen_stub_weak;-lScePad_stub_weak;-lSceRtc_gen_stub_weak;-lSceNet_stub_weak;-lSceHttp_stub_weak;-lSceSystemStateMgr_gen_stub_weak;-lSceSystemService_gen_stub_weak;-lSceSysCore_gen_stub_weak;-lSceUserService_gen_stub_weak;-lSceNet_gen_stub_weak;-lSceLncUtil_gen_stub_weak;-lSceRtc_stub_weak;-lSceUserService_stub_weak;-lSceSystemService_stub_weak;-lSceNetCtl_stub_weak;-lSceSysmodule_gen_stub_weak;-lSceAppInstUtil_gen_stub_weak;-lSceShellCoreUtil_gen_stub_weak;-lKernelInterface_stub_weak;-lGoldHEN;-lSQLite;-lprotobuf;%(AdditionalDependencies)</AdditionalDependencies>
       <Addressing Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">NonAslr</Addressing>
-      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libKernelInterface/ORBIS_Debug;$(SolutionDir)/External/StubMaker;$(SolutionDir)/External/libGoldHEN/ORBIS_Debug;$(SolutionDir)/External/libSQLite-ps4;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)External\libKernelInterface\ORBIS_Debug;$(SolutionDir)External\StubMaker;$(SolutionDir)External\libGoldHEN\ORBIS_Debug;$(SolutionDir)External\libSQLite-ps4;A:\Protobuf;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>"C:\Python27\python.exe" $(SolutionDir)\$(ProjectName)\make_fself.py  $(OutputPath)$(ProjectName).elf  $(OutputPath)eboot.bin --paid 0x3800000000010003 --auth-info 000000000000000000000000001C004000FF000000000080000000000000000000000000000000000000008000400040000000000000008000000000000000080040FFFF000000F000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -77,7 +78,7 @@ del temp.txt
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">_DEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <GenerateDebugInformation Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">true</GenerateDebugInformation>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libKernelInterface/libKernelInterface;$(SolutionDir)/External/StubMaker/include;$(SolutionDir)/External/libGoldHEN/libGoldHEN;$(SolutionDir)/Misc;$(SolutionDir)/External/libSQLite-ps4/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">$(SolutionDir)/External/libKernelInterface/libKernelInterface;$(SolutionDir)/External/StubMaker/include;$(SolutionDir)/External/libGoldHEN/libGoldHEN;$(SolutionDir)/Misc;$(SolutionDir)/External/libSQLite-ps4/include;A:\Protobuf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CppExceptions Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">true</CppExceptions>
       <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">true</MultiProcessorCompilation>
       <ProcessorNumber Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">32</ProcessorNumber>
@@ -97,6 +98,7 @@ del temp.txt
   <ItemGroup>
     <ClInclude Include="API.h" />
     <ClInclude Include="APIPackets.h" />
+    <ClInclude Include="APIPackets.pb.h" />
     <ClInclude Include="AppDatabase.h" />
     <ClInclude Include="AppPackets.h" />
     <ClInclude Include="Apps.h" />
@@ -106,7 +108,6 @@ del temp.txt
     <ClInclude Include="DebugPackets.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="Flash.h" />
-    <ClInclude Include="hde64.h" />
     <ClInclude Include="IpcGeneral.h" />
     <ClInclude Include="IpcShellUI.h" />
     <ClInclude Include="Library.h" />
@@ -119,7 +120,6 @@ del temp.txt
     <ClInclude Include="Sockets.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="System.h" />
-    <ClInclude Include="table64.h" />
     <ClInclude Include="Target.h" />
     <ClInclude Include="TargetPackets.h" />
     <ClInclude Include="ThreadPool.h" />
@@ -128,13 +128,13 @@ del temp.txt
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="API.cpp" />
+    <ClCompile Include="APIPackets.pb.cc" />
     <ClCompile Include="AppDatabase.cpp" />
     <ClCompile Include="Apps.cpp" />
     <ClCompile Include="ASM.s" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="Flash.cpp" />
-    <ClCompile Include="hde64.cpp" />
     <ClCompile Include="IpcGeneral.cpp" />
     <ClCompile Include="IpcShellUI.cpp" />
     <ClCompile Include="Library.cpp" />
@@ -151,6 +151,9 @@ del temp.txt
     <ClCompile Include="Target.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="Utilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="APIPackets.proto" />
   </ItemGroup>
   <Import Condition="'$(ConfigurationType)' == 'Makefile' and Exists('$(VCTargetsPath)\Platforms\$(Platform)\SCE.Makefile.$(Platform).targets')" Project="$(VCTargetsPath)\Platforms\$(Platform)\SCE.Makefile.$(Platform).targets" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

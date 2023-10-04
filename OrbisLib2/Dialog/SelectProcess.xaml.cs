@@ -1,4 +1,5 @@
 ﻿using OrbisLib2.Targets;
+using SimpleUI.Controls;
 using SimpleUI.Dialogs;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -37,23 +38,27 @@ namespace OrbisLib2.Dialog
         {
             Task.Run(() =>
             {
-                var procList = TargetManager.SelectedTarget.GetList();
+                var procList = new List<ProcInfo>();
+                var result = TargetManager.SelectedTarget.GetProcList(out procList);
 
-                if(procList != null && procList.Count > 0)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        ProcessList.ItemsSource = procList;
-                        ProcessList.Items.Refresh();
-                    });
-                }
-                else
+                // Print the error that occured if we failed to get the process list.
+                if (!result.Succeeded)
                 {
                     Dispatcher.Invoke(() =>
                     {
                         ProcessList.ItemsSource = null;
                     });
+
+                    SimpleMessageBox.ShowError(Window.GetWindow(this), result.ErrorMessage, "Failed to refresh process list.");
+                    return;
                 }
+
+                // Refresh the list.
+                Dispatcher.Invoke(() =>
+                {
+                    ProcessList.ItemsSource = procList;
+                    ProcessList.Items.Refresh();
+                });
             });
         }
 

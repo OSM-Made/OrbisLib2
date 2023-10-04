@@ -1,13 +1,18 @@
-﻿using OrbisLib2.Common.Database;
+﻿using Google.Protobuf;
+using OrbisLib2.Common.Database;
 using OrbisLib2.Common.Helpers;
 using OrbisLib2.Targets;
+using SimpleUI.Controls;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace OrbisLib2.Common.API
 {
     public static class API
     {
+        private static readonly uint MagicNumber = 0xDEADBEEF;
+        private static readonly int PacketVersion = 1;
+
         /// <summary>
         /// Connects to the api.
         /// </summary>
@@ -31,83 +36,79 @@ namespace OrbisLib2.Common.API
         /// <param name="Command">The command to be run.</param>
         /// <param name="AdditionalCommunications">Optional lambda to send/recv additional data.</param>
         /// <returns>Returns result of the communications with the API.</returns>
-        public static APIResults SendCommand(Target DesiredTarget, int TimeOut, APICommands Command, Action<Socket, APIResults>? AdditionalCommunications = null)
+        public static ResultState SendCommand(Target DesiredTarget, int TimeOut, APICommand Command, Action<Socket, ResultState>? AdditionalCommunications = null)
         {
+            // If the API isnt up were just giving up here.
             if(DesiredTarget.Info.IsAPIAvailable == false)
-            {
-                return APIResults.API_ERROR_COULDNT_CONNECT;
-            }
+                return new ResultState { Succeeded = false, ErrorMessage = $"The API is not available on the selected target {DesiredTarget.Name} ({DesiredTarget.IPAddress})." };
 
             try 
             {
                 if (Connect(DesiredTarget.IPAddress, Settings.CreateInstance().APIPort, TimeOut, out Socket Sock))
                 {
-                    // Send Inital Packet.
-                    var result = SendNextPacket(Sock, new APIPacket() { PacketMagic="ORBIS_SUITE", PacketVersion = Config.PacketVersion, Command = Command });
+                    // Send the Magic Number.
+                    Sock.Send(BitConverter.GetBytes(MagicNumber));
 
-                    // Call lambda for additional calls.
-                    if (result == APIResults.API_OK && AdditionalCommunications != null)
-                    {
+                    // Make sure the target is happy and ready to move on.
+                    if (Sock.RecvInt32() != 1)
+                        return new ResultState { Succeeded = false, ErrorMessage = $"The target {DesiredTarget.Name} ({DesiredTarget.IPAddress}) has rejected our initial communications." };
+
+                    // Send the Initial Packet.
+                    var initialResult = SendNextPacket(Sock, new InitialPacket { Command = (int)Command, PacketVersion = PacketVersion });
+
+                    // Check to see if we failed here and report back the message.
+                    if (!initialResult.Succeeded)
+                        return initialResult;
+
+                    // Set up the default respose.
+                    var result = new ResultState { Succeeded = true, ErrorMessage = string.Empty };
+
+                    // See if we have extra work to do.
+                    if (AdditionalCommunications != null)
                         AdditionalCommunications.Invoke(Sock, result);
-                    }
 
-                    // Clean up.
+                    // Were done here, Clean up.
                     Sock.Close();
 
+                    // Return either the default response or the edited response from the additional communications.
                     return result;
                 }
                 else
-                    return APIResults.API_ERROR_COULDNT_CONNECT;
+                    return new ResultState { Succeeded = false, ErrorMessage = $"Failed to connect to the target {DesiredTarget.Name} ({DesiredTarget.IPAddress})." };
             }
             catch (SocketException ex)
             {
-                Console.WriteLine($"SendCommand() Sock Error: {ex.Message}");
-                return APIResults.API_ERROR_COULDNT_CONNECT;
+                return new ResultState { Succeeded = false, ErrorMessage = $"Failed with the error: {ex.Message}" };
             }
         }
 
         /// <summary>
-        /// Sends additional data if required.
+        /// Gets the result state of the API.
         /// </summary>
-        /// <typeparam name="T">The packet type.</typeparam>
-        /// <param name="Sock">The socket instance were using.</param>
-        /// <param name="Packet">Any Packet structure.</param>
-        /// <returns>Returns the result of the action.</returns>
-        public static APIResults SendNextPacket<T>(Socket Sock, T Packet)
+        /// <param name="s">The socket open to the API.</param>
+        /// <returns>The result state.</returns>
+        public static ResultState GetState(Socket s)
         {
-            // Send Next Packet.
-            Sock.Send(Helper.StructToBytes(Packet));
+            // Recieve the result state.
+            var rawResult = s.ReceiveSize();
 
-            // Get API Response.
-            return (APIResults)Sock.RecvInt32();
+            // Return the parsed state.
+            return ResultState.Parser.ParseFrom(rawResult);
         }
 
         /// <summary>
-        /// Recieves the next packet.
+        /// Sends the next protobuf packet.
         /// </summary>
-        /// <typeparam name="T">The packet type.</typeparam>
-        /// <param name="Sock">Socket to recieve the packet on.</param>
-        /// <param name="Packet">The packet to be recieved on.</param>
-        /// <returns>Returns true if successful.</returns>
-        public static bool RecieveNextPacket<T>(Socket Sock, ref T Packet)
+        /// <param name="s">The socket to send the proto packet on.</param>
+        /// <param name="Packet">The packet that contains the data.</param>
+        /// <returns>The result state of the packet request.</returns>
+        public static ResultState SendNextPacket(Socket s, IMessage Packet)
         {
-            try
-            {
-                var RawPacket = new byte[Marshal.SizeOf(Packet)];
-                var bytes = Sock.Receive(RawPacket);
+            // Send the packet.
+            s.SendSize(Packet.ToByteArray());
 
-                if (bytes <= 0)
-                    return false;
-
-                // Convert the recieved bytes to a struct.
-                Helper.BytesToStruct(RawPacket, ref Packet);
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            // Return the result state.
+            return GetState(s);
         }
 
         /// <summary>
@@ -116,22 +117,20 @@ namespace OrbisLib2.Common.API
         /// <param name="Sock"></param>
         /// <param name="Value"></param>
         /// <returns></returns>
-        public static APIResults SendInt32(Socket Sock, int Value)
+        public static ResultState SendInt32(Socket Sock, int Value)
         {
             try
             {
                 // Send Next Packet.
                 Sock.Send(BitConverter.GetBytes(Value));
 
-                // Get API Response.
-                return (APIResults)Sock.RecvInt32();
+                // Return the parsed state.
+                return GetState(Sock);
             }
-            catch
+            catch (SocketException ex)
             {
-
+                return new ResultState { Succeeded = false, ErrorMessage = $"Failed to send int. {ex.Message}" };
             }
-
-            return APIResults.API_ERROR_GENERAL;
         }
     }
 }

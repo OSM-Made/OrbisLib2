@@ -4,7 +4,6 @@ using OrbisLib2.Common.Database.Types;
 using OrbisLib2.Common.Helpers;
 using OrbisLib2.General;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 
 namespace OrbisLib2.Targets
 {
@@ -125,31 +124,16 @@ namespace OrbisLib2.Targets
         /// </summary>
         /// <param name="savedTarget">The identifier of the target to update.</param>
         /// <returns>Returns weather or not the action was successful or not.</returns>
-        public static bool UpdateTargetInfo(SavedTarget savedTarget)
+        public static ResultState UpdateTargetInfo(SavedTarget savedTarget)
         {
             var Target = GetTarget(savedTarget.Name);
             if (Target == null)
+                return new ResultState { Succeeded = false, ErrorMessage = $"Couldn't Find Target \"{savedTarget.Name}\"." };
+
+            return API.SendCommand(Target, 5, APICommand.ApiTargetInfo, (Sock, Result) =>
             {
-                Console.WriteLine($"Couldn't Find Target \"{savedTarget.Name}\".");
-                return false;
-            }
-
-            bool labdaReult = false;
-            var result = API.SendCommand(Target, 5, APICommands.API_TARGET_INFO, (Sock, Result) =>
-            {
-                var Packet = new TargetInfoPacket();
-                var RawPacket = new byte[Marshal.SizeOf(Packet)];
-                var bytes = Sock.Receive(RawPacket);
-
-                if (bytes <= 0)
-                {
-                    return;
-                }
-
-                Helper.BytesToStruct(RawPacket, ref Packet);
-
-                if (Packet.ConsoleName == null || Packet.ConsoleName == string.Empty)
-                    return;
+                var rawPacket = Sock.ReceiveSize();
+                var Packet = TargetInfoPacket.Parser.ParseFrom(rawPacket);
 
                 savedTarget.Info.SDKVersion = $"{(Packet.SDKVersion >> 24 & 0xFF).ToString("X1")}.{(Packet.SDKVersion >> 12 & 0xFFF).ToString("X3")}.{(Packet.SDKVersion & 0xFFF).ToString("X3")}";
                 savedTarget.Info.SoftwareVersion = $"{(Packet.SoftwareVersion >> 24 & 0xFF).ToString("X1")}.{(Packet.SoftwareVersion >> 16 & 0xFF).ToString("X2")}";
@@ -163,10 +147,10 @@ namespace OrbisLib2.Targets
                 savedTarget.Info.Model = Packet.Model;
                 savedTarget.Info.MACAddressLAN = Packet.MACAddressLAN.ToUpper();
                 savedTarget.Info.MACAddressWIFI = Packet.MACAddressWIFI.ToUpper();
-                savedTarget.Info.UART = Packet.UART > 0;
-                savedTarget.Info.IDUMode = Packet.IDUMode > 0;
-                savedTarget.Info.IDPS = BitConverter.ToString(Packet.IDPS).Replace("-", string.Empty);
-                savedTarget.Info.PSID = BitConverter.ToString(Packet.PSID).Replace("-", string.Empty);
+                savedTarget.Info.UART = Packet.UART;
+                savedTarget.Info.IDUMode = Packet.IDUMode;
+                savedTarget.Info.IDPS = Packet.IDPS;
+                savedTarget.Info.PSID = Packet.PSID;
                 savedTarget.Info.ConsoleType = (ConsoleType)Packet.ConsoleType;
 
                 // Debugging.
@@ -191,10 +175,9 @@ namespace OrbisLib2.Targets
                 savedTarget.Info.RamUsage = Packet.Ram.Used;
                 savedTarget.Info.VRamUsage = Packet.VRam.Used;
 
-                labdaReult = true;
+                // Save the updated info.
+                savedTarget.Info.Save();
             });
-
-            return result == APIResults.API_OK && labdaReult && savedTarget.Info.Save();
         }
     }
 }

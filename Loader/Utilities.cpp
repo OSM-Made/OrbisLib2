@@ -42,10 +42,6 @@ bool LoadModules()
 
 bool Jailbreak()
 {
-	// Load the prx.
-	sceKernelLoadStartModule("/app0/libGoldHEN.sprx", 0, 0, 0, 0, 0);
-
-	// Jailbreak the prx.
 	jailbreak_backup bk;
 	return (sys_sdk_jailbreak(&bk) == 0);
 }
@@ -210,7 +206,7 @@ int MakeDir(const char* Dir, ...)
 
 void InstallDaemon(const char* Daemon, const char* libs[], int libCount)
 {
-	klog("Installing Daemoin %s...\n[%s] Making Directories...\n", Daemon, Daemon);
+	klog("Installing Daemon %s...\n[%s] Making Directories...\n", Daemon, Daemon);
 	MakeDir("/system/vsh/app/%s", Daemon);
 	MakeDir("/system/vsh/app/%s/sce_sys", Daemon);
 

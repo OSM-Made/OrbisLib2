@@ -23,10 +23,6 @@ void SocketListener::ListenThread(uint64_t port)
 	int reusePort = 1;
 	sceNetSetsockopt(ServerSocket, SCE_NET_SOL_SOCKET, SCE_NET_SO_REUSEPORT, &reusePort, sizeof(reusePort));
 
-	// Set the server socket to non-blocking mode
-	int flags = sceKernelFcntl(ServerSocket, F_GETFL, 0);
-	sceKernelFcntl(ServerSocket, F_SETFL, flags | O_NONBLOCK);
-
 	auto bindError = sceNetBind(ServerSocket, (SceNetSockaddr*)&addr, sizeof(addr));
 	if (bindError != 0)
 	{
@@ -97,7 +93,8 @@ Cleanup:
 	klog("Listener Thread Exiting!\n");
 
 	// Clean up.
-	sceNetSocketClose(ServerSocket);
+	if (ServerSocket != -1)
+		sceNetSocketClose(ServerSocket);
 }
 
 SocketListener::SocketListener(void(*ClientCallBack)(void* tdParam, SceNetId Sock, SceNetInAddr sin_addr), void* tdParam, unsigned short Port)
@@ -115,6 +112,7 @@ SocketListener::SocketListener(void(*ClientCallBack)(void* tdParam, SceNetId Soc
 
 				listener->ServerRunning = false;
 				sceNetSocketClose(listener->ServerSocket);
+				listener->ServerSocket = -1;
 			}
 		}, this, &CallbackId);
 
@@ -137,6 +135,7 @@ SocketListener::SocketListener(void(*ClientCallBack)(void* tdParam, SceNetId Soc
 						klog("Listener: Network Connection Lost.\n");
 						ServerRunning = false;
 						sceNetSocketClose(ServerSocket);
+						ServerSocket = -1;
 					}
 
 					break;

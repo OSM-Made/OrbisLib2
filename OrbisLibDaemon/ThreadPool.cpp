@@ -37,7 +37,7 @@ void ThreadPool::WorkingLoop()
 		}
 		catch (...)
 		{
-			klog("Other Unknown Error Occured in Worker Thread.\n"); // jtag fixed
+			klog("Other Unknown Error Occured in Worker Thread.\n");
 		}
 	}
 }

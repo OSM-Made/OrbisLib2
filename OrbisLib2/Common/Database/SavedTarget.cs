@@ -139,7 +139,7 @@ namespace OrbisLib2.Common.Database
                 db.Close();
                 return (result > 0);
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
