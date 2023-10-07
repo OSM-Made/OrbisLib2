@@ -620,7 +620,7 @@ class SignedElfFile(object):
 		self.meta_footer.unk1 = 0x10000
 
 		if not self.auth_info is None:
-			self.signature = (struct.pack('<QQ', len(self.auth_info), self.ex_info.paid) + self.auth_info[8:]).ljust(SIGNATURE_SIZE, '\0')
+			self.signature = (struct.pack('<QQ', len(self.auth_info), self.ex_info.paid) + self.auth_info[8:]).ljust(SIGNATURE_SIZE, b'\0')
 		else:
 			self.signature = EMPTY_SIGNATURE
 
@@ -696,7 +696,7 @@ class SignedElfFile(object):
 		self.meta_footer.save(f)
 
 		# write signature
-		f.write(self.signature.encode('utf-8'))
+		f.write(self.signature)
 
 		# write segments
 		for entry in self.entries:
@@ -711,29 +711,29 @@ class SignedElfFile(object):
 			f.write(self.version_data)
 
 def ensure_hex_string(val, **kwargs):
-	exact_size = int(kwargs['exact_size']) if 'exact_size' in kwargs else None
-	min_size = int(kwargs['min_size']) if 'min_size' in kwargs else None
-	max_size = int(kwargs['max_size']) if 'max_size' in kwargs else None
+    exact_size = int(kwargs['exact_size']) if 'exact_size' in kwargs else None
+    min_size = int(kwargs['min_size']) if 'min_size' in kwargs else None
+    max_size = int(kwargs['max_size']) if 'max_size' in kwargs else None
 
-	val = re.sub('\s+', '', val)
-	val_size = len(val)
-	if val_size > 0:
-		if val.startswith('0x') or val.startswith('0X'):
-			val = val[2:]
-		if len(val) % 2 != 0 or not all(x in string.hexdigits for x in val):
-			return None
-		val = val.decode('hex')
-		val_size = len(val)
+    val = re.sub('\s+', '', val)
+    val_size = len(val)
+    if val_size > 0:
+        if val.startswith('0x') or val.startswith('0X'):
+            val = val[2:]
+        if len(val) % 2 != 0 or not all(x in string.hexdigits for x in val):
+            return None
+        val = bytes.fromhex(val)
+        val_size = len(val)
 
-	if not exact_size is None and val_size != exact_size:
-		return None
-	else:
-		if not min_size is None and val_size < min_size:
-			return None
-		if not max_size is None and val_size > max_size:
-			return None
+    if not exact_size is None and val_size != exact_size:
+        return None
+    else:
+        if not min_size is None and val_size < min_size:
+            return None
+        if not max_size is None and val_size > max_size:
+            return None
 
-	return val
+    return val
 
 def input_file_type(val):
 	if not os.access(val, os.F_OK | os.R_OK) or not os.path.isfile(val):

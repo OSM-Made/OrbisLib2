@@ -16,3 +16,6 @@
 [submodule "External/libSQLite-ps4"]
 	path = External/libSQLite-ps4
 	url = https://github.com/bucanero/libSQLite-ps4
+[submodule "External/OrbisUtils2"]
+	path = External/OrbisUtils2
+	url = https://github.com/OSM-Made/OrbisUtils2

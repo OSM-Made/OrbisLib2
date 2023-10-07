@@ -39,7 +39,10 @@ namespace OrbisLib2.Targets
             if(!IsDebugging)
                 return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
 
-            return API.SendCommand(Target, 3, APICommand.ApiDbgDetach);
+            return API.SendCommand(Target, 3, APICommand.ApiDbgDetach, (Socket Sock, ResultState Result) =>
+            {
+                Result = API.GetState(Sock);
+            });
         }
 
         public ResultState GetCurrentProcessId(out int ProcessId)
@@ -70,7 +73,9 @@ namespace OrbisLib2.Targets
                 else
                 {
                     Result = API.SendNextPacket(Sock, new SPRXPacket { Path = Path });
-                    tempHandle = Sock.RecvInt32();
+
+                    if (Result.Succeeded)
+                        tempHandle = Sock.RecvInt32();
                 }
             });
 

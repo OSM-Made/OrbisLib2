@@ -3,9 +3,7 @@ using OrbisLib2.Common.Database.App;
 using OrbisLib2.Common.Helpers;
 using System.IO;
 using System.Net.Sockets;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows;
 
 namespace OrbisLib2.Targets
 {

@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "SocketListener.h"
-#include "APIPackets.h"
 #include "API.h"
 #include "Target.h"
 #include "Debug.h"
-#include "System.h"
 #include "Library.h"
 #include "Apps.h"
 
@@ -68,46 +66,65 @@ const std::map<int, std::function<void(SceNetId s)>> API::APICommands =
 
 void API::ListenerCallback(void* tdParam, SceNetId s, SceNetInAddr sin_addr)
 {
-	auto packet = Sockets::RecieveType<InitialPacket>(s);
-
-	// Did we recieve a packet?
-	if (packet == nullptr)
+	// Recieve the first 4 bytes.
+	int magicNumber;
+	if (!Sockets::RecvInt(s, &magicNumber))
 	{
+		Sockets::SendInt(s, 0);
+		Logger::Error("[API] Failed to recieve the magic number.\n");
+		return;
+	}
+
+	// Api Check magic.
+	if (magicNumber == 0xFEED)
+		return;
+
+	// Check the magic number so we dont get bogus packets.
+	if (magicNumber != 0xDEADBEEF)
+	{
+		Sockets::SendInt(s, 0);
+		Logger::Error("[API] Magic number miss match! We got %llX but we expected %llX.\n", magicNumber, 0xDEADBEEF);
+		return;
+	}
+
+	// Reply back with the accepted value.
+	Sockets::SendInt(s, 1);
+
+	// Get the initial packet.
+	InitialPacket packet;
+	if (!RecieveProtoBuf<InitialPacket>(s, &packet))
+	{
+		Logger::Error("[API] Failed to recieve the initial proto packet.\n");
 		return;
 	}
 
 	// Validate Packet
-	if (strcmp(packet->PacketMagic, "ORBIS_SUITE") || packet->PacketVersion != PACKET_VERSION)
+	if (packet.packetversion() != PACKET_VERSION)
 	{
-		// Send failed to verify packet.
-		Sockets::SendInt(s, 0);
-
-		klog("Invalid Packet with Magic '%s' and Version %i\nExpected 'ORBIS_SUITE' and %i\n", packet->PacketMagic, packet->PacketVersion, PACKET_VERSION);
-
+		SendStatePacket(s, false, "Packet version miss match expected packet version %d.", PACKET_VERSION);
+		Logger::Error("[API] Outdated packet version recieved %d but expected version %d.\n", packet.packetversion(), PACKET_VERSION);
 		return;
 	}
-
-	// Send successfully verified packet.
-	Sockets::SendInt(s, 1);
 
 	// Add host to the host list.
 	Events::AddHost(sin_addr.s_addr);
 
 	// Find the command in the map
-	auto it = API::APICommands.find(packet->Command);
+	auto it = API::APICommands.find(packet.command());
 
 	// Check if the command exists in the map
 	if (it != API::APICommands.end())
 	{
-		//if (packet->Command != API_TARGET_INFO && packet->Command != API_DBG_GET_CURRENT)
-		//	klog("Executing Command %d (%s)\n", packet->Command, CommandList[packet->Command]);
+		// Let the host know we have this command and are ready to move forward.
+		SendStatePacket(s, true, "");
 
 		// Call the command function with the given argument
 		it->second(s);
 	}
 	else
 	{
-		klog("Command %d does not exist.\n", packet->Command);
+		SendStatePacket(s, false, "Command %d is not implemented at this time.", packet.command());
+		Logger::Error("[API] Command %d is not implemented at this time.\n", packet.command());
 	}
 }
 

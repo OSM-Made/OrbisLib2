@@ -47,16 +47,22 @@ struct TableStruct_APIPackets_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[11]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[16]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
   static const uint32_t offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_APIPackets_2eproto;
+class AppInfoListPacket;
+struct AppInfoListPacketDefaultTypeInternal;
+extern AppInfoListPacketDefaultTypeInternal _AppInfoListPacket_default_instance_;
 class AppInfoPacket;
 struct AppInfoPacketDefaultTypeInternal;
 extern AppInfoPacketDefaultTypeInternal _AppInfoPacket_default_instance_;
+class AppPacket;
+struct AppPacketDefaultTypeInternal;
+extern AppPacketDefaultTypeInternal _AppPacket_default_instance_;
 class CurrentBigApp;
 struct CurrentBigAppDefaultTypeInternal;
 extern CurrentBigAppDefaultTypeInternal _CurrentBigApp_default_instance_;
@@ -66,9 +72,15 @@ extern InitialPacketDefaultTypeInternal _InitialPacket_default_instance_;
 class LibraryInfoPacket;
 struct LibraryInfoPacketDefaultTypeInternal;
 extern LibraryInfoPacketDefaultTypeInternal _LibraryInfoPacket_default_instance_;
+class LibraryListPacket;
+struct LibraryListPacketDefaultTypeInternal;
+extern LibraryListPacketDefaultTypeInternal _LibraryListPacket_default_instance_;
 class MemoryInfo;
 struct MemoryInfoDefaultTypeInternal;
 extern MemoryInfoDefaultTypeInternal _MemoryInfo_default_instance_;
+class ProcListPacket;
+struct ProcListPacketDefaultTypeInternal;
+extern ProcListPacketDefaultTypeInternal _ProcListPacket_default_instance_;
 class ProcPacket;
 struct ProcPacketDefaultTypeInternal;
 extern ProcPacketDefaultTypeInternal _ProcPacket_default_instance_;
@@ -87,18 +99,26 @@ extern TargetInfoPacketDefaultTypeInternal _TargetInfoPacket_default_instance_;
 class TargetNotifyPacket;
 struct TargetNotifyPacketDefaultTypeInternal;
 extern TargetNotifyPacketDefaultTypeInternal _TargetNotifyPacket_default_instance_;
+class TargetSettingsPacket;
+struct TargetSettingsPacketDefaultTypeInternal;
+extern TargetSettingsPacketDefaultTypeInternal _TargetSettingsPacket_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
+template<> ::AppInfoListPacket* Arena::CreateMaybeMessage<::AppInfoListPacket>(Arena*);
 template<> ::AppInfoPacket* Arena::CreateMaybeMessage<::AppInfoPacket>(Arena*);
+template<> ::AppPacket* Arena::CreateMaybeMessage<::AppPacket>(Arena*);
 template<> ::CurrentBigApp* Arena::CreateMaybeMessage<::CurrentBigApp>(Arena*);
 template<> ::InitialPacket* Arena::CreateMaybeMessage<::InitialPacket>(Arena*);
 template<> ::LibraryInfoPacket* Arena::CreateMaybeMessage<::LibraryInfoPacket>(Arena*);
+template<> ::LibraryListPacket* Arena::CreateMaybeMessage<::LibraryListPacket>(Arena*);
 template<> ::MemoryInfo* Arena::CreateMaybeMessage<::MemoryInfo>(Arena*);
+template<> ::ProcListPacket* Arena::CreateMaybeMessage<::ProcListPacket>(Arena*);
 template<> ::ProcPacket* Arena::CreateMaybeMessage<::ProcPacket>(Arena*);
 template<> ::RWPacket* Arena::CreateMaybeMessage<::RWPacket>(Arena*);
 template<> ::ResultState* Arena::CreateMaybeMessage<::ResultState>(Arena*);
 template<> ::SPRXPacket* Arena::CreateMaybeMessage<::SPRXPacket>(Arena*);
 template<> ::TargetInfoPacket* Arena::CreateMaybeMessage<::TargetInfoPacket>(Arena*);
 template<> ::TargetNotifyPacket* Arena::CreateMaybeMessage<::TargetNotifyPacket>(Arena*);
+template<> ::TargetSettingsPacket* Arena::CreateMaybeMessage<::TargetSettingsPacket>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 
 enum APICommand : int {
@@ -839,6 +859,312 @@ class AppInfoPacket final :
 };
 // -------------------------------------------------------------------
 
+class AppInfoListPacket final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:AppInfoListPacket) */ {
+ public:
+  inline AppInfoListPacket() : AppInfoListPacket(nullptr) {}
+  ~AppInfoListPacket() override;
+  explicit constexpr AppInfoListPacket(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AppInfoListPacket(const AppInfoListPacket& from);
+  AppInfoListPacket(AppInfoListPacket&& from) noexcept
+    : AppInfoListPacket() {
+    *this = ::std::move(from);
+  }
+
+  inline AppInfoListPacket& operator=(const AppInfoListPacket& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AppInfoListPacket& operator=(AppInfoListPacket&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AppInfoListPacket& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AppInfoListPacket* internal_default_instance() {
+    return reinterpret_cast<const AppInfoListPacket*>(
+               &_AppInfoListPacket_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(AppInfoListPacket& a, AppInfoListPacket& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AppInfoListPacket* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AppInfoListPacket* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AppInfoListPacket* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AppInfoListPacket>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const AppInfoListPacket& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const AppInfoListPacket& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AppInfoListPacket* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "AppInfoListPacket";
+  }
+  protected:
+  explicit AppInfoListPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAppsFieldNumber = 1,
+  };
+  // repeated .AppInfoPacket Apps = 1;
+  int apps_size() const;
+  private:
+  int _internal_apps_size() const;
+  public:
+  void clear_apps();
+  ::AppInfoPacket* mutable_apps(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::AppInfoPacket >*
+      mutable_apps();
+  private:
+  const ::AppInfoPacket& _internal_apps(int index) const;
+  ::AppInfoPacket* _internal_add_apps();
+  public:
+  const ::AppInfoPacket& apps(int index) const;
+  ::AppInfoPacket* add_apps();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::AppInfoPacket >&
+      apps() const;
+
+  // @@protoc_insertion_point(class_scope:AppInfoListPacket)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::AppInfoPacket > apps_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_APIPackets_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AppPacket final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:AppPacket) */ {
+ public:
+  inline AppPacket() : AppPacket(nullptr) {}
+  ~AppPacket() override;
+  explicit constexpr AppPacket(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AppPacket(const AppPacket& from);
+  AppPacket(AppPacket&& from) noexcept
+    : AppPacket() {
+    *this = ::std::move(from);
+  }
+
+  inline AppPacket& operator=(const AppPacket& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AppPacket& operator=(AppPacket&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AppPacket& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AppPacket* internal_default_instance() {
+    return reinterpret_cast<const AppPacket*>(
+               &_AppPacket_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(AppPacket& a, AppPacket& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AppPacket* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AppPacket* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AppPacket* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AppPacket>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const AppPacket& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const AppPacket& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AppPacket* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "AppPacket";
+  }
+  protected:
+  explicit AppPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTitleIdFieldNumber = 1,
+  };
+  // string TitleId = 1;
+  void clear_titleid();
+  const std::string& titleid() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_titleid(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_titleid();
+  PROTOBUF_NODISCARD std::string* release_titleid();
+  void set_allocated_titleid(std::string* titleid);
+  private:
+  const std::string& _internal_titleid() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_titleid(const std::string& value);
+  std::string* _internal_mutable_titleid();
+  public:
+
+  // @@protoc_insertion_point(class_scope:AppPacket)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr titleid_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_APIPackets_2eproto;
+};
+// -------------------------------------------------------------------
+
 class RWPacket final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:RWPacket) */ {
  public:
@@ -887,7 +1213,7 @@ class RWPacket final :
                &_RWPacket_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    5;
 
   friend void swap(RWPacket& a, RWPacket& b) {
     a.Swap(&b);
@@ -1044,7 +1370,7 @@ class SPRXPacket final :
                &_SPRXPacket_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    6;
 
   friend void swap(SPRXPacket& a, SPRXPacket& b) {
     a.Swap(&b);
@@ -1206,7 +1532,7 @@ class MemoryInfo final :
                &_MemoryInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    7;
 
   friend void swap(MemoryInfo& a, MemoryInfo& b) {
     a.Swap(&b);
@@ -1385,7 +1711,7 @@ class CurrentBigApp final :
                &_CurrentBigApp_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    8;
 
   friend void swap(CurrentBigApp& a, CurrentBigApp& b) {
     a.Swap(&b);
@@ -1563,7 +1889,7 @@ class TargetInfoPacket final :
                &_TargetInfoPacket_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    9;
 
   friend void swap(TargetInfoPacket& a, TargetInfoPacket& b) {
     a.Swap(&b);
@@ -1641,8 +1967,8 @@ class TargetInfoPacket final :
     kMotherboardSerialFieldNumber = 6,
     kSerialFieldNumber = 7,
     kModelFieldNumber = 8,
-    kMACAdressLANFieldNumber = 9,
-    kMACAdressWIFIFieldNumber = 10,
+    kMACAddressLANFieldNumber = 9,
+    kMACAddressWIFIFieldNumber = 10,
     kIDPSFieldNumber = 13,
     kPSIDFieldNumber = 14,
     kBigAppFieldNumber = 4,
@@ -1721,32 +2047,32 @@ class TargetInfoPacket final :
   std::string* _internal_mutable_model();
   public:
 
-  // string MACAdressLAN = 9;
-  void clear_macadresslan();
-  const std::string& macadresslan() const;
+  // string MACAddressLAN = 9;
+  void clear_macaddresslan();
+  const std::string& macaddresslan() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_macadresslan(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_macadresslan();
-  PROTOBUF_NODISCARD std::string* release_macadresslan();
-  void set_allocated_macadresslan(std::string* macadresslan);
+  void set_macaddresslan(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_macaddresslan();
+  PROTOBUF_NODISCARD std::string* release_macaddresslan();
+  void set_allocated_macaddresslan(std::string* macaddresslan);
   private:
-  const std::string& _internal_macadresslan() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_macadresslan(const std::string& value);
-  std::string* _internal_mutable_macadresslan();
+  const std::string& _internal_macaddresslan() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_macaddresslan(const std::string& value);
+  std::string* _internal_mutable_macaddresslan();
   public:
 
-  // string MACAdressWIFI = 10;
-  void clear_macadresswifi();
-  const std::string& macadresswifi() const;
+  // string MACAddressWIFI = 10;
+  void clear_macaddresswifi();
+  const std::string& macaddresswifi() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_macadresswifi(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_macadresswifi();
-  PROTOBUF_NODISCARD std::string* release_macadresswifi();
-  void set_allocated_macadresswifi(std::string* macadresswifi);
+  void set_macaddresswifi(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_macaddresswifi();
+  PROTOBUF_NODISCARD std::string* release_macaddresswifi();
+  void set_allocated_macaddresswifi(std::string* macaddresswifi);
   private:
-  const std::string& _internal_macadresswifi() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_macadresswifi(const std::string& value);
-  std::string* _internal_mutable_macadresswifi();
+  const std::string& _internal_macaddresswifi() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_macaddresswifi(const std::string& value);
+  std::string* _internal_mutable_macaddresswifi();
   public:
 
   // string IDPS = 13;
@@ -1986,8 +2312,8 @@ class TargetInfoPacket final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr motherboardserial_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr serial_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr model_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr macadresslan_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr macadresswifi_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr macaddresslan_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr macaddresswifi_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr idps_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr psid_;
   ::CurrentBigApp* bigapp_;
@@ -2062,7 +2388,7 @@ class TargetNotifyPacket final :
                &_TargetNotifyPacket_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    10;
 
   friend void swap(TargetNotifyPacket& a, TargetNotifyPacket& b) {
     a.Swap(&b);
@@ -2181,6 +2507,289 @@ class TargetNotifyPacket final :
 };
 // -------------------------------------------------------------------
 
+class TargetSettingsPacket final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:TargetSettingsPacket) */ {
+ public:
+  inline TargetSettingsPacket() : TargetSettingsPacket(nullptr) {}
+  ~TargetSettingsPacket() override;
+  explicit constexpr TargetSettingsPacket(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  TargetSettingsPacket(const TargetSettingsPacket& from);
+  TargetSettingsPacket(TargetSettingsPacket&& from) noexcept
+    : TargetSettingsPacket() {
+    *this = ::std::move(from);
+  }
+
+  inline TargetSettingsPacket& operator=(const TargetSettingsPacket& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TargetSettingsPacket& operator=(TargetSettingsPacket&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TargetSettingsPacket& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const TargetSettingsPacket* internal_default_instance() {
+    return reinterpret_cast<const TargetSettingsPacket*>(
+               &_TargetSettingsPacket_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(TargetSettingsPacket& a, TargetSettingsPacket& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(TargetSettingsPacket* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TargetSettingsPacket* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TargetSettingsPacket* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<TargetSettingsPacket>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const TargetSettingsPacket& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const TargetSettingsPacket& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(TargetSettingsPacket* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "TargetSettingsPacket";
+  }
+  protected:
+  explicit TargetSettingsPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kGameOverlayLocationFieldNumber = 7,
+    kAutoLoadSettingsFieldNumber = 1,
+    kShowDebugTitleIdLabelFieldNumber = 2,
+    kShowDevkitPanelFieldNumber = 3,
+    kShowDebugSettingsFieldNumber = 4,
+    kShowAppHomeFieldNumber = 5,
+    kShowBuildOverlayFieldNumber = 6,
+    kShowCPUUsageFieldNumber = 8,
+    kShowThreadCountFieldNumber = 9,
+    kShowramFieldNumber = 10,
+    kShowvramFieldNumber = 11,
+    kShowCPUTempFieldNumber = 12,
+    kShowSOCTempFieldNumber = 13,
+  };
+  // string GameOverlayLocation = 7;
+  void clear_gameoverlaylocation();
+  const std::string& gameoverlaylocation() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_gameoverlaylocation(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_gameoverlaylocation();
+  PROTOBUF_NODISCARD std::string* release_gameoverlaylocation();
+  void set_allocated_gameoverlaylocation(std::string* gameoverlaylocation);
+  private:
+  const std::string& _internal_gameoverlaylocation() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_gameoverlaylocation(const std::string& value);
+  std::string* _internal_mutable_gameoverlaylocation();
+  public:
+
+  // bool AutoLoadSettings = 1;
+  void clear_autoloadsettings();
+  bool autoloadsettings() const;
+  void set_autoloadsettings(bool value);
+  private:
+  bool _internal_autoloadsettings() const;
+  void _internal_set_autoloadsettings(bool value);
+  public:
+
+  // bool ShowDebugTitleIdLabel = 2;
+  void clear_showdebugtitleidlabel();
+  bool showdebugtitleidlabel() const;
+  void set_showdebugtitleidlabel(bool value);
+  private:
+  bool _internal_showdebugtitleidlabel() const;
+  void _internal_set_showdebugtitleidlabel(bool value);
+  public:
+
+  // bool ShowDevkitPanel = 3;
+  void clear_showdevkitpanel();
+  bool showdevkitpanel() const;
+  void set_showdevkitpanel(bool value);
+  private:
+  bool _internal_showdevkitpanel() const;
+  void _internal_set_showdevkitpanel(bool value);
+  public:
+
+  // bool ShowDebugSettings = 4;
+  void clear_showdebugsettings();
+  bool showdebugsettings() const;
+  void set_showdebugsettings(bool value);
+  private:
+  bool _internal_showdebugsettings() const;
+  void _internal_set_showdebugsettings(bool value);
+  public:
+
+  // bool ShowAppHome = 5;
+  void clear_showapphome();
+  bool showapphome() const;
+  void set_showapphome(bool value);
+  private:
+  bool _internal_showapphome() const;
+  void _internal_set_showapphome(bool value);
+  public:
+
+  // bool ShowBuildOverlay = 6;
+  void clear_showbuildoverlay();
+  bool showbuildoverlay() const;
+  void set_showbuildoverlay(bool value);
+  private:
+  bool _internal_showbuildoverlay() const;
+  void _internal_set_showbuildoverlay(bool value);
+  public:
+
+  // bool ShowCPUUsage = 8;
+  void clear_showcpuusage();
+  bool showcpuusage() const;
+  void set_showcpuusage(bool value);
+  private:
+  bool _internal_showcpuusage() const;
+  void _internal_set_showcpuusage(bool value);
+  public:
+
+  // bool ShowThreadCount = 9;
+  void clear_showthreadcount();
+  bool showthreadcount() const;
+  void set_showthreadcount(bool value);
+  private:
+  bool _internal_showthreadcount() const;
+  void _internal_set_showthreadcount(bool value);
+  public:
+
+  // bool Showram = 10;
+  void clear_showram();
+  bool showram() const;
+  void set_showram(bool value);
+  private:
+  bool _internal_showram() const;
+  void _internal_set_showram(bool value);
+  public:
+
+  // bool Showvram = 11;
+  void clear_showvram();
+  bool showvram() const;
+  void set_showvram(bool value);
+  private:
+  bool _internal_showvram() const;
+  void _internal_set_showvram(bool value);
+  public:
+
+  // bool ShowCPUTemp = 12;
+  void clear_showcputemp();
+  bool showcputemp() const;
+  void set_showcputemp(bool value);
+  private:
+  bool _internal_showcputemp() const;
+  void _internal_set_showcputemp(bool value);
+  public:
+
+  // bool ShowSOCTemp = 13;
+  void clear_showsoctemp();
+  bool showsoctemp() const;
+  void set_showsoctemp(bool value);
+  private:
+  bool _internal_showsoctemp() const;
+  void _internal_set_showsoctemp(bool value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:TargetSettingsPacket)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr gameoverlaylocation_;
+  bool autoloadsettings_;
+  bool showdebugtitleidlabel_;
+  bool showdevkitpanel_;
+  bool showdebugsettings_;
+  bool showapphome_;
+  bool showbuildoverlay_;
+  bool showcpuusage_;
+  bool showthreadcount_;
+  bool showram_;
+  bool showvram_;
+  bool showcputemp_;
+  bool showsoctemp_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_APIPackets_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ProcPacket final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:ProcPacket) */ {
  public:
@@ -2229,7 +2838,7 @@ class ProcPacket final :
                &_ProcPacket_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    12;
 
   friend void swap(ProcPacket& a, ProcPacket& b) {
     a.Swap(&b);
@@ -2370,6 +2979,161 @@ class ProcPacket final :
 };
 // -------------------------------------------------------------------
 
+class ProcListPacket final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:ProcListPacket) */ {
+ public:
+  inline ProcListPacket() : ProcListPacket(nullptr) {}
+  ~ProcListPacket() override;
+  explicit constexpr ProcListPacket(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  ProcListPacket(const ProcListPacket& from);
+  ProcListPacket(ProcListPacket&& from) noexcept
+    : ProcListPacket() {
+    *this = ::std::move(from);
+  }
+
+  inline ProcListPacket& operator=(const ProcListPacket& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ProcListPacket& operator=(ProcListPacket&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ProcListPacket& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ProcListPacket* internal_default_instance() {
+    return reinterpret_cast<const ProcListPacket*>(
+               &_ProcListPacket_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    13;
+
+  friend void swap(ProcListPacket& a, ProcListPacket& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ProcListPacket* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ProcListPacket* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ProcListPacket* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ProcListPacket>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const ProcListPacket& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const ProcListPacket& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ProcListPacket* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "ProcListPacket";
+  }
+  protected:
+  explicit ProcListPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kProcessesFieldNumber = 1,
+  };
+  // repeated .ProcPacket Processes = 1;
+  int processes_size() const;
+  private:
+  int _internal_processes_size() const;
+  public:
+  void clear_processes();
+  ::ProcPacket* mutable_processes(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::ProcPacket >*
+      mutable_processes();
+  private:
+  const ::ProcPacket& _internal_processes(int index) const;
+  ::ProcPacket* _internal_add_processes();
+  public:
+  const ::ProcPacket& processes(int index) const;
+  ::ProcPacket* add_processes();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::ProcPacket >&
+      processes() const;
+
+  // @@protoc_insertion_point(class_scope:ProcListPacket)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::ProcPacket > processes_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_APIPackets_2eproto;
+};
+// -------------------------------------------------------------------
+
 class LibraryInfoPacket final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:LibraryInfoPacket) */ {
  public:
@@ -2418,7 +3182,7 @@ class LibraryInfoPacket final :
                &_LibraryInfoPacket_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    14;
 
   friend void swap(LibraryInfoPacket& a, LibraryInfoPacket& b) {
     a.Swap(&b);
@@ -2582,6 +3346,161 @@ class LibraryInfoPacket final :
   uint64_t database_;
   uint64_t datasize_;
   uint32_t handle_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_APIPackets_2eproto;
+};
+// -------------------------------------------------------------------
+
+class LibraryListPacket final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:LibraryListPacket) */ {
+ public:
+  inline LibraryListPacket() : LibraryListPacket(nullptr) {}
+  ~LibraryListPacket() override;
+  explicit constexpr LibraryListPacket(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  LibraryListPacket(const LibraryListPacket& from);
+  LibraryListPacket(LibraryListPacket&& from) noexcept
+    : LibraryListPacket() {
+    *this = ::std::move(from);
+  }
+
+  inline LibraryListPacket& operator=(const LibraryListPacket& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LibraryListPacket& operator=(LibraryListPacket&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const LibraryListPacket& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const LibraryListPacket* internal_default_instance() {
+    return reinterpret_cast<const LibraryListPacket*>(
+               &_LibraryListPacket_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    15;
+
+  friend void swap(LibraryListPacket& a, LibraryListPacket& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(LibraryListPacket* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(LibraryListPacket* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  LibraryListPacket* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<LibraryListPacket>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const LibraryListPacket& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const LibraryListPacket& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(LibraryListPacket* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "LibraryListPacket";
+  }
+  protected:
+  explicit LibraryListPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kLibrariesFieldNumber = 1,
+  };
+  // repeated .LibraryInfoPacket Libraries = 1;
+  int libraries_size() const;
+  private:
+  int _internal_libraries_size() const;
+  public:
+  void clear_libraries();
+  ::LibraryInfoPacket* mutable_libraries(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::LibraryInfoPacket >*
+      mutable_libraries();
+  private:
+  const ::LibraryInfoPacket& _internal_libraries(int index) const;
+  ::LibraryInfoPacket* _internal_add_libraries();
+  public:
+  const ::LibraryInfoPacket& libraries(int index) const;
+  ::LibraryInfoPacket* add_libraries();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::LibraryInfoPacket >&
+      libraries() const;
+
+  // @@protoc_insertion_point(class_scope:LibraryListPacket)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::LibraryInfoPacket > libraries_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_APIPackets_2eproto;
 };
@@ -3201,6 +4120,105 @@ inline void AppInfoPacket::set_allocated_uicategory(std::string* uicategory) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:AppInfoPacket.UICategory)
+}
+
+// -------------------------------------------------------------------
+
+// AppInfoListPacket
+
+// repeated .AppInfoPacket Apps = 1;
+inline int AppInfoListPacket::_internal_apps_size() const {
+  return apps_.size();
+}
+inline int AppInfoListPacket::apps_size() const {
+  return _internal_apps_size();
+}
+inline void AppInfoListPacket::clear_apps() {
+  apps_.Clear();
+}
+inline ::AppInfoPacket* AppInfoListPacket::mutable_apps(int index) {
+  // @@protoc_insertion_point(field_mutable:AppInfoListPacket.Apps)
+  return apps_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::AppInfoPacket >*
+AppInfoListPacket::mutable_apps() {
+  // @@protoc_insertion_point(field_mutable_list:AppInfoListPacket.Apps)
+  return &apps_;
+}
+inline const ::AppInfoPacket& AppInfoListPacket::_internal_apps(int index) const {
+  return apps_.Get(index);
+}
+inline const ::AppInfoPacket& AppInfoListPacket::apps(int index) const {
+  // @@protoc_insertion_point(field_get:AppInfoListPacket.Apps)
+  return _internal_apps(index);
+}
+inline ::AppInfoPacket* AppInfoListPacket::_internal_add_apps() {
+  return apps_.Add();
+}
+inline ::AppInfoPacket* AppInfoListPacket::add_apps() {
+  ::AppInfoPacket* _add = _internal_add_apps();
+  // @@protoc_insertion_point(field_add:AppInfoListPacket.Apps)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::AppInfoPacket >&
+AppInfoListPacket::apps() const {
+  // @@protoc_insertion_point(field_list:AppInfoListPacket.Apps)
+  return apps_;
+}
+
+// -------------------------------------------------------------------
+
+// AppPacket
+
+// string TitleId = 1;
+inline void AppPacket::clear_titleid() {
+  titleid_.ClearToEmpty();
+}
+inline const std::string& AppPacket::titleid() const {
+  // @@protoc_insertion_point(field_get:AppPacket.TitleId)
+  return _internal_titleid();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AppPacket::set_titleid(ArgT0&& arg0, ArgT... args) {
+ 
+ titleid_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:AppPacket.TitleId)
+}
+inline std::string* AppPacket::mutable_titleid() {
+  std::string* _s = _internal_mutable_titleid();
+  // @@protoc_insertion_point(field_mutable:AppPacket.TitleId)
+  return _s;
+}
+inline const std::string& AppPacket::_internal_titleid() const {
+  return titleid_.Get();
+}
+inline void AppPacket::_internal_set_titleid(const std::string& value) {
+  
+  titleid_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* AppPacket::_internal_mutable_titleid() {
+  
+  return titleid_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* AppPacket::release_titleid() {
+  // @@protoc_insertion_point(field_release:AppPacket.TitleId)
+  return titleid_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void AppPacket::set_allocated_titleid(std::string* titleid) {
+  if (titleid != nullptr) {
+    
+  } else {
+    
+  }
+  titleid_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), titleid,
+      GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (titleid_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    titleid_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:AppPacket.TitleId)
 }
 
 // -------------------------------------------------------------------
@@ -3890,106 +4908,106 @@ inline void TargetInfoPacket::set_allocated_model(std::string* model) {
   // @@protoc_insertion_point(field_set_allocated:TargetInfoPacket.Model)
 }
 
-// string MACAdressLAN = 9;
-inline void TargetInfoPacket::clear_macadresslan() {
-  macadresslan_.ClearToEmpty();
+// string MACAddressLAN = 9;
+inline void TargetInfoPacket::clear_macaddresslan() {
+  macaddresslan_.ClearToEmpty();
 }
-inline const std::string& TargetInfoPacket::macadresslan() const {
-  // @@protoc_insertion_point(field_get:TargetInfoPacket.MACAdressLAN)
-  return _internal_macadresslan();
+inline const std::string& TargetInfoPacket::macaddresslan() const {
+  // @@protoc_insertion_point(field_get:TargetInfoPacket.MACAddressLAN)
+  return _internal_macaddresslan();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void TargetInfoPacket::set_macadresslan(ArgT0&& arg0, ArgT... args) {
+void TargetInfoPacket::set_macaddresslan(ArgT0&& arg0, ArgT... args) {
  
- macadresslan_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:TargetInfoPacket.MACAdressLAN)
+ macaddresslan_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:TargetInfoPacket.MACAddressLAN)
 }
-inline std::string* TargetInfoPacket::mutable_macadresslan() {
-  std::string* _s = _internal_mutable_macadresslan();
-  // @@protoc_insertion_point(field_mutable:TargetInfoPacket.MACAdressLAN)
+inline std::string* TargetInfoPacket::mutable_macaddresslan() {
+  std::string* _s = _internal_mutable_macaddresslan();
+  // @@protoc_insertion_point(field_mutable:TargetInfoPacket.MACAddressLAN)
   return _s;
 }
-inline const std::string& TargetInfoPacket::_internal_macadresslan() const {
-  return macadresslan_.Get();
+inline const std::string& TargetInfoPacket::_internal_macaddresslan() const {
+  return macaddresslan_.Get();
 }
-inline void TargetInfoPacket::_internal_set_macadresslan(const std::string& value) {
+inline void TargetInfoPacket::_internal_set_macaddresslan(const std::string& value) {
   
-  macadresslan_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  macaddresslan_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* TargetInfoPacket::_internal_mutable_macadresslan() {
+inline std::string* TargetInfoPacket::_internal_mutable_macaddresslan() {
   
-  return macadresslan_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return macaddresslan_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* TargetInfoPacket::release_macadresslan() {
-  // @@protoc_insertion_point(field_release:TargetInfoPacket.MACAdressLAN)
-  return macadresslan_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* TargetInfoPacket::release_macaddresslan() {
+  // @@protoc_insertion_point(field_release:TargetInfoPacket.MACAddressLAN)
+  return macaddresslan_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void TargetInfoPacket::set_allocated_macadresslan(std::string* macadresslan) {
-  if (macadresslan != nullptr) {
+inline void TargetInfoPacket::set_allocated_macaddresslan(std::string* macaddresslan) {
+  if (macaddresslan != nullptr) {
     
   } else {
     
   }
-  macadresslan_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), macadresslan,
+  macaddresslan_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), macaddresslan,
       GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (macadresslan_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    macadresslan_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  if (macaddresslan_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    macaddresslan_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:TargetInfoPacket.MACAdressLAN)
+  // @@protoc_insertion_point(field_set_allocated:TargetInfoPacket.MACAddressLAN)
 }
 
-// string MACAdressWIFI = 10;
-inline void TargetInfoPacket::clear_macadresswifi() {
-  macadresswifi_.ClearToEmpty();
+// string MACAddressWIFI = 10;
+inline void TargetInfoPacket::clear_macaddresswifi() {
+  macaddresswifi_.ClearToEmpty();
 }
-inline const std::string& TargetInfoPacket::macadresswifi() const {
-  // @@protoc_insertion_point(field_get:TargetInfoPacket.MACAdressWIFI)
-  return _internal_macadresswifi();
+inline const std::string& TargetInfoPacket::macaddresswifi() const {
+  // @@protoc_insertion_point(field_get:TargetInfoPacket.MACAddressWIFI)
+  return _internal_macaddresswifi();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void TargetInfoPacket::set_macadresswifi(ArgT0&& arg0, ArgT... args) {
+void TargetInfoPacket::set_macaddresswifi(ArgT0&& arg0, ArgT... args) {
  
- macadresswifi_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:TargetInfoPacket.MACAdressWIFI)
+ macaddresswifi_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:TargetInfoPacket.MACAddressWIFI)
 }
-inline std::string* TargetInfoPacket::mutable_macadresswifi() {
-  std::string* _s = _internal_mutable_macadresswifi();
-  // @@protoc_insertion_point(field_mutable:TargetInfoPacket.MACAdressWIFI)
+inline std::string* TargetInfoPacket::mutable_macaddresswifi() {
+  std::string* _s = _internal_mutable_macaddresswifi();
+  // @@protoc_insertion_point(field_mutable:TargetInfoPacket.MACAddressWIFI)
   return _s;
 }
-inline const std::string& TargetInfoPacket::_internal_macadresswifi() const {
-  return macadresswifi_.Get();
+inline const std::string& TargetInfoPacket::_internal_macaddresswifi() const {
+  return macaddresswifi_.Get();
 }
-inline void TargetInfoPacket::_internal_set_macadresswifi(const std::string& value) {
+inline void TargetInfoPacket::_internal_set_macaddresswifi(const std::string& value) {
   
-  macadresswifi_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  macaddresswifi_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* TargetInfoPacket::_internal_mutable_macadresswifi() {
+inline std::string* TargetInfoPacket::_internal_mutable_macaddresswifi() {
   
-  return macadresswifi_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return macaddresswifi_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* TargetInfoPacket::release_macadresswifi() {
-  // @@protoc_insertion_point(field_release:TargetInfoPacket.MACAdressWIFI)
-  return macadresswifi_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* TargetInfoPacket::release_macaddresswifi() {
+  // @@protoc_insertion_point(field_release:TargetInfoPacket.MACAddressWIFI)
+  return macaddresswifi_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void TargetInfoPacket::set_allocated_macadresswifi(std::string* macadresswifi) {
-  if (macadresswifi != nullptr) {
+inline void TargetInfoPacket::set_allocated_macaddresswifi(std::string* macaddresswifi) {
+  if (macaddresswifi != nullptr) {
     
   } else {
     
   }
-  macadresswifi_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), macadresswifi,
+  macaddresswifi_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), macaddresswifi,
       GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (macadresswifi_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    macadresswifi_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  if (macaddresswifi_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    macaddresswifi_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:TargetInfoPacket.MACAdressWIFI)
+  // @@protoc_insertion_point(field_set_allocated:TargetInfoPacket.MACAddressWIFI)
 }
 
 // bool UART = 11;
@@ -4642,6 +5660,301 @@ inline void TargetNotifyPacket::set_allocated_message(std::string* message) {
 
 // -------------------------------------------------------------------
 
+// TargetSettingsPacket
+
+// bool AutoLoadSettings = 1;
+inline void TargetSettingsPacket::clear_autoloadsettings() {
+  autoloadsettings_ = false;
+}
+inline bool TargetSettingsPacket::_internal_autoloadsettings() const {
+  return autoloadsettings_;
+}
+inline bool TargetSettingsPacket::autoloadsettings() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.AutoLoadSettings)
+  return _internal_autoloadsettings();
+}
+inline void TargetSettingsPacket::_internal_set_autoloadsettings(bool value) {
+  
+  autoloadsettings_ = value;
+}
+inline void TargetSettingsPacket::set_autoloadsettings(bool value) {
+  _internal_set_autoloadsettings(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.AutoLoadSettings)
+}
+
+// bool ShowDebugTitleIdLabel = 2;
+inline void TargetSettingsPacket::clear_showdebugtitleidlabel() {
+  showdebugtitleidlabel_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showdebugtitleidlabel() const {
+  return showdebugtitleidlabel_;
+}
+inline bool TargetSettingsPacket::showdebugtitleidlabel() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowDebugTitleIdLabel)
+  return _internal_showdebugtitleidlabel();
+}
+inline void TargetSettingsPacket::_internal_set_showdebugtitleidlabel(bool value) {
+  
+  showdebugtitleidlabel_ = value;
+}
+inline void TargetSettingsPacket::set_showdebugtitleidlabel(bool value) {
+  _internal_set_showdebugtitleidlabel(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowDebugTitleIdLabel)
+}
+
+// bool ShowDevkitPanel = 3;
+inline void TargetSettingsPacket::clear_showdevkitpanel() {
+  showdevkitpanel_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showdevkitpanel() const {
+  return showdevkitpanel_;
+}
+inline bool TargetSettingsPacket::showdevkitpanel() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowDevkitPanel)
+  return _internal_showdevkitpanel();
+}
+inline void TargetSettingsPacket::_internal_set_showdevkitpanel(bool value) {
+  
+  showdevkitpanel_ = value;
+}
+inline void TargetSettingsPacket::set_showdevkitpanel(bool value) {
+  _internal_set_showdevkitpanel(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowDevkitPanel)
+}
+
+// bool ShowDebugSettings = 4;
+inline void TargetSettingsPacket::clear_showdebugsettings() {
+  showdebugsettings_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showdebugsettings() const {
+  return showdebugsettings_;
+}
+inline bool TargetSettingsPacket::showdebugsettings() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowDebugSettings)
+  return _internal_showdebugsettings();
+}
+inline void TargetSettingsPacket::_internal_set_showdebugsettings(bool value) {
+  
+  showdebugsettings_ = value;
+}
+inline void TargetSettingsPacket::set_showdebugsettings(bool value) {
+  _internal_set_showdebugsettings(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowDebugSettings)
+}
+
+// bool ShowAppHome = 5;
+inline void TargetSettingsPacket::clear_showapphome() {
+  showapphome_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showapphome() const {
+  return showapphome_;
+}
+inline bool TargetSettingsPacket::showapphome() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowAppHome)
+  return _internal_showapphome();
+}
+inline void TargetSettingsPacket::_internal_set_showapphome(bool value) {
+  
+  showapphome_ = value;
+}
+inline void TargetSettingsPacket::set_showapphome(bool value) {
+  _internal_set_showapphome(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowAppHome)
+}
+
+// bool ShowBuildOverlay = 6;
+inline void TargetSettingsPacket::clear_showbuildoverlay() {
+  showbuildoverlay_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showbuildoverlay() const {
+  return showbuildoverlay_;
+}
+inline bool TargetSettingsPacket::showbuildoverlay() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowBuildOverlay)
+  return _internal_showbuildoverlay();
+}
+inline void TargetSettingsPacket::_internal_set_showbuildoverlay(bool value) {
+  
+  showbuildoverlay_ = value;
+}
+inline void TargetSettingsPacket::set_showbuildoverlay(bool value) {
+  _internal_set_showbuildoverlay(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowBuildOverlay)
+}
+
+// string GameOverlayLocation = 7;
+inline void TargetSettingsPacket::clear_gameoverlaylocation() {
+  gameoverlaylocation_.ClearToEmpty();
+}
+inline const std::string& TargetSettingsPacket::gameoverlaylocation() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.GameOverlayLocation)
+  return _internal_gameoverlaylocation();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TargetSettingsPacket::set_gameoverlaylocation(ArgT0&& arg0, ArgT... args) {
+ 
+ gameoverlaylocation_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.GameOverlayLocation)
+}
+inline std::string* TargetSettingsPacket::mutable_gameoverlaylocation() {
+  std::string* _s = _internal_mutable_gameoverlaylocation();
+  // @@protoc_insertion_point(field_mutable:TargetSettingsPacket.GameOverlayLocation)
+  return _s;
+}
+inline const std::string& TargetSettingsPacket::_internal_gameoverlaylocation() const {
+  return gameoverlaylocation_.Get();
+}
+inline void TargetSettingsPacket::_internal_set_gameoverlaylocation(const std::string& value) {
+  
+  gameoverlaylocation_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* TargetSettingsPacket::_internal_mutable_gameoverlaylocation() {
+  
+  return gameoverlaylocation_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* TargetSettingsPacket::release_gameoverlaylocation() {
+  // @@protoc_insertion_point(field_release:TargetSettingsPacket.GameOverlayLocation)
+  return gameoverlaylocation_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void TargetSettingsPacket::set_allocated_gameoverlaylocation(std::string* gameoverlaylocation) {
+  if (gameoverlaylocation != nullptr) {
+    
+  } else {
+    
+  }
+  gameoverlaylocation_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), gameoverlaylocation,
+      GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (gameoverlaylocation_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    gameoverlaylocation_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:TargetSettingsPacket.GameOverlayLocation)
+}
+
+// bool ShowCPUUsage = 8;
+inline void TargetSettingsPacket::clear_showcpuusage() {
+  showcpuusage_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showcpuusage() const {
+  return showcpuusage_;
+}
+inline bool TargetSettingsPacket::showcpuusage() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowCPUUsage)
+  return _internal_showcpuusage();
+}
+inline void TargetSettingsPacket::_internal_set_showcpuusage(bool value) {
+  
+  showcpuusage_ = value;
+}
+inline void TargetSettingsPacket::set_showcpuusage(bool value) {
+  _internal_set_showcpuusage(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowCPUUsage)
+}
+
+// bool ShowThreadCount = 9;
+inline void TargetSettingsPacket::clear_showthreadcount() {
+  showthreadcount_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showthreadcount() const {
+  return showthreadcount_;
+}
+inline bool TargetSettingsPacket::showthreadcount() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowThreadCount)
+  return _internal_showthreadcount();
+}
+inline void TargetSettingsPacket::_internal_set_showthreadcount(bool value) {
+  
+  showthreadcount_ = value;
+}
+inline void TargetSettingsPacket::set_showthreadcount(bool value) {
+  _internal_set_showthreadcount(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowThreadCount)
+}
+
+// bool Showram = 10;
+inline void TargetSettingsPacket::clear_showram() {
+  showram_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showram() const {
+  return showram_;
+}
+inline bool TargetSettingsPacket::showram() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.Showram)
+  return _internal_showram();
+}
+inline void TargetSettingsPacket::_internal_set_showram(bool value) {
+  
+  showram_ = value;
+}
+inline void TargetSettingsPacket::set_showram(bool value) {
+  _internal_set_showram(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.Showram)
+}
+
+// bool Showvram = 11;
+inline void TargetSettingsPacket::clear_showvram() {
+  showvram_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showvram() const {
+  return showvram_;
+}
+inline bool TargetSettingsPacket::showvram() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.Showvram)
+  return _internal_showvram();
+}
+inline void TargetSettingsPacket::_internal_set_showvram(bool value) {
+  
+  showvram_ = value;
+}
+inline void TargetSettingsPacket::set_showvram(bool value) {
+  _internal_set_showvram(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.Showvram)
+}
+
+// bool ShowCPUTemp = 12;
+inline void TargetSettingsPacket::clear_showcputemp() {
+  showcputemp_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showcputemp() const {
+  return showcputemp_;
+}
+inline bool TargetSettingsPacket::showcputemp() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowCPUTemp)
+  return _internal_showcputemp();
+}
+inline void TargetSettingsPacket::_internal_set_showcputemp(bool value) {
+  
+  showcputemp_ = value;
+}
+inline void TargetSettingsPacket::set_showcputemp(bool value) {
+  _internal_set_showcputemp(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowCPUTemp)
+}
+
+// bool ShowSOCTemp = 13;
+inline void TargetSettingsPacket::clear_showsoctemp() {
+  showsoctemp_ = false;
+}
+inline bool TargetSettingsPacket::_internal_showsoctemp() const {
+  return showsoctemp_;
+}
+inline bool TargetSettingsPacket::showsoctemp() const {
+  // @@protoc_insertion_point(field_get:TargetSettingsPacket.ShowSOCTemp)
+  return _internal_showsoctemp();
+}
+inline void TargetSettingsPacket::_internal_set_showsoctemp(bool value) {
+  
+  showsoctemp_ = value;
+}
+inline void TargetSettingsPacket::set_showsoctemp(bool value) {
+  _internal_set_showsoctemp(value);
+  // @@protoc_insertion_point(field_set:TargetSettingsPacket.ShowSOCTemp)
+}
+
+// -------------------------------------------------------------------
+
 // ProcPacket
 
 // int32 AppId = 1;
@@ -4784,6 +6097,50 @@ inline void ProcPacket::set_allocated_titleid(std::string* titleid) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:ProcPacket.TitleId)
+}
+
+// -------------------------------------------------------------------
+
+// ProcListPacket
+
+// repeated .ProcPacket Processes = 1;
+inline int ProcListPacket::_internal_processes_size() const {
+  return processes_.size();
+}
+inline int ProcListPacket::processes_size() const {
+  return _internal_processes_size();
+}
+inline void ProcListPacket::clear_processes() {
+  processes_.Clear();
+}
+inline ::ProcPacket* ProcListPacket::mutable_processes(int index) {
+  // @@protoc_insertion_point(field_mutable:ProcListPacket.Processes)
+  return processes_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::ProcPacket >*
+ProcListPacket::mutable_processes() {
+  // @@protoc_insertion_point(field_mutable_list:ProcListPacket.Processes)
+  return &processes_;
+}
+inline const ::ProcPacket& ProcListPacket::_internal_processes(int index) const {
+  return processes_.Get(index);
+}
+inline const ::ProcPacket& ProcListPacket::processes(int index) const {
+  // @@protoc_insertion_point(field_get:ProcListPacket.Processes)
+  return _internal_processes(index);
+}
+inline ::ProcPacket* ProcListPacket::_internal_add_processes() {
+  return processes_.Add();
+}
+inline ::ProcPacket* ProcListPacket::add_processes() {
+  ::ProcPacket* _add = _internal_add_processes();
+  // @@protoc_insertion_point(field_add:ProcListPacket.Processes)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::ProcPacket >&
+ProcListPacket::processes() const {
+  // @@protoc_insertion_point(field_list:ProcListPacket.Processes)
+  return processes_;
 }
 
 // -------------------------------------------------------------------
@@ -4961,9 +6318,63 @@ inline void LibraryInfoPacket::set_datasize(uint64_t value) {
   // @@protoc_insertion_point(field_set:LibraryInfoPacket.DataSize)
 }
 
+// -------------------------------------------------------------------
+
+// LibraryListPacket
+
+// repeated .LibraryInfoPacket Libraries = 1;
+inline int LibraryListPacket::_internal_libraries_size() const {
+  return libraries_.size();
+}
+inline int LibraryListPacket::libraries_size() const {
+  return _internal_libraries_size();
+}
+inline void LibraryListPacket::clear_libraries() {
+  libraries_.Clear();
+}
+inline ::LibraryInfoPacket* LibraryListPacket::mutable_libraries(int index) {
+  // @@protoc_insertion_point(field_mutable:LibraryListPacket.Libraries)
+  return libraries_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::LibraryInfoPacket >*
+LibraryListPacket::mutable_libraries() {
+  // @@protoc_insertion_point(field_mutable_list:LibraryListPacket.Libraries)
+  return &libraries_;
+}
+inline const ::LibraryInfoPacket& LibraryListPacket::_internal_libraries(int index) const {
+  return libraries_.Get(index);
+}
+inline const ::LibraryInfoPacket& LibraryListPacket::libraries(int index) const {
+  // @@protoc_insertion_point(field_get:LibraryListPacket.Libraries)
+  return _internal_libraries(index);
+}
+inline ::LibraryInfoPacket* LibraryListPacket::_internal_add_libraries() {
+  return libraries_.Add();
+}
+inline ::LibraryInfoPacket* LibraryListPacket::add_libraries() {
+  ::LibraryInfoPacket* _add = _internal_add_libraries();
+  // @@protoc_insertion_point(field_add:LibraryListPacket.Libraries)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::LibraryInfoPacket >&
+LibraryListPacket::libraries() const {
+  // @@protoc_insertion_point(field_list:LibraryListPacket.Libraries)
+  return libraries_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

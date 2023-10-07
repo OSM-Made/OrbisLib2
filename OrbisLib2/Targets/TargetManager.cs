@@ -135,6 +135,12 @@ namespace OrbisLib2.Targets
                 var rawPacket = Sock.ReceiveSize();
                 var Packet = TargetInfoPacket.Parser.ParseFrom(rawPacket);
 
+                if (Packet == null)
+                {
+                    Result = new ResultState { Succeeded = false, ErrorMessage = $"Protobuf packet was null." };
+                    return;
+                }
+
                 savedTarget.Info.SDKVersion = $"{(Packet.SDKVersion >> 24 & 0xFF).ToString("X1")}.{(Packet.SDKVersion >> 12 & 0xFFF).ToString("X3")}.{(Packet.SDKVersion & 0xFFF).ToString("X3")}";
                 savedTarget.Info.SoftwareVersion = $"{(Packet.SoftwareVersion >> 24 & 0xFF).ToString("X1")}.{(Packet.SoftwareVersion >> 16 & 0xFF).ToString("X2")}";
                 savedTarget.Info.FactorySoftwareVersion = $"{(Packet.FactorySoftwareVersion >> 24 & 0xFF).ToString("X1")}.{(Packet.FactorySoftwareVersion >> 12 & 0xFFF).ToString("X3")}.{(Packet.FactorySoftwareVersion & 0xFFF).ToString("X3")}";
@@ -172,8 +178,10 @@ namespace OrbisLib2.Targets
                 savedTarget.Info.ThreadCount = Packet.ThreadCount;
                 savedTarget.Info.AverageCPUUsage = Packet.AverageCPUUsage;
                 savedTarget.Info.BusyCore = Packet.BusyCore;
-                savedTarget.Info.RamUsage = Packet.Ram.Used;
-                savedTarget.Info.VRamUsage = Packet.VRam.Used;
+                if (Packet.Ram != null)
+                    savedTarget.Info.RamUsage = Packet.Ram.Used;
+                if (Packet.VRam != null)
+                    savedTarget.Info.VRamUsage = Packet.VRam.Used;
 
                 // Save the updated info.
                 savedTarget.Info.Save();

@@ -65,6 +65,30 @@ struct AppInfoPacketDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AppInfoPacketDefaultTypeInternal _AppInfoPacket_default_instance_;
+constexpr AppInfoListPacket::AppInfoListPacket(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : apps_(){}
+struct AppInfoListPacketDefaultTypeInternal {
+  constexpr AppInfoListPacketDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AppInfoListPacketDefaultTypeInternal() {}
+  union {
+    AppInfoListPacket _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AppInfoListPacketDefaultTypeInternal _AppInfoListPacket_default_instance_;
+constexpr AppPacket::AppPacket(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : titleid_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct AppPacketDefaultTypeInternal {
+  constexpr AppPacketDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AppPacketDefaultTypeInternal() {}
+  union {
+    AppPacket _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AppPacketDefaultTypeInternal _AppPacket_default_instance_;
 constexpr RWPacket::RWPacket(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : address_(uint64_t{0u})
@@ -126,8 +150,8 @@ constexpr TargetInfoPacket::TargetInfoPacket(
   , motherboardserial_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , serial_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , model_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , macadresslan_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , macadresswifi_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , macaddresslan_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , macaddresswifi_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , idps_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , psid_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , bigapp_(nullptr)
@@ -171,6 +195,30 @@ struct TargetNotifyPacketDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TargetNotifyPacketDefaultTypeInternal _TargetNotifyPacket_default_instance_;
+constexpr TargetSettingsPacket::TargetSettingsPacket(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : gameoverlaylocation_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , autoloadsettings_(false)
+  , showdebugtitleidlabel_(false)
+  , showdevkitpanel_(false)
+  , showdebugsettings_(false)
+  , showapphome_(false)
+  , showbuildoverlay_(false)
+  , showcpuusage_(false)
+  , showthreadcount_(false)
+  , showram_(false)
+  , showvram_(false)
+  , showcputemp_(false)
+  , showsoctemp_(false){}
+struct TargetSettingsPacketDefaultTypeInternal {
+  constexpr TargetSettingsPacketDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TargetSettingsPacketDefaultTypeInternal() {}
+  union {
+    TargetSettingsPacket _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TargetSettingsPacketDefaultTypeInternal _TargetSettingsPacket_default_instance_;
 constexpr ProcPacket::ProcPacket(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -186,6 +234,18 @@ struct ProcPacketDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ProcPacketDefaultTypeInternal _ProcPacket_default_instance_;
+constexpr ProcListPacket::ProcListPacket(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : processes_(){}
+struct ProcListPacketDefaultTypeInternal {
+  constexpr ProcListPacketDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ProcListPacketDefaultTypeInternal() {}
+  union {
+    ProcListPacket _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ProcListPacketDefaultTypeInternal _ProcListPacket_default_instance_;
 constexpr LibraryInfoPacket::LibraryInfoPacket(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -204,7 +264,19 @@ struct LibraryInfoPacketDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT LibraryInfoPacketDefaultTypeInternal _LibraryInfoPacket_default_instance_;
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_APIPackets_2eproto[11];
+constexpr LibraryListPacket::LibraryListPacket(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : libraries_(){}
+struct LibraryListPacketDefaultTypeInternal {
+  constexpr LibraryListPacketDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~LibraryListPacketDefaultTypeInternal() {}
+  union {
+    LibraryListPacket _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT LibraryListPacketDefaultTypeInternal _LibraryListPacket_default_instance_;
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_APIPackets_2eproto[16];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_APIPackets_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_APIPackets_2eproto = nullptr;
 
@@ -243,6 +315,20 @@ const uint32_t TableStruct_APIPackets_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
   PROTOBUF_FIELD_OFFSET(::AppInfoPacket, contentsize_),
   PROTOBUF_FIELD_OFFSET(::AppInfoPacket, installdate_),
   PROTOBUF_FIELD_OFFSET(::AppInfoPacket, uicategory_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::AppInfoListPacket, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::AppInfoListPacket, apps_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::AppPacket, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::AppPacket, titleid_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::RWPacket, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -292,8 +378,8 @@ const uint32_t TableStruct_APIPackets_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
   PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, motherboardserial_),
   PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, serial_),
   PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, model_),
-  PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, macadresslan_),
-  PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, macadresswifi_),
+  PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, macaddresslan_),
+  PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, macaddresswifi_),
   PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, uart_),
   PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, idumode_),
   PROTOBUF_FIELD_OFFSET(::TargetInfoPacket, idps_),
@@ -320,6 +406,25 @@ const uint32_t TableStruct_APIPackets_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
   PROTOBUF_FIELD_OFFSET(::TargetNotifyPacket, iconuri_),
   PROTOBUF_FIELD_OFFSET(::TargetNotifyPacket, message_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, autoloadsettings_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showdebugtitleidlabel_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showdevkitpanel_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showdebugsettings_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showapphome_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showbuildoverlay_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, gameoverlaylocation_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showcpuusage_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showthreadcount_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showram_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showvram_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showcputemp_),
+  PROTOBUF_FIELD_OFFSET(::TargetSettingsPacket, showsoctemp_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::ProcPacket, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -329,6 +434,13 @@ const uint32_t TableStruct_APIPackets_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
   PROTOBUF_FIELD_OFFSET(::ProcPacket, processid_),
   PROTOBUF_FIELD_OFFSET(::ProcPacket, name_),
   PROTOBUF_FIELD_OFFSET(::ProcPacket, titleid_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::ProcListPacket, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::ProcListPacket, processes_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::LibraryInfoPacket, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -342,33 +454,50 @@ const uint32_t TableStruct_APIPackets_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
   PROTOBUF_FIELD_OFFSET(::LibraryInfoPacket, textsize_),
   PROTOBUF_FIELD_OFFSET(::LibraryInfoPacket, database_),
   PROTOBUF_FIELD_OFFSET(::LibraryInfoPacket, datasize_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::LibraryListPacket, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::LibraryListPacket, libraries_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::InitialPacket)},
   { 8, -1, -1, sizeof(::ResultState)},
   { 16, -1, -1, sizeof(::AppInfoPacket)},
-  { 34, -1, -1, sizeof(::RWPacket)},
-  { 42, -1, -1, sizeof(::SPRXPacket)},
-  { 50, -1, -1, sizeof(::MemoryInfo)},
-  { 60, -1, -1, sizeof(::CurrentBigApp)},
-  { 69, -1, -1, sizeof(::TargetInfoPacket)},
-  { 102, -1, -1, sizeof(::TargetNotifyPacket)},
-  { 110, -1, -1, sizeof(::ProcPacket)},
-  { 120, -1, -1, sizeof(::LibraryInfoPacket)},
+  { 34, -1, -1, sizeof(::AppInfoListPacket)},
+  { 41, -1, -1, sizeof(::AppPacket)},
+  { 48, -1, -1, sizeof(::RWPacket)},
+  { 56, -1, -1, sizeof(::SPRXPacket)},
+  { 64, -1, -1, sizeof(::MemoryInfo)},
+  { 74, -1, -1, sizeof(::CurrentBigApp)},
+  { 83, -1, -1, sizeof(::TargetInfoPacket)},
+  { 116, -1, -1, sizeof(::TargetNotifyPacket)},
+  { 124, -1, -1, sizeof(::TargetSettingsPacket)},
+  { 143, -1, -1, sizeof(::ProcPacket)},
+  { 153, -1, -1, sizeof(::ProcListPacket)},
+  { 160, -1, -1, sizeof(::LibraryInfoPacket)},
+  { 173, -1, -1, sizeof(::LibraryListPacket)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_InitialPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_ResultState_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_AppInfoPacket_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_AppInfoListPacket_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_AppPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_RWPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_SPRXPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_MemoryInfo_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_CurrentBigApp_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_TargetInfoPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_TargetNotifyPacket_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_TargetSettingsPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_ProcPacket_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_ProcListPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_LibraryInfoPacket_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_LibraryListPacket_default_instance_),
 };
 
 const char descriptor_table_protodef_APIPackets_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -381,79 +510,92 @@ const char descriptor_table_protodef_APIPackets_2eproto[] PROTOBUF_SECTION_VARIA
   "Time\030\005 \001(\t\022\021\n\tIsVisible\030\006 \001(\010\022\024\n\014SortPri"
   "ority\030\007 \001(\005\022\024\n\014DispLocation\030\010 \001(\005\022\020\n\010Cat"
   "egory\030\t \001(\t\022\023\n\013ContentSize\030\n \001(\005\022\023\n\013Inst"
-  "allDate\030\013 \001(\t\022\022\n\nUICategory\030\014 \001(\t\"+\n\010RWP"
-  "acket\022\017\n\007Address\030\001 \001(\004\022\016\n\006Length\030\002 \001(\004\"*"
-  "\n\nSPRXPacket\022\014\n\004Path\030\001 \001(\t\022\016\n\006Handle\030\002 \001"
-  "(\005\"K\n\nMemoryInfo\022\014\n\004Used\030\001 \001(\005\022\014\n\004Free\030\002"
-  " \001(\005\022\r\n\005Total\030\003 \001(\005\022\022\n\nPercentage\030\004 \001(\002\""
-  ";\n\rCurrentBigApp\022\013\n\003Pid\030\001 \001(\005\022\014\n\004Name\030\002 "
-  "\001(\t\022\017\n\007TitleId\030\003 \001(\t\"\315\004\n\020TargetInfoPacke"
-  "t\022\022\n\nSDKVersion\030\001 \001(\005\022\027\n\017SoftwareVersion"
-  "\030\002 \001(\005\022\036\n\026FactorySoftwareVersion\030\003 \001(\005\022\036"
-  "\n\006BigApp\030\004 \001(\0132\016.CurrentBigApp\022\023\n\013Consol"
-  "eName\030\005 \001(\t\022\031\n\021MotherboardSerial\030\006 \001(\t\022\016"
-  "\n\006Serial\030\007 \001(\t\022\r\n\005Model\030\010 \001(\t\022\024\n\014MACAdre"
-  "ssLAN\030\t \001(\t\022\025\n\rMACAdressWIFI\030\n \001(\t\022\014\n\004UA"
-  "RT\030\013 \001(\010\022\017\n\007IDUMode\030\014 \001(\010\022\014\n\004IDPS\030\r \001(\t\022"
-  "\014\n\004PSID\030\016 \001(\t\022\023\n\013ConsoleType\030\017 \001(\005\022\020\n\010At"
-  "tached\030\020 \001(\005\022\023\n\013AttachedPid\030\021 \001(\005\022\033\n\023For"
-  "egroundAccountId\030\022 \001(\005\022\021\n\tFreeSpace\030\023 \001("
-  "\004\022\022\n\nTotalSpace\030\024 \001(\004\022\017\n\007CPUTemp\030\025 \001(\005\022\017"
-  "\n\007SOCTemp\030\026 \001(\005\022\023\n\013ThreadCount\030\027 \001(\005\022\027\n\017"
-  "AverageCPUUsage\030\030 \001(\002\022\020\n\010BusyCore\030\031 \001(\005\022"
-  "\030\n\003Ram\030\032 \001(\0132\013.MemoryInfo\022\031\n\004VRam\030\033 \001(\0132"
-  "\013.MemoryInfo\"6\n\022TargetNotifyPacket\022\017\n\007Ic"
-  "onURI\030\001 \001(\t\022\017\n\007Message\030\002 \001(\t\"M\n\nProcPack"
-  "et\022\r\n\005AppId\030\001 \001(\005\022\021\n\tProcessId\030\002 \001(\005\022\014\n\004"
-  "Name\030\003 \001(\t\022\017\n\007TitleId\030\004 \001(\t\"\211\001\n\021LibraryI"
-  "nfoPacket\022\016\n\006Handle\030\001 \001(\r\022\014\n\004Path\030\002 \001(\t\022"
-  "\017\n\007MapBase\030\003 \001(\004\022\017\n\007MapSize\030\004 \001(\004\022\020\n\010Tex"
-  "tSize\030\005 \001(\004\022\020\n\010DataBase\030\006 \001(\004\022\020\n\010DataSiz"
-  "e\030\007 \001(\004*\327\013\n\nAPICommand\022\026\n\022API_APPS_CHECK"
-  "_VER\020\000\022\023\n\017API_APPS_GET_DB\020\001\022\031\n\025API_APPS_"
-  "GET_INFO_STR\020\002\022\023\n\017API_APPS_STATUS\020\003\022\022\n\016A"
-  "PI_APPS_START\020\004\022\021\n\rAPI_APPS_STOP\020\005\022\024\n\020AP"
-  "I_APPS_SUSPEND\020\006\022\023\n\017API_APPS_RESUME\020\007\022\023\n"
-  "\017API_APPS_DELETE\020\010\022\033\n\027API_APPS_SET_VISIB"
-  "ILITY\020\t\022\033\n\027API_APPS_GET_VISIBILITY\020\n\022\022\n\016"
-  "API_DBG_ATTACH\020\013\022\022\n\016API_DBG_DETACH\020\014\022\027\n\023"
-  "API_DBG_GET_CURRENT\020\r\022\020\n\014API_DBG_READ\020\016\022"
-  "\021\n\rAPI_DBG_WRITE\020\017\022\020\n\014API_DBG_KILL\020\020\022\021\n\r"
-  "API_DBG_BREAK\020\021\022\022\n\016API_DBG_RESUME\020\022\022\022\n\016A"
-  "PI_DBG_SIGNAL\020\023\022\020\n\014API_DBG_STEP\020\024\022\025\n\021API"
-  "_DBG_STEP_OVER\020\025\022\024\n\020API_DBG_STEP_OUT\020\026\022\031"
-  "\n\025API_DBG_GET_CALLSTACK\020\027\022\023\n\017API_DBG_GET"
-  "_REG\020\030\022\023\n\017API_DBG_SET_REG\020\031\022\024\n\020API_DBG_G"
-  "ET_FREG\020\032\022\024\n\020API_DBG_SET_FREG\020\033\022\026\n\022API_D"
-  "BG_GET_DBGREG\020\034\022\026\n\022API_DBG_SET_DBGREG\020\035\022"
-  "\030\n\024API_DBG_LOAD_LIBRARY\020\036\022\032\n\026API_DBG_UNL"
-  "OAD_LIBRARY\020\037\022\032\n\026API_DBG_RELOAD_LIBRARY\020"
-  " \022\030\n\024API_DBG_LIBRARY_LIST\020!\022\027\n\023API_DBG_T"
-  "HREAD_LIST\020\"\022\027\n\023API_DBG_THREAD_STOP\020#\022\031\n"
-  "\025API_DBG_THREAD_RESUME\020$\022\036\n\032API_DBG_BREA"
-  "KPOINT_GETFREE\020%\022\032\n\026API_DBG_BREAKPOINT_S"
-  "ET\020&\022\035\n\031API_DBG_BREAKPOINT_UPDATE\020\'\022\035\n\031A"
-  "PI_DBG_BREAKPOINT_REMOVE\020(\022\036\n\032API_DBG_BR"
-  "EAKPOINT_GETINFO\020)\022\033\n\027API_DBG_BREAKPOINT"
-  "_LIST\020*\022\032\n\026API_DBG_WATCHPOINT_SET\020+\022\035\n\031A"
-  "PI_DBG_WATCHPOINT_UPDATE\020,\022\035\n\031API_DBG_WA"
-  "TCHPOINT_REMOVE\020-\022\036\n\032API_DBG_WATCHPOINT_"
-  "GETINFO\020.\022\033\n\027API_DBG_WATCHPOINT_LIST\020/\022\021"
-  "\n\rAPI_KERN_BASE\0200\022\021\n\rAPI_KERN_READ\0201\022\022\n\016"
-  "API_KERN_WRITE\0202\022\023\n\017API_TARGET_INFO\0203\022\027\n"
-  "\023API_TARGET_RESTMODE\0204\022\027\n\023API_TARGET_SHU"
-  "TDOWN\0205\022\025\n\021API_TARGET_REBOOT\0206\022\025\n\021API_TA"
-  "RGET_NOTIFY\0207\022\025\n\021API_TARGET_BUZZER\0208\022\026\n\022"
-  "API_TARGET_SET_LED\0209\022\033\n\027API_TARGET_SET_S"
-  "ETTINGS\020:\022\034\n\030API_TARGET_GET_PROC_LIST\020;\022"
-  "\030\n\024API_TARGET_SEND_FILE\020<*I\n\010AppState\022\025\n"
-  "\021STATE_NOT_RUNNING\020\000\022\021\n\rSTATE_RUNNING\020\001\022"
-  "\023\n\017STATE_SUSPENDED\020\002b\006proto3"
+  "allDate\030\013 \001(\t\022\022\n\nUICategory\030\014 \001(\t\"1\n\021App"
+  "InfoListPacket\022\034\n\004Apps\030\001 \003(\0132\016.AppInfoPa"
+  "cket\"\034\n\tAppPacket\022\017\n\007TitleId\030\001 \001(\t\"+\n\010RW"
+  "Packet\022\017\n\007Address\030\001 \001(\004\022\016\n\006Length\030\002 \001(\004\""
+  "*\n\nSPRXPacket\022\014\n\004Path\030\001 \001(\t\022\016\n\006Handle\030\002 "
+  "\001(\005\"K\n\nMemoryInfo\022\014\n\004Used\030\001 \001(\005\022\014\n\004Free\030"
+  "\002 \001(\005\022\r\n\005Total\030\003 \001(\005\022\022\n\nPercentage\030\004 \001(\002"
+  "\";\n\rCurrentBigApp\022\013\n\003Pid\030\001 \001(\005\022\014\n\004Name\030\002"
+  " \001(\t\022\017\n\007TitleId\030\003 \001(\t\"\317\004\n\020TargetInfoPack"
+  "et\022\022\n\nSDKVersion\030\001 \001(\005\022\027\n\017SoftwareVersio"
+  "n\030\002 \001(\005\022\036\n\026FactorySoftwareVersion\030\003 \001(\005\022"
+  "\036\n\006BigApp\030\004 \001(\0132\016.CurrentBigApp\022\023\n\013Conso"
+  "leName\030\005 \001(\t\022\031\n\021MotherboardSerial\030\006 \001(\t\022"
+  "\016\n\006Serial\030\007 \001(\t\022\r\n\005Model\030\010 \001(\t\022\025\n\rMACAdd"
+  "ressLAN\030\t \001(\t\022\026\n\016MACAddressWIFI\030\n \001(\t\022\014\n"
+  "\004UART\030\013 \001(\010\022\017\n\007IDUMode\030\014 \001(\010\022\014\n\004IDPS\030\r \001"
+  "(\t\022\014\n\004PSID\030\016 \001(\t\022\023\n\013ConsoleType\030\017 \001(\005\022\020\n"
+  "\010Attached\030\020 \001(\005\022\023\n\013AttachedPid\030\021 \001(\005\022\033\n\023"
+  "ForegroundAccountId\030\022 \001(\005\022\021\n\tFreeSpace\030\023"
+  " \001(\004\022\022\n\nTotalSpace\030\024 \001(\004\022\017\n\007CPUTemp\030\025 \001("
+  "\005\022\017\n\007SOCTemp\030\026 \001(\005\022\023\n\013ThreadCount\030\027 \001(\005\022"
+  "\027\n\017AverageCPUUsage\030\030 \001(\002\022\020\n\010BusyCore\030\031 \001"
+  "(\005\022\030\n\003Ram\030\032 \001(\0132\013.MemoryInfo\022\031\n\004VRam\030\033 \001"
+  "(\0132\013.MemoryInfo\"6\n\022TargetNotifyPacket\022\017\n"
+  "\007IconURI\030\001 \001(\t\022\017\n\007Message\030\002 \001(\t\"\313\002\n\024Targ"
+  "etSettingsPacket\022\030\n\020AutoLoadSettings\030\001 \001"
+  "(\010\022\035\n\025ShowDebugTitleIdLabel\030\002 \001(\010\022\027\n\017Sho"
+  "wDevkitPanel\030\003 \001(\010\022\031\n\021ShowDebugSettings\030"
+  "\004 \001(\010\022\023\n\013ShowAppHome\030\005 \001(\010\022\030\n\020ShowBuildO"
+  "verlay\030\006 \001(\010\022\033\n\023GameOverlayLocation\030\007 \001("
+  "\t\022\024\n\014ShowCPUUsage\030\010 \001(\010\022\027\n\017ShowThreadCou"
+  "nt\030\t \001(\010\022\017\n\007Showram\030\n \001(\010\022\020\n\010Showvram\030\013 "
+  "\001(\010\022\023\n\013ShowCPUTemp\030\014 \001(\010\022\023\n\013ShowSOCTemp\030"
+  "\r \001(\010\"M\n\nProcPacket\022\r\n\005AppId\030\001 \001(\005\022\021\n\tPr"
+  "ocessId\030\002 \001(\005\022\014\n\004Name\030\003 \001(\t\022\017\n\007TitleId\030\004"
+  " \001(\t\"0\n\016ProcListPacket\022\036\n\tProcesses\030\001 \003("
+  "\0132\013.ProcPacket\"\211\001\n\021LibraryInfoPacket\022\016\n\006"
+  "Handle\030\001 \001(\r\022\014\n\004Path\030\002 \001(\t\022\017\n\007MapBase\030\003 "
+  "\001(\004\022\017\n\007MapSize\030\004 \001(\004\022\020\n\010TextSize\030\005 \001(\004\022\020"
+  "\n\010DataBase\030\006 \001(\004\022\020\n\010DataSize\030\007 \001(\004\":\n\021Li"
+  "braryListPacket\022%\n\tLibraries\030\001 \003(\0132\022.Lib"
+  "raryInfoPacket*\327\013\n\nAPICommand\022\026\n\022API_APP"
+  "S_CHECK_VER\020\000\022\023\n\017API_APPS_GET_DB\020\001\022\031\n\025AP"
+  "I_APPS_GET_INFO_STR\020\002\022\023\n\017API_APPS_STATUS"
+  "\020\003\022\022\n\016API_APPS_START\020\004\022\021\n\rAPI_APPS_STOP\020"
+  "\005\022\024\n\020API_APPS_SUSPEND\020\006\022\023\n\017API_APPS_RESU"
+  "ME\020\007\022\023\n\017API_APPS_DELETE\020\010\022\033\n\027API_APPS_SE"
+  "T_VISIBILITY\020\t\022\033\n\027API_APPS_GET_VISIBILIT"
+  "Y\020\n\022\022\n\016API_DBG_ATTACH\020\013\022\022\n\016API_DBG_DETAC"
+  "H\020\014\022\027\n\023API_DBG_GET_CURRENT\020\r\022\020\n\014API_DBG_"
+  "READ\020\016\022\021\n\rAPI_DBG_WRITE\020\017\022\020\n\014API_DBG_KIL"
+  "L\020\020\022\021\n\rAPI_DBG_BREAK\020\021\022\022\n\016API_DBG_RESUME"
+  "\020\022\022\022\n\016API_DBG_SIGNAL\020\023\022\020\n\014API_DBG_STEP\020\024"
+  "\022\025\n\021API_DBG_STEP_OVER\020\025\022\024\n\020API_DBG_STEP_"
+  "OUT\020\026\022\031\n\025API_DBG_GET_CALLSTACK\020\027\022\023\n\017API_"
+  "DBG_GET_REG\020\030\022\023\n\017API_DBG_SET_REG\020\031\022\024\n\020AP"
+  "I_DBG_GET_FREG\020\032\022\024\n\020API_DBG_SET_FREG\020\033\022\026"
+  "\n\022API_DBG_GET_DBGREG\020\034\022\026\n\022API_DBG_SET_DB"
+  "GREG\020\035\022\030\n\024API_DBG_LOAD_LIBRARY\020\036\022\032\n\026API_"
+  "DBG_UNLOAD_LIBRARY\020\037\022\032\n\026API_DBG_RELOAD_L"
+  "IBRARY\020 \022\030\n\024API_DBG_LIBRARY_LIST\020!\022\027\n\023AP"
+  "I_DBG_THREAD_LIST\020\"\022\027\n\023API_DBG_THREAD_ST"
+  "OP\020#\022\031\n\025API_DBG_THREAD_RESUME\020$\022\036\n\032API_D"
+  "BG_BREAKPOINT_GETFREE\020%\022\032\n\026API_DBG_BREAK"
+  "POINT_SET\020&\022\035\n\031API_DBG_BREAKPOINT_UPDATE"
+  "\020\'\022\035\n\031API_DBG_BREAKPOINT_REMOVE\020(\022\036\n\032API"
+  "_DBG_BREAKPOINT_GETINFO\020)\022\033\n\027API_DBG_BRE"
+  "AKPOINT_LIST\020*\022\032\n\026API_DBG_WATCHPOINT_SET"
+  "\020+\022\035\n\031API_DBG_WATCHPOINT_UPDATE\020,\022\035\n\031API"
+  "_DBG_WATCHPOINT_REMOVE\020-\022\036\n\032API_DBG_WATC"
+  "HPOINT_GETINFO\020.\022\033\n\027API_DBG_WATCHPOINT_L"
+  "IST\020/\022\021\n\rAPI_KERN_BASE\0200\022\021\n\rAPI_KERN_REA"
+  "D\0201\022\022\n\016API_KERN_WRITE\0202\022\023\n\017API_TARGET_IN"
+  "FO\0203\022\027\n\023API_TARGET_RESTMODE\0204\022\027\n\023API_TAR"
+  "GET_SHUTDOWN\0205\022\025\n\021API_TARGET_REBOOT\0206\022\025\n"
+  "\021API_TARGET_NOTIFY\0207\022\025\n\021API_TARGET_BUZZE"
+  "R\0208\022\026\n\022API_TARGET_SET_LED\0209\022\033\n\027API_TARGE"
+  "T_SET_SETTINGS\020:\022\034\n\030API_TARGET_GET_PROC_"
+  "LIST\020;\022\030\n\024API_TARGET_SEND_FILE\020<*I\n\010AppS"
+  "tate\022\025\n\021STATE_NOT_RUNNING\020\000\022\021\n\rSTATE_RUN"
+  "NING\020\001\022\023\n\017STATE_SUSPENDED\020\002b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_APIPackets_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_APIPackets_2eproto = {
-  false, false, 3068, descriptor_table_protodef_APIPackets_2eproto, "APIPackets.proto", 
-  &descriptor_table_APIPackets_2eproto_once, nullptr, 0, 11,
+  false, false, 3595, descriptor_table_protodef_APIPackets_2eproto, "APIPackets.proto", 
+  &descriptor_table_APIPackets_2eproto_once, nullptr, 0, 16,
   schemas, file_default_instances, TableStruct_APIPackets_2eproto::offsets,
   file_level_metadata_APIPackets_2eproto, file_level_enum_descriptors_APIPackets_2eproto, file_level_service_descriptors_APIPackets_2eproto,
 };
@@ -1645,6 +1787,394 @@ void AppInfoPacket::InternalSwap(AppInfoPacket* other) {
 
 // ===================================================================
 
+class AppInfoListPacket::_Internal {
+ public:
+};
+
+AppInfoListPacket::AppInfoListPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  apps_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:AppInfoListPacket)
+}
+AppInfoListPacket::AppInfoListPacket(const AppInfoListPacket& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      apps_(from.apps_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:AppInfoListPacket)
+}
+
+inline void AppInfoListPacket::SharedCtor() {
+}
+
+AppInfoListPacket::~AppInfoListPacket() {
+  // @@protoc_insertion_point(destructor:AppInfoListPacket)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void AppInfoListPacket::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void AppInfoListPacket::ArenaDtor(void* object) {
+  AppInfoListPacket* _this = reinterpret_cast< AppInfoListPacket* >(object);
+  (void)_this;
+}
+void AppInfoListPacket::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void AppInfoListPacket::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void AppInfoListPacket::Clear() {
+// @@protoc_insertion_point(message_clear_start:AppInfoListPacket)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  apps_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* AppInfoListPacket::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .AppInfoPacket Apps = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_apps(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* AppInfoListPacket::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:AppInfoListPacket)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .AppInfoPacket Apps = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_apps_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, this->_internal_apps(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:AppInfoListPacket)
+  return target;
+}
+
+size_t AppInfoListPacket::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:AppInfoListPacket)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .AppInfoPacket Apps = 1;
+  total_size += 1UL * this->_internal_apps_size();
+  for (const auto& msg : this->apps_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AppInfoListPacket::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    AppInfoListPacket::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AppInfoListPacket::GetClassData() const { return &_class_data_; }
+
+void AppInfoListPacket::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<AppInfoListPacket *>(to)->MergeFrom(
+      static_cast<const AppInfoListPacket &>(from));
+}
+
+
+void AppInfoListPacket::MergeFrom(const AppInfoListPacket& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:AppInfoListPacket)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  apps_.MergeFrom(from.apps_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void AppInfoListPacket::CopyFrom(const AppInfoListPacket& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:AppInfoListPacket)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AppInfoListPacket::IsInitialized() const {
+  return true;
+}
+
+void AppInfoListPacket::InternalSwap(AppInfoListPacket* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  apps_.InternalSwap(&other->apps_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata AppInfoListPacket::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
+      file_level_metadata_APIPackets_2eproto[3]);
+}
+
+// ===================================================================
+
+class AppPacket::_Internal {
+ public:
+};
+
+AppPacket::AppPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:AppPacket)
+}
+AppPacket::AppPacket(const AppPacket& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  titleid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    titleid_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_titleid().empty()) {
+    titleid_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_titleid(), 
+      GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:AppPacket)
+}
+
+inline void AppPacket::SharedCtor() {
+titleid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  titleid_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+AppPacket::~AppPacket() {
+  // @@protoc_insertion_point(destructor:AppPacket)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void AppPacket::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  titleid_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void AppPacket::ArenaDtor(void* object) {
+  AppPacket* _this = reinterpret_cast< AppPacket* >(object);
+  (void)_this;
+}
+void AppPacket::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void AppPacket::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void AppPacket::Clear() {
+// @@protoc_insertion_point(message_clear_start:AppPacket)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  titleid_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* AppPacket::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string TitleId = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_titleid();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "AppPacket.TitleId"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* AppPacket::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:AppPacket)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string TitleId = 1;
+  if (!this->_internal_titleid().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_titleid().data(), static_cast<int>(this->_internal_titleid().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "AppPacket.TitleId");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_titleid(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:AppPacket)
+  return target;
+}
+
+size_t AppPacket::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:AppPacket)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string TitleId = 1;
+  if (!this->_internal_titleid().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_titleid());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AppPacket::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    AppPacket::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AppPacket::GetClassData() const { return &_class_data_; }
+
+void AppPacket::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<AppPacket *>(to)->MergeFrom(
+      static_cast<const AppPacket &>(from));
+}
+
+
+void AppPacket::MergeFrom(const AppPacket& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:AppPacket)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_titleid().empty()) {
+    _internal_set_titleid(from._internal_titleid());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void AppPacket::CopyFrom(const AppPacket& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:AppPacket)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AppPacket::IsInitialized() const {
+  return true;
+}
+
+void AppPacket::InternalSwap(AppPacket* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &titleid_, lhs_arena,
+      &other->titleid_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata AppPacket::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
+      file_level_metadata_APIPackets_2eproto[4]);
+}
+
+// ===================================================================
+
 class RWPacket::_Internal {
  public:
 };
@@ -1852,7 +2382,7 @@ void RWPacket::InternalSwap(RWPacket* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RWPacket::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
-      file_level_metadata_APIPackets_2eproto[3]);
+      file_level_metadata_APIPackets_2eproto[5]);
 }
 
 // ===================================================================
@@ -2081,7 +2611,7 @@ void SPRXPacket::InternalSwap(SPRXPacket* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SPRXPacket::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
-      file_level_metadata_APIPackets_2eproto[4]);
+      file_level_metadata_APIPackets_2eproto[6]);
 }
 
 // ===================================================================
@@ -2349,7 +2879,7 @@ void MemoryInfo::InternalSwap(MemoryInfo* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata MemoryInfo::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
-      file_level_metadata_APIPackets_2eproto[5]);
+      file_level_metadata_APIPackets_2eproto[7]);
 }
 
 // ===================================================================
@@ -2627,7 +3157,7 @@ void CurrentBigApp::InternalSwap(CurrentBigApp* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CurrentBigApp::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
-      file_level_metadata_APIPackets_2eproto[6]);
+      file_level_metadata_APIPackets_2eproto[8]);
 }
 
 // ===================================================================
@@ -2695,20 +3225,20 @@ TargetInfoPacket::TargetInfoPacket(const TargetInfoPacket& from)
     model_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_model(), 
       GetArenaForAllocation());
   }
-  macadresslan_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  macaddresslan_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    macadresslan_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+    macaddresslan_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_macadresslan().empty()) {
-    macadresslan_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_macadresslan(), 
+  if (!from._internal_macaddresslan().empty()) {
+    macaddresslan_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_macaddresslan(), 
       GetArenaForAllocation());
   }
-  macadresswifi_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  macaddresswifi_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    macadresswifi_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+    macaddresswifi_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_macadresswifi().empty()) {
-    macadresswifi_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_macadresswifi(), 
+  if (!from._internal_macaddresswifi().empty()) {
+    macaddresswifi_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_macaddresswifi(), 
       GetArenaForAllocation());
   }
   idps_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -2765,13 +3295,13 @@ model_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlread
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
   model_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-macadresslan_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+macaddresslan_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  macadresslan_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  macaddresslan_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-macadresswifi_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+macaddresswifi_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  macadresswifi_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  macaddresswifi_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 idps_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -2800,8 +3330,8 @@ inline void TargetInfoPacket::SharedDtor() {
   motherboardserial_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   serial_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   model_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  macadresslan_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  macadresswifi_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  macaddresslan_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  macaddresswifi_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   idps_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   psid_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete bigapp_;
@@ -2829,8 +3359,8 @@ void TargetInfoPacket::Clear() {
   motherboardserial_.ClearToEmpty();
   serial_.ClearToEmpty();
   model_.ClearToEmpty();
-  macadresslan_.ClearToEmpty();
-  macadresswifi_.ClearToEmpty();
+  macaddresslan_.ClearToEmpty();
+  macaddresswifi_.ClearToEmpty();
   idps_.ClearToEmpty();
   psid_.ClearToEmpty();
   if (GetArenaForAllocation() == nullptr && bigapp_ != nullptr) {
@@ -2929,22 +3459,22 @@ const char* TargetInfoPacket::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
         } else
           goto handle_unusual;
         continue;
-      // string MACAdressLAN = 9;
+      // string MACAddressLAN = 9;
       case 9:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
-          auto str = _internal_mutable_macadresslan();
+          auto str = _internal_mutable_macaddresslan();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "TargetInfoPacket.MACAdressLAN"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "TargetInfoPacket.MACAddressLAN"));
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // string MACAdressWIFI = 10;
+      // string MACAddressWIFI = 10;
       case 10:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 82)) {
-          auto str = _internal_mutable_macadresswifi();
+          auto str = _internal_mutable_macaddresswifi();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "TargetInfoPacket.MACAdressWIFI"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "TargetInfoPacket.MACAddressWIFI"));
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3184,24 +3714,24 @@ uint8_t* TargetInfoPacket::_InternalSerialize(
         8, this->_internal_model(), target);
   }
 
-  // string MACAdressLAN = 9;
-  if (!this->_internal_macadresslan().empty()) {
+  // string MACAddressLAN = 9;
+  if (!this->_internal_macaddresslan().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_macadresslan().data(), static_cast<int>(this->_internal_macadresslan().length()),
+      this->_internal_macaddresslan().data(), static_cast<int>(this->_internal_macaddresslan().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "TargetInfoPacket.MACAdressLAN");
+      "TargetInfoPacket.MACAddressLAN");
     target = stream->WriteStringMaybeAliased(
-        9, this->_internal_macadresslan(), target);
+        9, this->_internal_macaddresslan(), target);
   }
 
-  // string MACAdressWIFI = 10;
-  if (!this->_internal_macadresswifi().empty()) {
+  // string MACAddressWIFI = 10;
+  if (!this->_internal_macaddresswifi().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_macadresswifi().data(), static_cast<int>(this->_internal_macadresswifi().length()),
+      this->_internal_macaddresswifi().data(), static_cast<int>(this->_internal_macaddresswifi().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "TargetInfoPacket.MACAdressWIFI");
+      "TargetInfoPacket.MACAddressWIFI");
     target = stream->WriteStringMaybeAliased(
-        10, this->_internal_macadresswifi(), target);
+        10, this->_internal_macaddresswifi(), target);
   }
 
   // bool UART = 11;
@@ -3366,18 +3896,18 @@ size_t TargetInfoPacket::ByteSizeLong() const {
         this->_internal_model());
   }
 
-  // string MACAdressLAN = 9;
-  if (!this->_internal_macadresslan().empty()) {
+  // string MACAddressLAN = 9;
+  if (!this->_internal_macaddresslan().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_macadresslan());
+        this->_internal_macaddresslan());
   }
 
-  // string MACAdressWIFI = 10;
-  if (!this->_internal_macadresswifi().empty()) {
+  // string MACAddressWIFI = 10;
+  if (!this->_internal_macaddresswifi().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_macadresswifi());
+        this->_internal_macaddresswifi());
   }
 
   // string IDPS = 13;
@@ -3551,11 +4081,11 @@ void TargetInfoPacket::MergeFrom(const TargetInfoPacket& from) {
   if (!from._internal_model().empty()) {
     _internal_set_model(from._internal_model());
   }
-  if (!from._internal_macadresslan().empty()) {
-    _internal_set_macadresslan(from._internal_macadresslan());
+  if (!from._internal_macaddresslan().empty()) {
+    _internal_set_macaddresslan(from._internal_macaddresslan());
   }
-  if (!from._internal_macadresswifi().empty()) {
-    _internal_set_macadresswifi(from._internal_macadresswifi());
+  if (!from._internal_macaddresswifi().empty()) {
+    _internal_set_macaddresswifi(from._internal_macaddresswifi());
   }
   if (!from._internal_idps().empty()) {
     _internal_set_idps(from._internal_idps());
@@ -3665,13 +4195,13 @@ void TargetInfoPacket::InternalSwap(TargetInfoPacket* other) {
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &macadresslan_, lhs_arena,
-      &other->macadresslan_, rhs_arena
+      &macaddresslan_, lhs_arena,
+      &other->macaddresslan_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &macadresswifi_, lhs_arena,
-      &other->macadresswifi_, rhs_arena
+      &macaddresswifi_, lhs_arena,
+      &other->macaddresswifi_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
@@ -3694,7 +4224,7 @@ void TargetInfoPacket::InternalSwap(TargetInfoPacket* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata TargetInfoPacket::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
-      file_level_metadata_APIPackets_2eproto[7]);
+      file_level_metadata_APIPackets_2eproto[9]);
 }
 
 // ===================================================================
@@ -3946,7 +4476,490 @@ void TargetNotifyPacket::InternalSwap(TargetNotifyPacket* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata TargetNotifyPacket::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
-      file_level_metadata_APIPackets_2eproto[8]);
+      file_level_metadata_APIPackets_2eproto[10]);
+}
+
+// ===================================================================
+
+class TargetSettingsPacket::_Internal {
+ public:
+};
+
+TargetSettingsPacket::TargetSettingsPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:TargetSettingsPacket)
+}
+TargetSettingsPacket::TargetSettingsPacket(const TargetSettingsPacket& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  gameoverlaylocation_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    gameoverlaylocation_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_gameoverlaylocation().empty()) {
+    gameoverlaylocation_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_gameoverlaylocation(), 
+      GetArenaForAllocation());
+  }
+  ::memcpy(&autoloadsettings_, &from.autoloadsettings_,
+    static_cast<size_t>(reinterpret_cast<char*>(&showsoctemp_) -
+    reinterpret_cast<char*>(&autoloadsettings_)) + sizeof(showsoctemp_));
+  // @@protoc_insertion_point(copy_constructor:TargetSettingsPacket)
+}
+
+inline void TargetSettingsPacket::SharedCtor() {
+gameoverlaylocation_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  gameoverlaylocation_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&autoloadsettings_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&showsoctemp_) -
+    reinterpret_cast<char*>(&autoloadsettings_)) + sizeof(showsoctemp_));
+}
+
+TargetSettingsPacket::~TargetSettingsPacket() {
+  // @@protoc_insertion_point(destructor:TargetSettingsPacket)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void TargetSettingsPacket::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  gameoverlaylocation_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void TargetSettingsPacket::ArenaDtor(void* object) {
+  TargetSettingsPacket* _this = reinterpret_cast< TargetSettingsPacket* >(object);
+  (void)_this;
+}
+void TargetSettingsPacket::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void TargetSettingsPacket::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void TargetSettingsPacket::Clear() {
+// @@protoc_insertion_point(message_clear_start:TargetSettingsPacket)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  gameoverlaylocation_.ClearToEmpty();
+  ::memset(&autoloadsettings_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&showsoctemp_) -
+      reinterpret_cast<char*>(&autoloadsettings_)) + sizeof(showsoctemp_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* TargetSettingsPacket::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // bool AutoLoadSettings = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          autoloadsettings_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowDebugTitleIdLabel = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          showdebugtitleidlabel_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowDevkitPanel = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          showdevkitpanel_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowDebugSettings = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          showdebugsettings_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowAppHome = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          showapphome_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowBuildOverlay = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          showbuildoverlay_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string GameOverlayLocation = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          auto str = _internal_mutable_gameoverlaylocation();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "TargetSettingsPacket.GameOverlayLocation"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowCPUUsage = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
+          showcpuusage_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowThreadCount = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
+          showthreadcount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool Showram = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
+          showram_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool Showvram = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 88)) {
+          showvram_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowCPUTemp = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 96)) {
+          showcputemp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool ShowSOCTemp = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 104)) {
+          showsoctemp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* TargetSettingsPacket::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:TargetSettingsPacket)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // bool AutoLoadSettings = 1;
+  if (this->_internal_autoloadsettings() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_autoloadsettings(), target);
+  }
+
+  // bool ShowDebugTitleIdLabel = 2;
+  if (this->_internal_showdebugtitleidlabel() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_showdebugtitleidlabel(), target);
+  }
+
+  // bool ShowDevkitPanel = 3;
+  if (this->_internal_showdevkitpanel() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(3, this->_internal_showdevkitpanel(), target);
+  }
+
+  // bool ShowDebugSettings = 4;
+  if (this->_internal_showdebugsettings() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(4, this->_internal_showdebugsettings(), target);
+  }
+
+  // bool ShowAppHome = 5;
+  if (this->_internal_showapphome() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(5, this->_internal_showapphome(), target);
+  }
+
+  // bool ShowBuildOverlay = 6;
+  if (this->_internal_showbuildoverlay() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(6, this->_internal_showbuildoverlay(), target);
+  }
+
+  // string GameOverlayLocation = 7;
+  if (!this->_internal_gameoverlaylocation().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_gameoverlaylocation().data(), static_cast<int>(this->_internal_gameoverlaylocation().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "TargetSettingsPacket.GameOverlayLocation");
+    target = stream->WriteStringMaybeAliased(
+        7, this->_internal_gameoverlaylocation(), target);
+  }
+
+  // bool ShowCPUUsage = 8;
+  if (this->_internal_showcpuusage() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(8, this->_internal_showcpuusage(), target);
+  }
+
+  // bool ShowThreadCount = 9;
+  if (this->_internal_showthreadcount() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(9, this->_internal_showthreadcount(), target);
+  }
+
+  // bool Showram = 10;
+  if (this->_internal_showram() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(10, this->_internal_showram(), target);
+  }
+
+  // bool Showvram = 11;
+  if (this->_internal_showvram() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(11, this->_internal_showvram(), target);
+  }
+
+  // bool ShowCPUTemp = 12;
+  if (this->_internal_showcputemp() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(12, this->_internal_showcputemp(), target);
+  }
+
+  // bool ShowSOCTemp = 13;
+  if (this->_internal_showsoctemp() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(13, this->_internal_showsoctemp(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:TargetSettingsPacket)
+  return target;
+}
+
+size_t TargetSettingsPacket::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:TargetSettingsPacket)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string GameOverlayLocation = 7;
+  if (!this->_internal_gameoverlaylocation().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_gameoverlaylocation());
+  }
+
+  // bool AutoLoadSettings = 1;
+  if (this->_internal_autoloadsettings() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowDebugTitleIdLabel = 2;
+  if (this->_internal_showdebugtitleidlabel() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowDevkitPanel = 3;
+  if (this->_internal_showdevkitpanel() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowDebugSettings = 4;
+  if (this->_internal_showdebugsettings() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowAppHome = 5;
+  if (this->_internal_showapphome() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowBuildOverlay = 6;
+  if (this->_internal_showbuildoverlay() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowCPUUsage = 8;
+  if (this->_internal_showcpuusage() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowThreadCount = 9;
+  if (this->_internal_showthreadcount() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool Showram = 10;
+  if (this->_internal_showram() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool Showvram = 11;
+  if (this->_internal_showvram() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowCPUTemp = 12;
+  if (this->_internal_showcputemp() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool ShowSOCTemp = 13;
+  if (this->_internal_showsoctemp() != 0) {
+    total_size += 1 + 1;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TargetSettingsPacket::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    TargetSettingsPacket::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TargetSettingsPacket::GetClassData() const { return &_class_data_; }
+
+void TargetSettingsPacket::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<TargetSettingsPacket *>(to)->MergeFrom(
+      static_cast<const TargetSettingsPacket &>(from));
+}
+
+
+void TargetSettingsPacket::MergeFrom(const TargetSettingsPacket& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:TargetSettingsPacket)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_gameoverlaylocation().empty()) {
+    _internal_set_gameoverlaylocation(from._internal_gameoverlaylocation());
+  }
+  if (from._internal_autoloadsettings() != 0) {
+    _internal_set_autoloadsettings(from._internal_autoloadsettings());
+  }
+  if (from._internal_showdebugtitleidlabel() != 0) {
+    _internal_set_showdebugtitleidlabel(from._internal_showdebugtitleidlabel());
+  }
+  if (from._internal_showdevkitpanel() != 0) {
+    _internal_set_showdevkitpanel(from._internal_showdevkitpanel());
+  }
+  if (from._internal_showdebugsettings() != 0) {
+    _internal_set_showdebugsettings(from._internal_showdebugsettings());
+  }
+  if (from._internal_showapphome() != 0) {
+    _internal_set_showapphome(from._internal_showapphome());
+  }
+  if (from._internal_showbuildoverlay() != 0) {
+    _internal_set_showbuildoverlay(from._internal_showbuildoverlay());
+  }
+  if (from._internal_showcpuusage() != 0) {
+    _internal_set_showcpuusage(from._internal_showcpuusage());
+  }
+  if (from._internal_showthreadcount() != 0) {
+    _internal_set_showthreadcount(from._internal_showthreadcount());
+  }
+  if (from._internal_showram() != 0) {
+    _internal_set_showram(from._internal_showram());
+  }
+  if (from._internal_showvram() != 0) {
+    _internal_set_showvram(from._internal_showvram());
+  }
+  if (from._internal_showcputemp() != 0) {
+    _internal_set_showcputemp(from._internal_showcputemp());
+  }
+  if (from._internal_showsoctemp() != 0) {
+    _internal_set_showsoctemp(from._internal_showsoctemp());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void TargetSettingsPacket::CopyFrom(const TargetSettingsPacket& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:TargetSettingsPacket)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TargetSettingsPacket::IsInitialized() const {
+  return true;
+}
+
+void TargetSettingsPacket::InternalSwap(TargetSettingsPacket* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &gameoverlaylocation_, lhs_arena,
+      &other->gameoverlaylocation_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(TargetSettingsPacket, showsoctemp_)
+      + sizeof(TargetSettingsPacket::showsoctemp_)
+      - PROTOBUF_FIELD_OFFSET(TargetSettingsPacket, autoloadsettings_)>(
+          reinterpret_cast<char*>(&autoloadsettings_),
+          reinterpret_cast<char*>(&other->autoloadsettings_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata TargetSettingsPacket::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
+      file_level_metadata_APIPackets_2eproto[11]);
 }
 
 // ===================================================================
@@ -4258,7 +5271,192 @@ void ProcPacket::InternalSwap(ProcPacket* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ProcPacket::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
-      file_level_metadata_APIPackets_2eproto[9]);
+      file_level_metadata_APIPackets_2eproto[12]);
+}
+
+// ===================================================================
+
+class ProcListPacket::_Internal {
+ public:
+};
+
+ProcListPacket::ProcListPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  processes_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:ProcListPacket)
+}
+ProcListPacket::ProcListPacket(const ProcListPacket& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      processes_(from.processes_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:ProcListPacket)
+}
+
+inline void ProcListPacket::SharedCtor() {
+}
+
+ProcListPacket::~ProcListPacket() {
+  // @@protoc_insertion_point(destructor:ProcListPacket)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void ProcListPacket::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void ProcListPacket::ArenaDtor(void* object) {
+  ProcListPacket* _this = reinterpret_cast< ProcListPacket* >(object);
+  (void)_this;
+}
+void ProcListPacket::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ProcListPacket::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ProcListPacket::Clear() {
+// @@protoc_insertion_point(message_clear_start:ProcListPacket)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  processes_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ProcListPacket::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .ProcPacket Processes = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_processes(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ProcListPacket::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:ProcListPacket)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .ProcPacket Processes = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_processes_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, this->_internal_processes(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:ProcListPacket)
+  return target;
+}
+
+size_t ProcListPacket::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:ProcListPacket)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .ProcPacket Processes = 1;
+  total_size += 1UL * this->_internal_processes_size();
+  for (const auto& msg : this->processes_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ProcListPacket::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ProcListPacket::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ProcListPacket::GetClassData() const { return &_class_data_; }
+
+void ProcListPacket::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ProcListPacket *>(to)->MergeFrom(
+      static_cast<const ProcListPacket &>(from));
+}
+
+
+void ProcListPacket::MergeFrom(const ProcListPacket& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:ProcListPacket)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  processes_.MergeFrom(from.processes_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ProcListPacket::CopyFrom(const ProcListPacket& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ProcListPacket)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ProcListPacket::IsInitialized() const {
+  return true;
+}
+
+void ProcListPacket::InternalSwap(ProcListPacket* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  processes_.InternalSwap(&other->processes_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ProcListPacket::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
+      file_level_metadata_APIPackets_2eproto[13]);
 }
 
 // ===================================================================
@@ -4609,7 +5807,192 @@ void LibraryInfoPacket::InternalSwap(LibraryInfoPacket* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata LibraryInfoPacket::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
-      file_level_metadata_APIPackets_2eproto[10]);
+      file_level_metadata_APIPackets_2eproto[14]);
+}
+
+// ===================================================================
+
+class LibraryListPacket::_Internal {
+ public:
+};
+
+LibraryListPacket::LibraryListPacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  libraries_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:LibraryListPacket)
+}
+LibraryListPacket::LibraryListPacket(const LibraryListPacket& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      libraries_(from.libraries_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:LibraryListPacket)
+}
+
+inline void LibraryListPacket::SharedCtor() {
+}
+
+LibraryListPacket::~LibraryListPacket() {
+  // @@protoc_insertion_point(destructor:LibraryListPacket)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void LibraryListPacket::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void LibraryListPacket::ArenaDtor(void* object) {
+  LibraryListPacket* _this = reinterpret_cast< LibraryListPacket* >(object);
+  (void)_this;
+}
+void LibraryListPacket::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void LibraryListPacket::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void LibraryListPacket::Clear() {
+// @@protoc_insertion_point(message_clear_start:LibraryListPacket)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  libraries_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* LibraryListPacket::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .LibraryInfoPacket Libraries = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_libraries(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* LibraryListPacket::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:LibraryListPacket)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .LibraryInfoPacket Libraries = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_libraries_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, this->_internal_libraries(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:LibraryListPacket)
+  return target;
+}
+
+size_t LibraryListPacket::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:LibraryListPacket)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .LibraryInfoPacket Libraries = 1;
+  total_size += 1UL * this->_internal_libraries_size();
+  for (const auto& msg : this->libraries_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LibraryListPacket::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    LibraryListPacket::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LibraryListPacket::GetClassData() const { return &_class_data_; }
+
+void LibraryListPacket::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<LibraryListPacket *>(to)->MergeFrom(
+      static_cast<const LibraryListPacket &>(from));
+}
+
+
+void LibraryListPacket::MergeFrom(const LibraryListPacket& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:LibraryListPacket)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  libraries_.MergeFrom(from.libraries_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void LibraryListPacket::CopyFrom(const LibraryListPacket& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:LibraryListPacket)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool LibraryListPacket::IsInitialized() const {
+  return true;
+}
+
+void LibraryListPacket::InternalSwap(LibraryListPacket* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  libraries_.InternalSwap(&other->libraries_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata LibraryListPacket::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
+      file_level_metadata_APIPackets_2eproto[15]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -4622,6 +6005,12 @@ template<> PROTOBUF_NOINLINE ::ResultState* Arena::CreateMaybeMessage< ::ResultS
 }
 template<> PROTOBUF_NOINLINE ::AppInfoPacket* Arena::CreateMaybeMessage< ::AppInfoPacket >(Arena* arena) {
   return Arena::CreateMessageInternal< ::AppInfoPacket >(arena);
+}
+template<> PROTOBUF_NOINLINE ::AppInfoListPacket* Arena::CreateMaybeMessage< ::AppInfoListPacket >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::AppInfoListPacket >(arena);
+}
+template<> PROTOBUF_NOINLINE ::AppPacket* Arena::CreateMaybeMessage< ::AppPacket >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::AppPacket >(arena);
 }
 template<> PROTOBUF_NOINLINE ::RWPacket* Arena::CreateMaybeMessage< ::RWPacket >(Arena* arena) {
   return Arena::CreateMessageInternal< ::RWPacket >(arena);
@@ -4641,11 +6030,20 @@ template<> PROTOBUF_NOINLINE ::TargetInfoPacket* Arena::CreateMaybeMessage< ::Ta
 template<> PROTOBUF_NOINLINE ::TargetNotifyPacket* Arena::CreateMaybeMessage< ::TargetNotifyPacket >(Arena* arena) {
   return Arena::CreateMessageInternal< ::TargetNotifyPacket >(arena);
 }
+template<> PROTOBUF_NOINLINE ::TargetSettingsPacket* Arena::CreateMaybeMessage< ::TargetSettingsPacket >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::TargetSettingsPacket >(arena);
+}
 template<> PROTOBUF_NOINLINE ::ProcPacket* Arena::CreateMaybeMessage< ::ProcPacket >(Arena* arena) {
   return Arena::CreateMessageInternal< ::ProcPacket >(arena);
 }
+template<> PROTOBUF_NOINLINE ::ProcListPacket* Arena::CreateMaybeMessage< ::ProcListPacket >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::ProcListPacket >(arena);
+}
 template<> PROTOBUF_NOINLINE ::LibraryInfoPacket* Arena::CreateMaybeMessage< ::LibraryInfoPacket >(Arena* arena) {
   return Arena::CreateMessageInternal< ::LibraryInfoPacket >(arena);
+}
+template<> PROTOBUF_NOINLINE ::LibraryListPacket* Arena::CreateMaybeMessage< ::LibraryListPacket >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::LibraryListPacket >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

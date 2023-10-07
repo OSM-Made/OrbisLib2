@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections;
+using System.Data;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
@@ -122,16 +123,28 @@ namespace OrbisLib2.Common.Helpers
 
                 if (!success)
                 {
+                    client.Close(); // Close the TcpClient if the connection attempt fails.
                     return false;
                 }
 
-                client.EndConnect(result);
+                client.EndConnect(result); // Complete the connection.
+
+                // Get the network stream for sending data.
+                NetworkStream stream = client.GetStream();
+
+                // Send the byte array over the network stream.
+                byte[] byteArray = BitConverter.GetBytes(0xFEED);
+                stream.Write(byteArray, 0, byteArray.Length);
+
+                // Close the network stream and client when done.
+                stream.Close();
+                client.Close();
 
                 return true;
             }
             catch
             {
-
+                
             }
 
             return false;

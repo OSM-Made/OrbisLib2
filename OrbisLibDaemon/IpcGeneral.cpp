@@ -16,14 +16,14 @@ bool IpcGeneral::SendCommand(SceNetId Sock, int Command)
 {
 	if (!Sockets::SendInt(Sock, Command))
 	{
-		klog("[IpcGeneral] Failed to send Command\n");
+		Logger::Error("[IpcGeneral] Failed to send Command\n");
 		return false;
 	}
 
 	int Status;
 	if (!Sockets::RecvInt(Sock, &Status))
 	{
-		klog("[IpcGeneral] Failed to recv status\n");
+		Logger::Error("[IpcGeneral] Failed to recv status\n");
 		return false;
 	}
 
@@ -44,7 +44,7 @@ bool IpcGeneral::TestConnection(int pid)
 	auto sock = Connect(pid);
 	if (!sock)
 	{
-		klog("[IpcGeneral] Failed to connect to socket.\n");
+		Logger::Error("[IpcGeneral] Failed to connect to socket.\n");
 		return false;
 	}
 
@@ -54,7 +54,7 @@ bool IpcGeneral::TestConnection(int pid)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to send command.\n");
+		Logger::Error("[IpcGeneral] Failed to send command.\n");
 		return false;
 	}
 
@@ -65,7 +65,7 @@ bool IpcGeneral::TestConnection(int pid)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to recv status.\n");
+		Logger::Error("[IpcGeneral] Failed to recv status.\n");
 		return false;
 	}
 
@@ -81,7 +81,7 @@ bool IpcGeneral::LoadLibrary(int pid, const char* Path, int* HandleOut)
 	auto sock = Connect(pid);
 	if (!sock)
 	{
-		klog("[IpcGeneral] Failed to connect to socket.\n");
+		Logger::Error("[IpcGeneral] Failed to connect to socket.\n");
 		return false;
 	}
 
@@ -91,7 +91,7 @@ bool IpcGeneral::LoadLibrary(int pid, const char* Path, int* HandleOut)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to send command.\n");
+		Logger::Error("[IpcGeneral] Failed to send command.\n");
 		return false;
 	}
 
@@ -105,7 +105,7 @@ bool IpcGeneral::LoadLibrary(int pid, const char* Path, int* HandleOut)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to send PRXPacket.\n");
+		Logger::Error("[IpcGeneral] Failed to send PRXPacket.\n");
 
 		return false;
 	}
@@ -116,7 +116,7 @@ bool IpcGeneral::LoadLibrary(int pid, const char* Path, int* HandleOut)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to recv handle.\n");
+		Logger::Error("[IpcGeneral] Failed to recv handle.\n");
 
 		return false;
 	}
@@ -127,7 +127,7 @@ bool IpcGeneral::LoadLibrary(int pid, const char* Path, int* HandleOut)
 	// Check to see if it was loaded successfully.
 	if (*HandleOut <= 0)
 	{
-		klog("[IpcGeneral] Failed to load PRX '%s' (0x%llX).\n", Path, *HandleOut);
+		Logger::Error("[IpcGeneral] Failed to load PRX '%s' (0x%llX).\n", Path, *HandleOut);
 
 		return false;
 	}
@@ -141,7 +141,7 @@ bool IpcGeneral::UnLoadLibrary(int pid, int Handle)
 	auto sock = Connect(pid);
 	if (!sock)
 	{
-		klog("[IpcGeneral] Failed to connect to socket.\n");
+		Logger::Error("[IpcGeneral] Failed to connect to socket.\n");
 		return false;
 	}
 
@@ -151,7 +151,7 @@ bool IpcGeneral::UnLoadLibrary(int pid, int Handle)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to send command.\n");
+		Logger::Error("[IpcGeneral] Failed to send command.\n");
 		return false;
 	}
 
@@ -165,7 +165,7 @@ bool IpcGeneral::UnLoadLibrary(int pid, int Handle)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to send PRXPacket.\n");
+		Logger::Error("[IpcGeneral] Failed to send PRXPacket.\n");
 
 		return false;
 	}
@@ -177,7 +177,7 @@ bool IpcGeneral::UnLoadLibrary(int pid, int Handle)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to recv result.\n");
+		Logger::Error("[IpcGeneral] Failed to recv result.\n");
 		return false;
 	}
 
@@ -187,7 +187,7 @@ bool IpcGeneral::UnLoadLibrary(int pid, int Handle)
 		// Close the socket.
 		sceNetSocketClose(sock);
 
-		klog("[IpcGeneral] Failed to un load PRX '%s' (0x%llX).\n", result);
+		Logger::Error("[IpcGeneral] Failed to un load PRX '%s' (0x%llX).\n", result);
 		return false;
 	}
 

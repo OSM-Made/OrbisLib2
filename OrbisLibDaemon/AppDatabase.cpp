@@ -10,7 +10,7 @@ sqlite3* AppDatabase::OpenDatabase()
 	auto res = sqlite3_open("/system_data/priv/mms/app.db", &db);
 	if (res != SQLITE_OK)
 	{
-		klog("OpenDatabase(): Failed because %s\n", sqlite3_errmsg(db));
+		Logger::Error("OpenDatabase(): Failed because %s\n", sqlite3_errmsg(db));
 		return nullptr;
 	}
 	else
@@ -44,7 +44,7 @@ int AppDatabase::GetVersion()
 	auto res = sqlite3_prepare(db, "SELECT * FROM tbl_version WHERE category='sync_server'", -1, &stmt, NULL);
 	if (res != SQLITE_OK)
 	{
-		klog("sqlite3_prepare(): Failed because %s\n", sqlite3_errmsg(db));
+		Logger::Error("sqlite3_prepare(): Failed because %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return false;
 	}
@@ -96,7 +96,7 @@ bool AppDatabase::GetApps(std::vector<AppInfo>& Apps)
 	res = sqlite3_prepare(db, query, -1, &stmt, NULL);
 	if (res != SQLITE_OK)
 	{
-		klog("sqlite3_prepare(): Failed because %s\n", sqlite3_errmsg(db));
+		Logger::Error("sqlite3_prepare(): Failed because %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return false;
 	}
@@ -152,7 +152,7 @@ bool AppDatabase::GetAppInfoString(const char* TitleId, char* Out, size_t OutSiz
 	res = sqlite3_prepare(db, query, -1, &stmt, NULL);
 	if (res != SQLITE_OK)
 	{
-		klog("sqlite3_prepare(): Failed because %s\n", sqlite3_errmsg(db));
+		Logger::Error("sqlite3_prepare(): Failed because %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return false;
 	}
@@ -203,7 +203,7 @@ bool AppDatabase::SetVisibility(const char* TitleId, VisibilityType Visibility)
 	res = sqlite3_exec(db, query, nullptr, nullptr, nullptr);
 	if (res != SQLITE_OK)
 	{
-		klog("sqlite3_exec(): Failed because %s\n", sqlite3_errmsg(db));
+		Logger::Error("sqlite3_exec(): Failed because %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return false;
 	}
@@ -237,7 +237,7 @@ AppDatabase::VisibilityType AppDatabase::GetVisibility(const char* TitleId)
 	res = sqlite3_prepare(db, query, -1, &stmt, NULL);
 	if (res != SQLITE_OK)
 	{
-		klog("sqlite3_prepare(): Failed because %s\n", sqlite3_errmsg(db));
+		Logger::Error("sqlite3_prepare(): Failed because %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		return VisibilityType::VT_NONE;
 	}

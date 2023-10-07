@@ -1,6 +1,6 @@
 #pragma once
 
-class Monitor
+class SystemMonitor
 {
 public:
 	static void Run();

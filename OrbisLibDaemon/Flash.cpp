@@ -11,6 +11,6 @@ void ReadFlash(off_t Offset, void* Data, unsigned int Size)
 	}
 	else
 	{
-		klog("Failed to Open sflash\n");
+		Logger::Error("Failed to Open sflash\n");
 	}
 }

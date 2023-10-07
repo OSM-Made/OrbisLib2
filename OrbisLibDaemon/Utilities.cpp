@@ -10,63 +10,63 @@ bool LoadModules()
 	auto res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_SYSTEM_SERVICE);
 	if (res != 0)
 	{
-		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_SYSTEM_SERVICE (%llX)\n", res);
+		Logger::Error("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_SYSTEM_SERVICE (%llX)\n", res);
 		return false;
 	}
 	
 	res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_APPINSTUTIL);
 	if (res != 0)
 	{
-		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_APPINSTUTIL (%llX)\n", res);
+		Logger::Error("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_APPINSTUTIL (%llX)\n", res);
 		return false;
 	}
 	
 	res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_USER_SERVICE);
 	if (res != 0)
 	{
-		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_USER_SERVICE (%llX)\n", res);
+		Logger::Error("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_USER_SERVICE (%llX)\n", res);
 		return false;
 	}
 	
 	res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_SYS_CORE);
 	if (res != 0)
 	{
-		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_SYS_CORE (%llX)\n", res);
+		Logger::Error("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_SYS_CORE (%llX)\n", res);
 		return false;
 	}
 	
 	res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_NETCTL);
 	if (res != 0)
 	{
-		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_NETCTL (%llX)\n", res);
+		Logger::Error("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_NETCTL (%llX)\n", res);
 		return false;
 	}
 	
 	res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_NET);
 	if (res != 0)
 	{
-		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_NET (%llX)\n", res);
+		Logger::Error("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_NET (%llX)\n", res);
 		return false;
 	}
 	
 	//res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_HTTP);
 	//if (res != 0)
 	//{
-	//	klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_HTTP (%llX)\n", res);
+	//	Logger::Error("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_HTTP (%llX)\n", res);
 	//	return false;
 	//}
 	
 	res = sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_BGFT);
 	if (res != 0)
 	{
-		klog("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_BGFT (%llX)\n", res);
+		Logger::Error("LoadModules(): Failed to load SCE_SYSMODULE_INTERNAL_BGFT (%llX)\n", res);
 		return false;
 	}
 
 	res = sceKernelLoadStartModule("/mnt/sandbox/ORBS30000_000/app0/libKernelInterface.sprx", 0, 0, 0, 0, 0);
 	if (res < 0)
 	{
-		klog("LoadModules(): Failed to load kernel interface (%llX)\n", res);
+		Logger::Error("LoadModules(): Failed to load kernel interface (%llX)\n", res);
 		return false;
 	}
 	
@@ -74,7 +74,7 @@ bool LoadModules()
 	res = sceNetInit();
 	if (res != 0)
 	{
-		klog("LoadModules(): sceNetInit failed\n");
+		Logger::Error("LoadModules(): sceNetInit failed\n");
 		return false;
 	}
 
@@ -83,7 +83,7 @@ bool LoadModules()
 	res = sceUserServiceInitialize(&userParam);
 	if (res != 0)
 	{
-		klog("LoadModules(): sceUserServiceInitialize failed (%llX)\n", res);
+		Logger::Error("LoadModules(): sceUserServiceInitialize failed (%llX)\n", res);
 		return false;
 	}
 
@@ -91,7 +91,7 @@ bool LoadModules()
 	res = sceLncUtilInitialize();
 	if (res != 0)
 	{
-		klog("LoadModules(): sceLncUtilInitialize failed (%llX)\n", res);
+		Logger::Error("LoadModules(): sceLncUtilInitialize failed (%llX)\n", res);
 		return false;
 	}
 
@@ -99,7 +99,7 @@ bool LoadModules()
 	res = sceApplicationInitialize();
 	if (res != 0)
 	{
-		klog("LoadModules(): sceApplicationInitialize failed (%llX)\n", res);
+		Logger::Error("LoadModules(): sceApplicationInitialize failed (%llX)\n", res);
 		return false;
 	}
 
@@ -107,18 +107,18 @@ bool LoadModules()
 	res = sceAppInstUtilInitialize();
 	if (res != 0)
 	{
-		klog("LoadModules(): sceAppInstUtilInitialize failed (%llX)\n", res);
+		Logger::Error("LoadModules(): sceAppInstUtilInitialize failed (%llX)\n", res);
 		return false;
 	}
 
 	res = sceNetCtlInit();
 	if (res != 0)
 	{
-		klog("LoadModules(): sceNetCtlInit failed (%llX)\n", res);
+		Logger::Error("LoadModules(): sceNetCtlInit failed (%llX)\n", res);
 		return false;
 	}
 
-	klog("LoadModules(): Success!\n");
+	Logger::Success("LoadModules(): Success!\n");
 	return true;
 }
 
@@ -132,78 +132,15 @@ bool Jailbreak()
 	return (sys_sdk_jailbreak(&bk) == 0);
 }
 
-void klog(const char* fmt, ...)
-{
-	char Buffer[0x200];
-
-	//Create full string from va list.
-	va_list args;
-	va_start(args, fmt);
-	vsprintf(Buffer, fmt, args);
-	va_end(args);
-
-	sceKernelDebugOutText(0, Buffer);
-}
-
-void Notify(const char* MessageFMT, ...)
-{
-	SceNotificationRequest Buffer;
-
-	//Create full string from va list.
-	va_list args;
-	va_start(args, MessageFMT);
-	vsprintf(Buffer.message, MessageFMT, args);
-	va_end(args);
-
-	//Populate the notify buffer.
-	Buffer.type = SceNotificationRequestType::NotificationRequest; //this one is just a standard one and will print what ever is stored at the buffer.Message.
-	Buffer.unk3 = 0;
-	Buffer.useIconImageUri = 1; //Bool to use a custom uri.
-	Buffer.targetId = -1; //Not sure if name is correct but is always set to -1.
-	strcpy(Buffer.iconUri, "https://i.imgur.com/SJPIBGG.png"); //Copy the uri to the buffer.
-
-	//From user land we can call int64_t sceKernelSendNotificationRequest(int64_t unk1, char* Buffer, size_t size, int64_t unk2) which is a libkernel import.
-	sceKernelSendNotificationRequest(0, &Buffer, 3120, 0);
-}
-
-void NotifyCustom(const char* IconURI, const char* MessageFMT, ...)
-{
-	SceNotificationRequest Buffer;
-
-	//Create full string from va list.
-	va_list args;
-	va_start(args, MessageFMT);
-	vsprintf(Buffer.message, MessageFMT, args);
-	va_end(args);
-
-	//Populate the notify buffer.
-	Buffer.type = SceNotificationRequestType::NotificationRequest; //this one is just a standard one and will print what ever is stored at the buffer.Message.
-	Buffer.unk3 = 0;
-	Buffer.useIconImageUri = 1; //Bool to use a custom uri.
-	Buffer.targetId = -1; //Not sure if name is correct but is always set to -1.
-	strcpy(Buffer.iconUri, IconURI); //Copy the uri to the buffer.
-
-	//From user land we can call int64_t sceKernelSendNotificationRequest(int64_t unk1, char* Buffer, size_t size, int64_t unk2) which is a libkernel import.
-	sceKernelSendNotificationRequest(0, &Buffer, 3120, 0);
-}
-
 bool LoadSymbol(SceKernelModule handle, const char* symbol, void** funcOut)
 {
 	if (sceKernelDlsym(handle, symbol, funcOut) != 0 || *funcOut == 0)
 	{
-		klog("Failed to load %s.\n", symbol);
+		Logger::Error("Failed to load %s.\n", symbol);
 		return false;
 	}
 
 	return true;
-}
-
-void ExitGraceful()
-{
-	SceAppInfo info;
-	sceKernelGetAppInfo(getpid(), &info);
-
-	sceLncUtilKillApp(info.AppId);
 }
 
 bool CopySflash()
@@ -215,7 +152,7 @@ bool CopySflash()
 		auto buffer = (unsigned char*)malloc(4 * 1024 * 1024);
 		if (buffer == nullptr)
 		{
-			klog("failled to allocate memory for sflash read.\n");
+			Logger::Error("failled to allocate memory for sflash read.\n");
 			return false;
 		}
 
@@ -234,170 +171,41 @@ bool CopySflash()
 	return false;
 }
 
-int getMacAddress(int ifName_Num, char* strOut, size_t len)
+void SendProtobufPacket(SceNetId sock, const google::protobuf::Message& message)
 {
-	if (len < 18)
+	// Make room for the data.
+	std::vector<uint8_t> data;
+	data.resize(message.ByteSizeLong());
+
+	// Serialize the data.
+	if (!message.SerializeToArray(data.data(), data.size()))
 	{
-		klog("getMacAddress(): Output len must be >= 18.\n");
-		return -1;
-	}
-
-	SceNetIfEntry ifEntry;
-	auto res = sceNetGetIfList((SceNetIfName)ifName_Num, &ifEntry, 1);
-	if (res < 0)
-	{
-		klog("getMacAddress(): failed to get IfList for %i\n", ifName_Num);
-		return res;
-	}
-
-	return sceNetEtherNtostr((SceNetEtherAddr*)ifEntry.MacAddress, strOut, len);
-}
-
-int GetProcessList(std::vector<kinfo_proc>& ProcessList)
-{
-	size_t length;
-
-	static int name[] = { CTL_KERN, KERN_PROC, KERN_PROC_PROC, 0 };
-
-	// Get the size of buffer needed.
-	if (sysctl(name, 3, nullptr, &length, nullptr, 0) < 0)
-		return -1;
-
-	// Resize our vector to accommodate.
-	try
-	{
-		ProcessList.resize(length / sizeof(kinfo_proc));
-	}
-	catch (const std::bad_alloc&)
-	{
-		return -1;
-	}
-
-	// Retrive the processes.
-	if (sysctl(name, 3, ProcessList.data(), &length, nullptr, 0) < 0)
-		return -1;
-
-	// Fix names.
-	for (auto& proc : ProcessList)
-	{
-		sceKernelGetProcessName(proc.pid, (char*)proc.name);
-	}
-
-	return 0;
-}
-
-static void build_iovec(iovec** iov, int* iovlen, const char* name, const void* val, size_t len) {
-	int i;
-
-	if (*iovlen < 0)
-		return;
-
-	i = *iovlen;
-	*iov = (iovec*)realloc(*iov, sizeof * *iov * (i + 2));
-	if (*iov == NULL) {
-		*iovlen = -1;
+		Logger::Error("Failed to serialize the protobuf message.\n");
 		return;
 	}
-
-	(*iov)[i].iov_base = strdup(name);
-	(*iov)[i].iov_len = strlen(name) + 1;
-	++i;
-
-	(*iov)[i].iov_base = (void*)val;
-	if (len == (size_t)-1) {
-		if (val != NULL)
-			len = strlen((const char*)val) + 1;
-		else
-			len = 0;
-	}
-	(*iov)[i].iov_len = (int)len;
-
-	*iovlen = ++i;
-}
-
-int nmount(struct iovec* iov, unsigned int niov, int flags)
-{
-	return syscall(378, iov, niov, flags);
-}
-
-bool LinkDir(const char* Dir, const char* LinkedDir)
-{
-	auto res = sceKernelMkdir(LinkedDir, 0777);
-	if (res != 0 && res != 0x80020011)
-	{
-		klog("Failed to make dir '%s' err: %llX\n", LinkedDir, res);
-		return false;
-	}
-
-	struct iovec* iov = NULL;
-	int iovlen = 0;
-
-	build_iovec(&iov, &iovlen, "fstype", "nullfs", -1);
-	build_iovec(&iov, &iovlen, "fspath", LinkedDir, -1);
-	build_iovec(&iov, &iovlen, "target", Dir, -1);
-
-	if (nmount(iov, iovlen, 0))
-	{
-		klog("nmount failed\n");
-		sceKernelRmdir(LinkedDir);
-		return false;
-	}
-
-	return true;
-}
-
-bool LoadToolbox()
-{
-	auto handle = sys_sdk_proc_prx_load((char*)"SceShellUI", (char*)"/user/data/Orbis Toolbox/OrbisToolbox-2.0.sprx");
-	if (handle > 0) {
-		klog("Orbis Toolbox loaded! %d\n", handle);
-
-		// Mount data & hostapp into ShellUI sandbox
-		LinkDir("/data/", "/mnt/sandbox/NPXS20001_000/data");
-		LinkDir("/hostapp/", "/mnt/sandbox/NPXS20001_000/hostapp");
-
-		return true;
-	}
-	else
-	{
-		klog("error: %d\n", handle);
-		Notify("Failed to load Orbis Toolbox!");
-		return false;
-	}
-}
-
-bool LoadProcHelper(int pid)
-{
-	// Get the proc name.
-	char processName[32];
-	sceKernelGetProcessName(pid, processName);
-
-	SceAppInfo info;
-	sceKernelGetAppInfo(pid, &info);
-
-	// Get the library list.
-	OrbisLibraryInfo libraries[256];
-	int actualCount = GetLibraries(pid, libraries, 256);
 	
-	// Unload if it is already loaded.
-	for (int i = 0; i < actualCount; i++)
+	// Send the Protobuf packet.
+	if (!Sockets::SendWithSize(sock, data.data(), data.size()))
 	{
-		if (strstr(libraries[i].Path, "OrbisLibGeneralHelper"))
-		{
-			sys_sdk_proc_prx_unload(processName, libraries[i].Handle);
-			break;
-		}
+		Logger::Error("Failed to send the serialized protobuf packet.\n");
 	}
+}
 
-	// Load the helper library.
-	int handle = sys_sdk_proc_prx_load(processName, (char*)(strstr(info.TitleId, "CUSA") ? HelperPrxPath : HelperPrxPathSys));
-	
-	if (handle < 0)
-	{
-		klog("Failed to load Helper PRX! %llX\n", handle);
-		return false;
-	}
+void SendStatePacket(SceNetId sock, bool succeeded, const char* fmt, ...)
+{
+	ResultState packet;
+	char buffer[1024];
 
-	klog("Helper PRX has loaded with the handle of %d\n", handle);
-	return true;
+	// Parse the va list.
+	va_list args;
+	va_start(args, fmt);
+	vsprintf(buffer, fmt, args);
+	va_end(args);
+
+	// Set up the packet.
+	packet.set_succeeded(succeeded);
+	packet.set_errormessage(buffer);
+
+	// Send it out!
+	SendProtobufPacket(sock, packet);
 }

@@ -1,26 +1,25 @@
 #include "stdafx.h"
 #include "Flash.h"
-#include "TargetPackets.h"
 #include "Target.h"
 #include <NetExt.h>
 #include <user_service.h>
 #include "ShellCoreUtil.h"
-#include "System.h"
 #include "UserServiceExt.h"
 #include "SystemServiceExt.h"
-#include "APIPackets.h"
+#include "Debug.h"
 
 void Target::SendTargetInfo(SceNetId sock)
 {
-	auto Packet = std::make_unique<TargetInfoPacket>();
+	TargetInfoPacket packet;
 
-	Packet->SDKVersion = GetSDKVersion();
-	Packet->SoftwareVersion = GetUpdateVersion();
-	ReadFlash(FLASH_FACTORY_FW, &Packet->FactorySoftwareVersion, sizeof(int));
-	Packet->CPUTemp = GetCPUTemp();
-	Packet->SOCTemp = GetSOCTemp();
+	packet.set_sdkversion(GetSDKVersion());
+	packet.set_softwareversion(GetUpdateVersion());
+	//ReadFlash(FLASH_FACTORY_FW, &Packet->FactorySoftwareVersion, sizeof(int));
+	packet.set_cputemp(GetCPUTemp());
+	packet.set_soctemp(GetSOCTemp());
 
 	// Current Big App.
+	auto bigApp = packet.mutable_bigapp();
 	auto bigAppAppId = sceSystemServiceGetAppIdOfBigApp();
 	if (bigAppAppId > 0)
 	{
@@ -37,9 +36,9 @@ void Target::SendTargetInfo(SceNetId sock)
 			// Using the titleId match our desired app and return the appId from the appinfo.
 			if (appInfo.AppId == bigAppAppId)
 			{
-				Packet->BigApp.Pid = i.pid;
-				strcpy(Packet->BigApp.Name, i.name);
-				strcpy(Packet->BigApp.TitleId, appInfo.TitleId);
+				bigApp->set_pid(i.pid);
+				bigApp->set_name(i.name);
+				bigApp->set_titleid(appInfo.TitleId);
 
 				break;
 			}
@@ -47,31 +46,37 @@ void Target::SendTargetInfo(SceNetId sock)
 	}
 	else
 	{
-		strcpy(Packet->BigApp.TitleId, "N/A");
+		bigApp->set_titleid("N/A");
 	}
 
+	packet.set_consolename(GetConsoleName().c_str());
 
-	GetConsoleName(Packet->ConsoleName, 100);
-	ReadFlash(FLASH_MB_SERIAL, &Packet->MotherboardSerial, 14);
-	ReadFlash(FLASH_SERIAL, &Packet->Serial, 10);
-	ReadFlash(FLASH_MODEL, &Packet->Model, 14);
-	getMacAddress(SCE_NET_IF_NAME_ETH0, Packet->MACAdressLAN, 18);
-	getMacAddress(SCE_NET_IF_NAME_WLAN0, Packet->MACAdressWIFI, 18);
-	ReadFlash(FLASH_UART_FLAG, &Packet->UART, 1);
-	ReadFlash(FLASH_IDU_MODE, &Packet->IDUMode, 1);
-	GetIDPS(Packet->IDPS);
-	GetPSID(Packet->PSID);
-	Packet->ConsoleType = GetConsoleType();
+	// TODO: Convert these to be string value.
+	//ReadFlash(FLASH_MB_SERIAL, &Packet->MotherboardSerial, 14);
+	//ReadFlash(FLASH_SERIAL, &Packet->Serial, 10);
+	//ReadFlash(FLASH_MODEL, &Packet->Model, 14);
+	packet.set_macaddresslan(GetMacAddress(SCE_NET_IF_NAME_ETH0).c_str());
+	packet.set_macaddresswifi(GetMacAddress(SCE_NET_IF_NAME_WLAN0).c_str());
+	
+	// TODO: Flash revamp.
+	//ReadFlash(FLASH_UART_FLAG, &Packet->UART, 1);
+	//ReadFlash(FLASH_IDU_MODE, &Packet->IDUMode, 1);
+
+	packet.set_idps(GetIdPs());
+	packet.set_psid(GetPsId());
+	packet.set_consoletype(GetConsoleType());
 
 	// Debugging.
-	//Packet->AttachedPid = Debug->CurrentPID;
-	//Packet->Attached = Debug->IsDebugging;
+	packet.set_attachedpid(Debug::CurrentPID);
+	packet.set_attached(Debug::IsDebugging);
 
 	// User.
-	sceUserServiceGetForegroundUser(&Packet->ForegroundAccountId);
+	packet.set_foregroundaccountid(GetForeGroundUserId());
 
 	// Storage Stats.
-	sceShellCoreUtilGetFreeSizeOfUserPartition(&Packet->FreeSpace, &Packet->TotalSpace);
+	auto storageStats = GetStorageStats();
+	packet.set_freespace(std::get<0>(storageStats));
+	packet.set_totalspace(std::get<1>(storageStats));
 
 	// Perf Stats. TODO: Move from toolbox
 	/*Packet->ThreadCount = SystemMonitor::Thread_Count;
@@ -80,19 +85,25 @@ void Target::SendTargetInfo(SceNetId sock)
 	memcpy(&Packet->Ram, &SystemMonitor::RAM, sizeof(MemoryInfo));
 	memcpy(&Packet->VRam, &SystemMonitor::VRAM, sizeof(MemoryInfo));*/
 
-	sceNetSend(sock, Packet.get(), sizeof(TargetInfoPacket), 0);
+	SendProtobufPacket(sock, packet);
 }
 
 void Target::DoNotify(SceNetId sock)
 {
-	auto packet = Sockets::RecieveType<TargetNotifyPacket>(sock);
+	TargetNotifyPacket packet;
+	if (!RecieveProtoBuf<TargetNotifyPacket>(sock, &packet))
+	{
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
+	}
 
-	if (!strcmp(packet->IconURI, ""))
-		Notify(packet->Message);
+	if (packet.iconuri() == "")
+		Notify(packet.message().c_str());
 	else
-		NotifyCustom(packet->IconURI, packet->Message);
+		NotifyCustom(packet.iconuri().c_str(), packet.message().c_str());
 
-	Sockets::SendInt(sock, API_OK);
+	// Send the happy state.
+	SendStatePacket(sock, true, "");
 }
 
 void Target::DoBuzzer(SceNetId sock)
@@ -145,14 +156,14 @@ void Target::ProcList(SceNetId sock)
 		sceKernelGetAppInfo(i.pid, &appInfo);
 
 		// Build packet.
-		auto packet = std::make_unique<ProcPacket>();
-		packet->AppId = appInfo.AppId;
-		packet->ProcessId = i.pid;
-		strcpy(packet->Name, i.name);
-		strcpy(packet->TitleId, appInfo.TitleId);
+		ProcPacket packet;
+		packet.set_appid(appInfo.AppId);
+		packet.set_processid(i.pid);
+		packet.set_name(i.name);
+		packet.set_titleid(appInfo.TitleId);
 
 		// send packet.
-		sceNetSend(sock, packet.get(), sizeof(ProcPacket), 0);
+		SendProtobufPacket(sock, packet);
 	}
 }
 
@@ -166,7 +177,7 @@ void Target::SendFile(SceNetId Sock)
 	auto fd = sceKernelOpen(filePath, SCE_KERNEL_O_RDONLY, 0);
 	if (fd <= 0)
 	{
-		klog("Failed to open file \"%s\".\n", filePath);
+		Logger::Error("Failed to open file \"%s\".\n", filePath);
 		return;
 	}
 
@@ -176,7 +187,7 @@ void Target::SendFile(SceNetId Sock)
 
 	if (stats.st_size == 0)
 	{
-		klog("Failed to get size of file \"%s\"..\n", filePath);
+		Logger::Error("Failed to get size of file \"%s\"..\n", filePath);
 		return;
 	}
 

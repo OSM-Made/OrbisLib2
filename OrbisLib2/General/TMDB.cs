@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -26,6 +27,10 @@ namespace OrbisLib2.General
 
         private string GetUrl()
         {
+            // Add the _00 if its not there.
+            if (Regex.IsMatch(_TitleId, @"CUSA\d{5}") && !_TitleId.Contains("_00"))
+                _TitleId += "_00";
+
             if (!Regex.IsMatch(_TitleId, @"CUSA\d{5}_00"))
             {
                 throw new Exception("TitleID format incorrect!! Format must follow CUSAXXXXX_00.");
@@ -39,52 +44,81 @@ namespace OrbisLib2.General
 
         public async Task FetchDataAsync()
         {
-            using var client = new HttpClient();
-            var response = await client.GetStringAsync(TmdbUrl);
-            Data.Clear();
-            var jsonData = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(response);
-
-            if (jsonData is not null)
+            try
             {
-                foreach (var (key, value) in jsonData)
+                //using var client = new HttpClient();
+                //var response = await client.GetStringAsync(TmdbUrl);
+                var webClient = new WebClient();
+                var response = webClient.DownloadString(TmdbUrl);
+                Data.Clear();
+
+                var jsonData = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(response);
+
+                if (jsonData is not null)
                 {
-                    if (value.ValueKind == JsonValueKind.Array)
+                    foreach (var (key, value) in jsonData)
                     {
-                        if (key == "names")
+                        if (value.ValueKind == JsonValueKind.Array)
                         {
-                            var names = value.EnumerateArray().Select(element => element.GetProperty("name").GetString()).ToArray();
-                            Data[key] = names;
-                        }
-                        else
-                        {
-                            var arrayValues = value.EnumerateArray().Select(element => element.GetRawText()).ToArray();
-                            Data[key] = arrayValues;
-                        }
-                    }
-                    else if (value.ValueKind == JsonValueKind.Object)
-                    {
-                        var objectValues = new Dictionary<string, string>();
-                        foreach (var property in value.EnumerateObject())
-                        {
-                            if (property.Value.ValueKind == JsonValueKind.String)
+                            if (key == "names")
                             {
-                                objectValues[property.Name] = property.Value.GetString() ?? string.Empty;
+                                var name = value.EnumerateArray().Select(element => element.GetProperty("name").GetString()).ToArray();
+                                Data[key] = name;
+                            }
+                            else if (key == "icons")
+                            {
+                                var icon = value.EnumerateArray().Select(element => element.GetProperty("icon").GetString()).ToArray();
+                                Data[key] = icon;
+                            }
+                            else
+                            {
+                                var arrayValues = value.EnumerateArray().Select(element => element.GetRawText()).ToArray();
+                                Data[key] = arrayValues;
                             }
                         }
-                        Data[key] = objectValues;
-                    }
-                    else if (value.ValueKind == JsonValueKind.String)
-                    {
-                        Data[key] = value.GetString() ?? string.Empty;
-                    }
-                    else if (value.ValueKind == JsonValueKind.Number)
-                    {
-                        Data[key] = value.TryGetInt32(out var intValue) ? intValue : (object)value.GetDecimal();
+                        else if (value.ValueKind == JsonValueKind.Object)
+                        {
+                            var objectValues = new Dictionary<string, string>();
+                            foreach (var property in value.EnumerateObject())
+                            {
+                                if (property.Value.ValueKind == JsonValueKind.String)
+                                {
+                                    objectValues[property.Name] = property.Value.GetString() ?? string.Empty;
+                                }
+                            }
+                            Data[key] = objectValues;
+                        }
+                        else if (value.ValueKind == JsonValueKind.String)
+                        {
+                            Data[key] = value.GetString() ?? string.Empty;
+                        }
+                        else if (value.ValueKind == JsonValueKind.Number)
+                        {
+                            Data[key] = value.TryGetInt32(out var intValue) ? intValue : (object)value.GetDecimal();
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+
+            }
+            
+            
+        }
+        public string[] GetIcons()
+        {
+            return Data["icons"] as string[];
+        }
+
+        public string[] GetNames()
+        {
+            return Data["names"] as string[];
+        }
+
+        public string GetTitleId()
+        {
+            return Data["npTitleId"] as string;
         }
     }
-
-    public record Icons(string Url, string Size);
 }

@@ -3,7 +3,6 @@
 #include "AppDatabase.h"
 #include <SystemServiceExt.h>
 #include <UserServiceExt.h>
-#include "AppPackets.h"
 
 #define APP_DB_PATH "/system_data/priv/mms/app.db"
 
@@ -13,7 +12,7 @@ void Apps::GetDB(SceNetId Sock)
 	auto fd = sceKernelOpen(APP_DB_PATH, SCE_KERNEL_O_RDONLY, 0);
 	if (fd <= 0)
 	{
-		klog("Failed to open app database file.\n");
+		Logger::Error("Failed to open app database file.\n");
 		return;
 	}
 
@@ -23,7 +22,7 @@ void Apps::GetDB(SceNetId Sock)
 
 	if (stats.st_size == 0)
 	{
-		klog("Failed to get size of app database.\n");
+		Logger::Error("Failed to get size of app database.\n");
 		return;
 	}
 
@@ -45,13 +44,14 @@ void Apps::CheckVersion(SceNetId Sock)
 	auto currentVersion = 0;
 	if (!Sockets::RecvInt(Sock, &currentVersion))
 	{
-		klog("CheckVersion: Failed to recieve the current app version.\n");
+		Logger::Error("CheckVersion: Failed to recieve the current app version.\n");
 		return;
 	}
 
 	Sockets::SendInt(Sock, AppDatabase::GetVersion() > currentVersion ? 1 : 0);
 }
 
+// Depreciated ??
 void Apps::GetAppsList(SceNetId Sock)
 {
 	std::vector<AppDatabase::AppInfo> AppList;
@@ -66,6 +66,7 @@ void Apps::GetAppsList(SceNetId Sock)
 	Sockets::SendLargeData(Sock, (unsigned char*)AppList.data(), AppList.size() * sizeof(AppInfoPacket));
 }
 
+// Depreciated ??
 void Apps::GetAppInfoString(SceNetId Sock)
 {
 	char titleId[10];
@@ -112,18 +113,25 @@ int Apps::GetAppId(const char* TitleId)
 	return appId;
 }
 
-void Apps::SendAppStatus(SceNetId Sock)
+void Apps::SendAppStatus(SceNetId sock)
 {
-	char titleId[10];
-	memset(titleId, 0, sizeof(titleId));
-	sceNetRecv(Sock, titleId, sizeof(titleId), 0);
+	AppPacket packet;
+	if (!RecieveProtoBuf(sock, &packet))
+	{
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
+	}
 
-	auto appId = GetAppId(titleId);
+	// Send the happy packet so we continue.
+	SendStatePacket(sock, true, "");
+
+	// Get the appId from the titleId.
+	auto appId = GetAppId(packet.titleid().c_str());
 
 	// If we have no appId that means the process is not running. 
 	if (appId <= 0)
 	{
-		Sockets::SendInt(Sock, STATE_NOT_RUNNING);
+		Sockets::SendInt(sock, STATE_NOT_RUNNING);
 	}
 	else
 	{
@@ -131,20 +139,23 @@ void Apps::SendAppStatus(SceNetId Sock)
 		auto res = sceSystemServiceIsAppSuspended(appId, &state);
 		if (res == 0 && state)
 		{
-			Sockets::SendInt(Sock, STATE_SUSPENDED);
+			Sockets::SendInt(sock, STATE_SUSPENDED);
 		}
 		else
 		{
-			Sockets::SendInt(Sock, STATE_RUNNING);
+			Sockets::SendInt(sock, STATE_RUNNING);
 		}
 	}
 }
 
-void Apps::StartApp(SceNetId Sock)
+void Apps::StartApp(SceNetId sock)
 {
-	char titleId[10];
-	memset(titleId, 0, sizeof(titleId));
-	sceNetRecv(Sock, titleId, sizeof(titleId), 0);
+	AppPacket packet;
+	if (!RecieveProtoBuf(sock, &packet))
+	{
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
+	}
 
 	LaunchAppParam appParam;
 	appParam.enableCrashReport = 0;
@@ -154,121 +165,189 @@ void Apps::StartApp(SceNetId Sock)
 
 	if (auto res = sceUserServiceGetForegroundUser(&appParam.userId) != 0)
 	{
-		klog("sceUserServiceGetForegroundUser(): Failed with error %llX\n", res);
-
-		Sockets::SendInt(Sock, 0);
+		Logger::Error("sceUserServiceGetForegroundUser(): Failed with error %llX\n", res);
+		SendStatePacket(sock, false, "sceUserServiceGetForegroundUser(): Failed with error %llX.", res);
 		return;
 	}
 
-	auto res = sceLncUtilLaunchApp(titleId, nullptr, &appParam);
+	auto res = sceLncUtilLaunchApp(packet.titleid().c_str(), nullptr, &appParam);
 	if (res <= 0)
 	{
-		klog("sceLncUtilLaunchApp() : Failed with error %llX\n", res);
-
-		Sockets::SendInt(Sock, 0);
+		Logger::Error("sceLncUtilLaunchApp() : Failed with error %llX\n", res);
+		SendStatePacket(sock, false, "sceLncUtilLaunchApp(): Failed with error %llX.", res);
 		return;
 	}
 
-	Sockets::SendInt(Sock, res);
+	// Send the happy packet so we continue.
+	SendStatePacket(sock, true, "");
 }
 
-void Apps::KillApp(SceNetId Sock)
+void Apps::KillApp(SceNetId sock)
 {
-	char titleId[10];
-	memset(titleId, 0, sizeof(titleId));
-	sceNetRecv(Sock, titleId, sizeof(titleId), 0);
-
-	auto appId = GetAppId(titleId);
-
-	if (appId > 0 && sceSystemServiceKillApp(appId, -1, 0, 0) == 0)
+	AppPacket packet;
+	if (!RecieveProtoBuf(sock, &packet))
 	{
-		Sockets::SendInt(Sock, 1);
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
 	}
-	else
+
+	// Get the appId from the titleId.
+	auto appId = GetAppId(packet.titleid().c_str());
+	if (appId <= 0)
 	{
-		Sockets::SendInt(Sock, 0);
+		SendStatePacket(sock, false, "GetAppId(): Failed to retrieve the app Id.");
+		return;
 	}
+
+	// Send the command to kill the app by the app Id.
+	auto res = sceSystemServiceKillApp(appId, -1, 0, false);
+	if (res != 0)
+	{
+		SendStatePacket(sock, false, "sceSystemServiceKillApp(): Failed with error %llX.", res);
+		return;
+	}
+
+	// Send the happy packet.
+	SendStatePacket(sock, true, "");
 }
 
-void Apps::SuspendApp(SceNetId Sock)
+void Apps::SuspendApp(SceNetId sock)
 {
-	char titleId[10];
-	memset(titleId, 0, sizeof(titleId));
-	sceNetRecv(Sock, titleId, sizeof(titleId), 0);
-
-	auto appId = GetAppId(titleId);
-
-	if (appId > 0 && sceLncUtilSuspendApp(appId, 0) == 0)
+	AppPacket packet;
+	if (!RecieveProtoBuf(sock, &packet))
 	{
-		Sockets::SendInt(Sock, 1);
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
 	}
-	else
+
+	// Get the appId from the titleId.
+	auto appId = GetAppId(packet.titleid().c_str());
+	if (appId <= 0)
 	{
-		Sockets::SendInt(Sock, 0);
+		SendStatePacket(sock, false, "GetAppId(): Failed to retrieve the app Id.");
+		return;
 	}
+
+	// Send the lnc command to resume the app using the app id.
+	auto res = sceLncUtilSuspendApp(appId, 0);
+	if (res != 0)
+	{
+		SendStatePacket(sock, false, "sceLncUtilSuspendApp(): Failed with error %llX.", res);
+		return;
+	}
+
+	// Send the happy packet.
+	SendStatePacket(sock, true, "");
 }
 
-void Apps::ResumeApp(SceNetId Sock)
+void Apps::ResumeApp(SceNetId sock)
 {
-	char titleId[10];
-	memset(titleId, 0, sizeof(titleId));
-	sceNetRecv(Sock, titleId, sizeof(titleId), 0);
-
-	auto appId = GetAppId(titleId);
-
-	if (appId > 0 && sceLncUtilResumeApp(appId, 0) == 0 && sceApplicationSetApplicationFocus(appId) == 0)
+	AppPacket packet;
+	if (!RecieveProtoBuf(sock, &packet))
 	{
-		Sockets::SendInt(Sock, 1);
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
 	}
-	else
+
+	// Get the appId from the titleId.
+	auto appId = GetAppId(packet.titleid().c_str());
+	if (appId <= 0)
 	{
-		Sockets::SendInt(Sock, 0);
+		SendStatePacket(sock, false, "GetAppId(): Failed to retrieve the app Id.");
+		return;
 	}
+
+	// Call the lnc command to resume the app by the id.
+	auto res = sceLncUtilResumeApp(appId, 0);
+	if (res != 0)
+	{
+		SendStatePacket(sock, false, "sceLncUtilResumeApp(): Failed with error %llX.", res);
+		return;
+	}
+
+	// Set the app as the focused app.
+	res = sceApplicationSetApplicationFocus(appId);
+	if (res != 0)
+	{
+		SendStatePacket(sock, false, "sceApplicationSetApplicationFocus(): Failed with error %llX.", res);
+		return;
+	}
+
+	// Send the happy packet.
+	SendStatePacket(sock, true, "");
 }
 
-void Apps::DeleteApp(SceNetId Sock)
+void Apps::DeleteApp(SceNetId sock)
 {
-	char titleId[10];
-	memset(titleId, 0, sizeof(titleId));
-	sceNetRecv(Sock, titleId, sizeof(titleId), 0);
+	AppPacket packet;
+	if (!RecieveProtoBuf(sock, &packet))
+	{
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
+	}
 
-	auto result = sceAppInstUtilAppUnInstall(titleId);
+	// Call the app util to delete the app. This may only delete the game and patch?
+	auto res = sceAppInstUtilAppUnInstall(packet.titleid().c_str());
+	if (res != 0)
+	{
+		SendStatePacket(sock, false, "sceAppInstUtilAppUnInstall(): Failed with error %llX.", res);
+		return;
+	}
 
-	Sockets::SendInt(Sock, (result == 0) ? 1 : 0);
+	// Send the happy packet.
+	SendStatePacket(sock, true, "");
 }
 
-void Apps::SetVisibility(SceNetId Sock)
+void Apps::SetVisibility(SceNetId sock)
 {
-	char titleId[10];
-	memset(titleId, 0, sizeof(titleId));
-	sceNetRecv(Sock, titleId, sizeof(titleId), 0);
+	AppPacket packet;
+	if (!RecieveProtoBuf(sock, &packet))
+	{
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
+	}
+
+	// Send the happy packet so we continue.
+	SendStatePacket(sock, true, "");
 
 	auto value = 0;
-	if (!Sockets::RecvInt(Sock, &value))
+	if (!Sockets::RecvInt(sock, &value))
 	{
-		klog("SetVisibility(): Failed to recieve value.\n");
+		Logger::Error("SetVisibility(): Failed to recieve value.\n");
+		SendStatePacket(sock, false, "Failed to recieve value.");
 		return;
 	}
 
 	if (value >= AppDatabase::VisibilityType::VT_NONE && value <= AppDatabase::VisibilityType::VT_INVISIBLE)
 	{
-		auto result = AppDatabase::SetVisibility(titleId, (AppDatabase::VisibilityType)value);
+		if (!AppDatabase::SetVisibility(packet.titleid().c_str(), (AppDatabase::VisibilityType)value))
+		{
+			SendStatePacket(sock, false, "Failed ot set the visibility.");
+			return;
+		}
 
 		// TODO:
 		//ShellUIIPC::RefreshContentArea();
 
-		Sockets::SendInt(Sock, result ? 1 : 0);
+		// Send the happy packet.
+		SendStatePacket(sock, true, "");
 	}
 
-	Sockets::SendInt(Sock, 0);
+	SendStatePacket(sock, false, "Failed ot set the visibility.");
 }
 
-void Apps::GetVisibility(SceNetId Sock)
+void Apps::GetVisibility(SceNetId sock)
 {
-	char titleId[10];
-	memset(titleId, 0, sizeof(titleId));
-	sceNetRecv(Sock, titleId, sizeof(titleId), 0);
+	AppPacket packet;
+	if (!RecieveProtoBuf(sock, &packet))
+	{
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
+	}
 
-	auto visibility = AppDatabase::GetVisibility(titleId);
-	Sockets::SendInt(Sock, visibility);
+	// Send the happy packet so we continue.
+	SendStatePacket(sock, true, "");
+
+	auto visibility = AppDatabase::GetVisibility(packet.titleid().c_str());
+	Sockets::SendInt(sock, visibility);
 }

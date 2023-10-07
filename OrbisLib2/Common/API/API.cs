@@ -2,16 +2,14 @@
 using OrbisLib2.Common.Database;
 using OrbisLib2.Common.Helpers;
 using OrbisLib2.Targets;
-using SimpleUI.Controls;
 using System.Net.Sockets;
-using System.Windows;
 
 namespace OrbisLib2.Common.API
 {
     public static class API
     {
         private static readonly uint MagicNumber = 0xDEADBEEF;
-        private static readonly int PacketVersion = 1;
+        private static readonly int PacketVersion = 5;
 
         /// <summary>
         /// Connects to the api.

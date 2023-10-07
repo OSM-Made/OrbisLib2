@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Monitor.h"
 #include "API.h"
+#include "SystemMonitor.h"
 #include "ProcessMonitor.h"
 #include <KernelInterface.h>
 #include "GoldHEN.h"
@@ -8,6 +8,9 @@
 
 int main(int argc, char** arg)
 {
+	// Set up the Logger.
+	Logger::Init(true, Logger::LoggingLevels::LogLevelAll);
+
 	// Jailbreak our current process.
 	if (!Jailbreak())
 	{
@@ -35,15 +38,15 @@ int main(int argc, char** arg)
 	
 	// Start up the thread pool.
 	ThreadPool::Init(10);
-	
+
 	// Log the loaded version string.
-	klog("\n%s\n\n", ORBISLIB_BUILDSTRING);
+	Logger::Info("%s\n", ORBISLIB_BUILDSTRING);
 	
 	// Start up the API.
 	API::Init();
 	
 	// Blocking run the system monitor.
-	Monitor::Run();
+	SystemMonitor::Run();
 
 	ExitGraceful();
 	return 0;
