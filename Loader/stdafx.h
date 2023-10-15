@@ -13,12 +13,23 @@
 #include <kernel.h>
 #include <map>
 #include <memory>
+#include <GoldHEN.h>
+#include <NetExt.h>
+
+#include <UserServiceExt.h>
+
+#include <StringUtils.h>
+#include <FileSystem.h>
+#include <Utilities.h>
+#include <Logging.h>
+#include <Logger.h>
+
+using namespace OrbisUtils;
 
 // Custom linked dependancies.
 #include <KernelExt.h>
 #include <SysmoduleInternal.h>
 #include <LncUtil.h>
 
-#include "ASM.h"
 #include "Config.h"
 #include "Utilities.h"

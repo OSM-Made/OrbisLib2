@@ -15,6 +15,7 @@
 *.elf
 *.oelf
 *.dll
+*.7z
 Executables/
 
 # User-specific files (MonoDevelop/Xamarin Studio)

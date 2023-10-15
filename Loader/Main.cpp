@@ -1,14 +1,17 @@
 #include "stdafx.h"
-#include <UserServiceExt.h>
+#include <7z/7zExtractor.h>
+#include <AppControl.h>
 
 #define DEBUG
 
 int main(int argc, char** arg)
 {
-	klog("Hello from OrbisLib Loader\n");
+	Logger::Init(true, Logger::LogLevelAll);
+
+	Logger::Info("Hello from OrbisLib Loader\n");
 
 	// Jailbreak our current process.
-	klog("Jailbreaking our process.\n");
+	Logger::Info("Jailbreaking our process.\n");
 	if (!Jailbreak())
 	{
 		Notify("Failed to jailbreak Process...");
@@ -17,7 +20,7 @@ int main(int argc, char** arg)
 	}
 
 	// Load internal system modules.
-	klog("Loading modules.\n");
+	Logger::Info("Loading modules.\n");
 	if (!LoadModules())
 	{
 		Notify("Failed to Load Modules...");
@@ -26,44 +29,27 @@ int main(int argc, char** arg)
 	}
 
 	// Set RW on the system directory.
-	klog("Mounting System as R/W.\n");
+	Logger::Info("Mounting System as R/W.\n");
 	mount_large_fs("/dev/da0x4.crypt", "/system", "exfatfs", "511", MNT_UPDATE);
-
+	
 	// Install all the things! :D
-	const char* LibList[] = { "libKernelInterface.sprx" };
-	InstallDaemon("ORBS30000", LibList, 1); // Orbis Lib
-	InstallOrbisToolbox();
-	InstallOrbisSuite();
+	Logger::Info("Extracting OrbisLib Deamon.\n");
+	Extract7zFile("/mnt/sandbox/ORBS00000_000/app0/Daemons/ORBS30000.7z", "/system/vsh/app/");
 
-	// Start the API.
-	auto appId = sceLncUtilGetAppId("ORBS30000");
-	if (appId)
-	{
-#ifdef DEBUG
-		sceLncUtilKillApp(appId);
-#else
-		ExitGraceful();
-		return 0;
-#endif
-	}
+	Logger::Info("Extracting Orbis Toolbox.\n");
+	Extract7zFile("/mnt/sandbox/ORBS00000_000/app0/Orbis Toolbox.7z", "/data/");
 
-	LaunchAppParam appParam;
-	appParam.size = sizeof(LaunchAppParam);
-	sceUserServiceGetForegroundUser(&appParam.userId);
-	appParam.enableCrashReport = 0;
-	appParam.checkFlag = 0;
-	appParam.appAttr = 0;
+	Logger::Info("Making Orbis Suite Directory\n");
+	MakeDir("/data/Orbis Suite");
 
-#ifdef DEBUG
-	auto res = sceLncUtilLaunchApp("ORBS30000", nullptr, &appParam);
+	// Launch the daemon for everyone.
+	Logger::Info("Starting or Restarting OrbisLib Deamon.\n");
+	auto res = StartRestartApp("ORBS30000", nullptr, SCE_USER_SERVICE_USER_ID_EVERYONE);
 
 	if (res != 0)
 	{
-		klog("Failed to load Daemon.\n");
+		Notify("Failed to start the OrbisLib Daemon. :(");
 	}
-#else
-	sceLncUtilLaunchApp("ORBS30000", nullptr, &appParam);
-#endif // DEBUG
 
 	ExitGraceful();
 	return 0;

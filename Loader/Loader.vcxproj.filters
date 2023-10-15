@@ -26,9 +26,6 @@
     <ClInclude Include="Utilities.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="ASM.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -40,10 +37,5 @@
     <ClCompile Include="Utilities.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ASM.s">
-      <Filter>Source Files\Utilities</Filter>
-    </None>
   </ItemGroup>
 </Project>

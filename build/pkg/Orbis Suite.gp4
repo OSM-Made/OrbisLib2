@@ -15,38 +15,18 @@
   </volume>
   <files img_no="0">
     <file targ_path="eboot.bin" orig_path="eboot.bin" />
-    <file targ_path="Orbis Toolbox/Icons/icon_daemon.png" orig_path="Orbis Toolbox\Icons\icon_daemon.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_payload.png" orig_path="Orbis Toolbox\Icons\icon_payload.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_pkg.png" orig_path="Orbis Toolbox\Icons\icon_pkg.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_plugin.png" orig_path="Orbis Toolbox\Icons\icon_plugin.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_reboot.png" orig_path="Orbis Toolbox\Icons\icon_reboot.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_reload_ui.png" orig_path="Orbis Toolbox\Icons\icon_reload_ui.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_shutdown.png" orig_path="Orbis Toolbox\Icons\icon_shutdown.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_suspend.png" orig_path="Orbis Toolbox\Icons\icon_suspend.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_system_settings.png" orig_path="Orbis Toolbox\Icons\icon_system_settings.png" />
-    <file targ_path="Orbis Toolbox/Icons/icon_toolbox.png" orig_path="Orbis Toolbox\Icons\icon_toolbox.png" />
     <file targ_path="sce_module/libc.prx" orig_path="sce_module\libc.prx" />
     <file targ_path="sce_module/libSceFios2.prx" orig_path="sce_module\libSceFios2.prx" />
     <file targ_path="sce_sys/icon0.png" orig_path="sce_sys\icon0.png" />
     <file targ_path="sce_sys/param.sfo" orig_path="sce_sys\param.sfo" />
     <file targ_path="sce_sys/pic0.png" orig_path="sce_sys\pic0.png" />
     <file targ_path="sce_sys/pic1.png" orig_path="sce_sys\pic1.png" />
-    <file targ_path="Orbis Toolbox/OrbisToolbox-2.0.sprx" orig_path="Orbis Toolbox\OrbisToolbox-2.0.sprx" />
-    <file targ_path="Daemons/ORBS30000/sce_sys/icon0.png" orig_path="Daemons\ORBS30000\sce_sys\icon0.png" />
-    <file targ_path="Daemons/ORBS30000/sce_sys/param" orig_path="Daemons\ORBS30000\sce_sys\param" />
-    <file targ_path="Daemons/ORBS30000/eboot.bin" orig_path="Daemons\ORBS30000\eboot.bin" />
-    <file targ_path="Daemons/ORBS30000/libKernelInterface.sprx" orig_path="Daemons\ORBS30000\libKernelInterface.sprx" />
+    <file targ_path="Daemons/ORBS30000.7z" orig_path="Daemons\ORBS30000.7z" />
+    <file targ_path="Orbis Toolbox.7z" orig_path="Orbis Toolbox.7z" />
   </files>
   <rootdir>
-    <dir targ_name="Orbis Toolbox">
-      <dir targ_name="Icons" />
-    </dir>
     <dir targ_name="sce_module" />
     <dir targ_name="sce_sys" />
-    <dir targ_name="Daemons">
-      <dir targ_name="ORBS30000">
-        <dir targ_name="sce_sys" />
-      </dir>
-    </dir>
+    <dir targ_name="Daemons" />
   </rootdir>
 </psproject>
