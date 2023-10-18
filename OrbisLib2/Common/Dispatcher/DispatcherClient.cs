@@ -72,7 +72,7 @@ namespace OrbisLib2.Common.Dispatcher
                     break;
 
                 case ForwardPacket.PacketType.TargetAPIAvailability:
-                    Events.FireTargetAPIAvailability(e.Message.TargetAvailability.Available, e.Message.TargetAvailability.Name);
+                    Events.FireTargetAPIAvailability(e.Message.TargetAPIAvailability.Available, e.Message.TargetAPIAvailability.Name);
                     break;
 
                 // Misc

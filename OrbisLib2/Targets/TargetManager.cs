@@ -126,6 +126,20 @@ namespace OrbisLib2.Targets
         /// <returns>Returns weather or not the action was successful or not.</returns>
         public static ResultState UpdateTargetInfo(SavedTarget savedTarget)
         {
+            if (!savedTarget.Info.IsAPIAvailable)
+            {
+                savedTarget.Info.CPUTemp = 0;
+                savedTarget.Info.SOCTemp = 0;
+                savedTarget.Info.ThreadCount = 0;
+                savedTarget.Info.AverageCPUUsage = 0;
+                savedTarget.Info.BusyCore = 0;
+                savedTarget.Info.RamUsage = 0;
+                savedTarget.Info.VRamUsage = 0;
+                savedTarget.Info.BigAppTitleID = "-";
+                savedTarget.Info.Save();
+                return new ResultState { Succeeded = true };
+            }
+
             var Target = GetTarget(savedTarget.Name);
             if (Target == null)
                 return new ResultState { Succeeded = false, ErrorMessage = $"Couldn't Find Target \"{savedTarget.Name}\"." };
@@ -185,7 +199,7 @@ namespace OrbisLib2.Targets
                 // Save the updated info.
                 savedTarget.Info.Save();
 
-                return new ResultState { Succeded = true };
+                return new ResultState { Succeeded = true };
             });
         }
     }
