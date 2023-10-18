@@ -62,6 +62,8 @@ const std::map<int, std::function<void(SceNetId s)>> API::APICommands =
 	{ API_TARGET_SET_SETTINGS, Target::SetSettings },
 	{ API_TARGET_GET_PROC_LIST, Target::ProcList },
 	{ API_TARGET_SEND_FILE, Target::SendFile },
+	{ API_TARGET_RECIEVE_FILE, Target::RecieveFile },
+	{ API_TARGET_DELETE_FILE, Target::DeleteFile },
 };
 
 void API::ListenerCallback(void* tdParam, SceNetId s, SceNetInAddr sin_addr)

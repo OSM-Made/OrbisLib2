@@ -147,8 +147,7 @@ void Target::ProcList(SceNetId sock)
 	std::vector<kinfo_proc> processList;
 	GetProcessList(processList);
 
-	Sockets::SendInt(sock, processList.size());
-
+	std::vector<ProcPacket> vectorList;
 	for (const auto& i : processList)
 	{
 		// Get the app info using the pid.
@@ -156,50 +155,126 @@ void Target::ProcList(SceNetId sock)
 		sceKernelGetAppInfo(i.pid, &appInfo);
 
 		// Build packet.
-		ProcPacket packet;
-		packet.set_appid(appInfo.AppId);
-		packet.set_processid(i.pid);
-		packet.set_name(i.name);
-		packet.set_titleid(appInfo.TitleId);
-
-		// send packet.
-		SendProtobufPacket(sock, packet);
+		ProcPacket procPacket;
+		procPacket.set_appid(appInfo.AppId);
+		procPacket.set_processid(i.pid);
+		procPacket.set_name(i.name);
+		procPacket.set_titleid(appInfo.TitleId);
+		vectorList.push_back(procPacket);
 	}
+
+	// Set the parsed list into the protobuf packet.
+	ProcListPacket packet;
+	*packet.mutable_processes() = { vectorList.begin(), vectorList.end() };
+
+	// Send the list to host.
+	SendProtobufPacket(sock, packet);
 }
 
-void Target::SendFile(SceNetId Sock)
+void Target::SendFile(SceNetId sock)
 {
-	char filePath[0x200];
-	memset(filePath, 0, sizeof(filePath));
-	sceNetRecv(Sock, filePath, sizeof(filePath), 0);
-
-	//Open file descriptors 
-	auto fd = sceKernelOpen(filePath, SCE_KERNEL_O_RDONLY, 0);
-	if (fd <= 0)
+	FilePacket packet;
+	if (!RecieveProtoBuf<FilePacket>(sock, &packet))
 	{
-		Logger::Error("Failed to open file \"%s\".\n", filePath);
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
 		return;
 	}
 
-	//Get File size
+	// Open file descriptors 
+	auto fd = sceKernelOpen(packet.filepath().c_str(), SCE_KERNEL_O_RDONLY, 0);
+	if (fd <= 0)
+	{
+		SendStatePacket(sock, false, "Failed to open the file \"%s\".", packet.filepath().c_str());
+		Logger::Error("Failed to open file \"%s\".\n", packet.filepath().c_str());
+		return;
+	}
+
+	// Get File size
 	SceKernelStat stats;
 	sceKernelFstat(fd, &stats);
 
 	if (stats.st_size == 0)
 	{
-		Logger::Error("Failed to get size of file \"%s\"..\n", filePath);
+		SendStatePacket(sock, false, "Failed to get size of the file \"%s\".", packet.filepath().c_str());
+		Logger::Error("Failed to get size of file \"%s\"..\n", packet.filepath().c_str());
 		return;
 	}
 
-	//Allocate space to read data.
+	// Allocate space to read data.
 	auto FileData = (unsigned char*)malloc(stats.st_size);
 
-	//ReadFile.
+	// ReadFile.
 	sceKernelRead(fd, FileData, stats.st_size);
 	sceKernelClose(fd);
 
-	Sockets::SendInt(Sock, stats.st_size);
-	Sockets::SendLargeData(Sock, FileData, stats.st_size);
+	// Send the happy packet.
+	SendStatePacket(sock, true, "");
+
+	Sockets::SendInt(sock, stats.st_size);
+	Sockets::SendLargeData(sock, FileData, stats.st_size);
 
 	free(FileData);
+}
+
+void Target::RecieveFile(SceNetId sock)
+{
+	FilePacket packet;
+	if (!RecieveProtoBuf<FilePacket>(sock, &packet))
+	{
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
+	}
+
+	// Open file descriptors 
+	auto fd = sceKernelOpen(packet.filepath().c_str(), SCE_KERNEL_O_CREAT | SCE_KERNEL_O_RDWR, 0777);
+	if (fd <= 0)
+	{
+		SendStatePacket(sock, false, "Failed to open the file \"%s\" with error 0x%llX.", packet.filepath().c_str(), fd);
+		Logger::Error("Failed to open file \"%s\" with error 0x%llX.\n", packet.filepath().c_str(), fd);
+		return;
+	}
+
+	// Send the happy packet.
+	SendStatePacket(sock, true, "");
+
+	int fileSize;
+	if (!Sockets::RecvInt(sock, &fileSize))
+	{
+		Logger::Error("Failed to get the file size.\n");
+		return;
+	}
+
+	// Allocate space to read data.
+	auto fileData = (unsigned char*)malloc(fileSize);
+
+	if (!Sockets::RecvLargeData(sock, fileData, fileSize))
+	{
+		Logger::Error("Failed to get the file data.\n");
+		return;
+	}
+
+	sceKernelWrite(fd, fileData, fileSize);
+	sceKernelClose(fd);
+
+	free(fileData);
+}
+
+void Target::DeleteFile(SceNetId sock)
+{
+	FilePacket packet;
+	if (!RecieveProtoBuf<FilePacket>(sock, &packet))
+	{
+		SendStatePacket(sock, false, "Failed to parse the next protobuf packet.");
+		return;
+	}
+
+	auto res = sceKernelUnlink(packet.filepath().c_str());
+	if (res != 0)
+	{
+		Logger::Error("Failed to delete the file \"%s\" 0x%llX.\n", packet.filepath().c_str(), res);
+		SendStatePacket(sock, false, "Failed to delete the file \"%s\" 0x%llX.\n", packet.filepath().c_str(), res);
+		return;
+	}
+
+	SendStatePacket(sock, true, "");
 }

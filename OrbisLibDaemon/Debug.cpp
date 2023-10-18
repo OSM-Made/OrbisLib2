@@ -97,12 +97,9 @@ void Debug::Attach(SceNetId sock)
 		SceAppInfo appInfo;
 		sceKernelGetAppInfo(pid, &appInfo);
 
-		// Get sandbox path.
-		char sandBoxPath[PATH_MAX];
-		snprintf(sandBoxPath, sizeof(sandBoxPath), "/mnt/sandbox/%s_000/data", appInfo.TitleId); // TODO: Some games cant tidy up. Might be good to search for other numbers.
-
-		// Mount data into sandbox
-		LinkDir("/data/", sandBoxPath);
+		// Mount data & system into sandbox
+		LinkDir("/data/", va("/mnt/sandbox/%s_000/data", appInfo.TitleId).c_str());
+		LinkDir("/system/", va("/mnt/sandbox/%s_000/system", appInfo.TitleId).c_str());
 	}
 }
 
@@ -113,6 +110,14 @@ void Debug::Detach(SceNetId sock)
 
 	{
 		std::unique_lock<std::mutex> lock(DebugMtx);
+
+		// Get app info.
+		SceAppInfo appInfo;
+		sceKernelGetAppInfo(CurrentPID, &appInfo);
+
+		// Unmount the linked dirs.
+		unmount(va("/mnt/sandbox/%s_000/data", appInfo.TitleId).c_str(), MNT_FORCE);
+		unmount(va("/mnt/sandbox/%s_000/system", appInfo.TitleId).c_str(), MNT_FORCE);
 
 		if (TryDetach(CurrentPID))
 		{
@@ -211,6 +216,14 @@ void Debug::OnExit()
 	// Send the event to the host that the process has died.
 	Events::SendEvent(Events::EVENT_DIE, CurrentPID);
 
+	// Get app info.
+	SceAppInfo appInfo;
+	sceKernelGetAppInfo(CurrentPID, &appInfo);
+
+	// Unmount the linked dirs.
+	unmount(va("/mnt/sandbox/%s_000/data", appInfo.TitleId).c_str(), MNT_FORCE);
+	unmount(va("/mnt/sandbox/%s_000/system", appInfo.TitleId).c_str(), MNT_FORCE);
+
 	// For now just detach.
 	if (!TryDetach(CurrentPID))
 	{
@@ -231,6 +244,14 @@ void Debug::OnException(int status)
 		Logger::Info("SIGSTOP\n");
 		break;
 	}
+
+	// Get app info.
+	SceAppInfo appInfo;
+	sceKernelGetAppInfo(CurrentPID, &appInfo);
+
+	// Unmount the linked dirs.
+	unmount(va("/mnt/sandbox/%s_000/data", appInfo.TitleId).c_str(), MNT_FORCE);
+	unmount(va("/mnt/sandbox/%s_000/system", appInfo.TitleId).c_str(), MNT_FORCE);
 
 	// For now just detach.
 	if (!TryDetach(CurrentPID))

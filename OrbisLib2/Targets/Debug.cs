@@ -26,11 +26,11 @@ namespace OrbisLib2.Targets
 
         public ResultState Attach(int pid)
         {
-            return API.SendCommand(Target, 3, APICommand.ApiDbgAttach, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 3, APICommand.ApiDbgAttach, (Socket Sock) =>
             {
                 Sock.SendInt32(pid);
 
-                Result = API.GetState(Sock);
+                return API.GetState(Sock);
             });
         }
 
@@ -39,18 +39,20 @@ namespace OrbisLib2.Targets
             if(!IsDebugging)
                 return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
 
-            return API.SendCommand(Target, 3, APICommand.ApiDbgDetach, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 3, APICommand.ApiDbgDetach, (Socket Sock) =>
             {
-                Result = API.GetState(Sock);
+                return API.GetState(Sock);
             });
         }
 
         public ResultState GetCurrentProcessId(out int ProcessId)
         {
             var tempProcessId = -1;
-            var result = API.SendCommand(Target, 3, APICommand.ApiDbgGetCurrent, (Socket Sock, ResultState Result) =>
+            var result = API.SendCommand(Target, 3, APICommand.ApiDbgGetCurrent, (Socket Sock) =>
             {
                 tempProcessId = Sock.RecvInt32();
+
+                return new ResultState { Succeeded = true };
             });
 
             ProcessId = tempProcessId;
@@ -66,16 +68,18 @@ namespace OrbisLib2.Targets
             }
 
             int tempHandle = -1;
-            var result = API.SendCommand(Target, 3, APICommand.ApiDbgLoadLibrary, (Socket Sock, ResultState Result) =>
+            var result = API.SendCommand(Target, 3, APICommand.ApiDbgLoadLibrary, (Socket Sock) =>
             {
                 if (Sock.RecvInt32() != 1)
-                    Result = new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
+                    return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    Result = API.SendNextPacket(Sock, new SPRXPacket { Path = Path });
+                    var result = API.SendNextPacket(Sock, new SPRXPacket { Path = Path });
 
-                    if (Result.Succeeded)
+                    if (result.Succeeded)
                         tempHandle = Sock.RecvInt32();
+
+                    return result;
                 }
             });
 
@@ -88,12 +92,12 @@ namespace OrbisLib2.Targets
             if (!IsDebugging)
                 return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
 
-            return API.SendCommand(Target, 3, APICommand.ApiDbgUnloadLibrary, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 3, APICommand.ApiDbgUnloadLibrary, (Socket Sock) =>
             {
                 if (Sock.RecvInt32() != 1)
-                    Result = new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
+                    return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
-                    Result = API.SendNextPacket(Sock, new SPRXPacket { Handle = Handle });
+                    return API.SendNextPacket(Sock, new SPRXPacket { Handle = Handle });
             });
         }
 
@@ -106,14 +110,16 @@ namespace OrbisLib2.Targets
             }
 
             int tempHandle = -1;
-            var result = API.SendCommand(Target, 3, APICommand.ApiDbgReloadLibrary, (Socket Sock, ResultState Result) =>
+            var result = API.SendCommand(Target, 3, APICommand.ApiDbgReloadLibrary, (Socket Sock) =>
             {
                 if (Sock.RecvInt32() != 1)
-                    Result = new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
+                    return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    Result = API.SendNextPacket(Sock, new SPRXPacket { Path = Path, Handle = Handle });
+                    var result = API.SendNextPacket(Sock, new SPRXPacket { Path = Path, Handle = Handle });
                     tempHandle = Sock.RecvInt32();
+
+                    return result;
                 }
             });
 
@@ -131,10 +137,10 @@ namespace OrbisLib2.Targets
                 return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
             }
 
-            var result = API.SendCommand(Target, 6, APICommand.ApiDbgLibraryList, (Socket Sock, ResultState Result) =>
+            var result = API.SendCommand(Target, 6, APICommand.ApiDbgLibraryList, (Socket Sock) =>
             {
                 if (Sock.RecvInt32() != 1)
-                    Result = new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
+                    return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
                     var rawPacket = Sock.ReceiveSize();
@@ -144,6 +150,8 @@ namespace OrbisLib2.Targets
                     {
                         tempLibraryList.Add(new LibraryInfo(library.Handle, library.Path, library.MapBase, library.MapSize, library.TextSize, library.DataBase, library.TextSize));
                     }
+
+                    return new ResultState { Succeeded = true };
                 }
             });
 
@@ -161,16 +169,18 @@ namespace OrbisLib2.Targets
             }
 
             var data = new byte[Length];
-            var result = API.SendCommand(Target, 6, APICommand.ApiDbgRead, (Socket Sock, ResultState Result) =>
+            var result = API.SendCommand(Target, 6, APICommand.ApiDbgRead, (Socket Sock) =>
             {
                 if (Sock.RecvInt32() != 1)
-                    Result = new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
+                    return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    Result = API.SendNextPacket(Sock, new RWPacket { Address = Address, Length = Length });
+                    var result = API.SendNextPacket(Sock, new RWPacket { Address = Address, Length = Length });
 
-                    if (Result.Succeeded)
+                    if (result.Succeeded)
                         Sock.RecvLarge(data);
+
+                    return result;
                 }
             });
 
@@ -183,20 +193,22 @@ namespace OrbisLib2.Targets
             if (!IsDebugging)
                 return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
 
-            return API.SendCommand(Target, 6, APICommand.ApiDbgWrite, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 6, APICommand.ApiDbgWrite, (Socket Sock) =>
             {
                 if (Sock.RecvInt32() != 1)
-                    Result = new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
+                    return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    Result = API.SendNextPacket(Sock, new RWPacket { Address = Address, Length = (ulong)Data.Length });
+                    var result = API.SendNextPacket(Sock, new RWPacket { Address = Address, Length = (ulong)Data.Length });
 
-                    if (Result.Succeeded)
+                    if (result.Succeeded)
                     {
                         Sock.SendLarge(Data);
 
-                        Result = API.GetState(Sock);
+                        result = API.GetState(Sock);
                     }
+
+                    return result;
                 }
             });
         }

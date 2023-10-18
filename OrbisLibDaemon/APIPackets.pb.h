@@ -47,7 +47,7 @@ struct TableStruct_APIPackets_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[16]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[17]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -66,6 +66,9 @@ extern AppPacketDefaultTypeInternal _AppPacket_default_instance_;
 class CurrentBigApp;
 struct CurrentBigAppDefaultTypeInternal;
 extern CurrentBigAppDefaultTypeInternal _CurrentBigApp_default_instance_;
+class FilePacket;
+struct FilePacketDefaultTypeInternal;
+extern FilePacketDefaultTypeInternal _FilePacket_default_instance_;
 class InitialPacket;
 struct InitialPacketDefaultTypeInternal;
 extern InitialPacketDefaultTypeInternal _InitialPacket_default_instance_;
@@ -107,6 +110,7 @@ template<> ::AppInfoListPacket* Arena::CreateMaybeMessage<::AppInfoListPacket>(A
 template<> ::AppInfoPacket* Arena::CreateMaybeMessage<::AppInfoPacket>(Arena*);
 template<> ::AppPacket* Arena::CreateMaybeMessage<::AppPacket>(Arena*);
 template<> ::CurrentBigApp* Arena::CreateMaybeMessage<::CurrentBigApp>(Arena*);
+template<> ::FilePacket* Arena::CreateMaybeMessage<::FilePacket>(Arena*);
 template<> ::InitialPacket* Arena::CreateMaybeMessage<::InitialPacket>(Arena*);
 template<> ::LibraryInfoPacket* Arena::CreateMaybeMessage<::LibraryInfoPacket>(Arena*);
 template<> ::LibraryListPacket* Arena::CreateMaybeMessage<::LibraryListPacket>(Arena*);
@@ -183,12 +187,14 @@ enum APICommand : int {
   API_TARGET_SET_SETTINGS = 58,
   API_TARGET_GET_PROC_LIST = 59,
   API_TARGET_SEND_FILE = 60,
+  API_TARGET_RECIEVE_FILE = 61,
+  API_TARGET_DELETE_FILE = 62,
   APICommand_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   APICommand_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool APICommand_IsValid(int value);
 constexpr APICommand APICommand_MIN = API_APPS_CHECK_VER;
-constexpr APICommand APICommand_MAX = API_TARGET_SEND_FILE;
+constexpr APICommand APICommand_MAX = API_TARGET_DELETE_FILE;
 constexpr int APICommand_ARRAYSIZE = APICommand_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* APICommand_descriptor();
@@ -3504,6 +3510,157 @@ class LibraryListPacket final :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_APIPackets_2eproto;
 };
+// -------------------------------------------------------------------
+
+class FilePacket final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:FilePacket) */ {
+ public:
+  inline FilePacket() : FilePacket(nullptr) {}
+  ~FilePacket() override;
+  explicit constexpr FilePacket(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  FilePacket(const FilePacket& from);
+  FilePacket(FilePacket&& from) noexcept
+    : FilePacket() {
+    *this = ::std::move(from);
+  }
+
+  inline FilePacket& operator=(const FilePacket& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FilePacket& operator=(FilePacket&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FilePacket& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FilePacket* internal_default_instance() {
+    return reinterpret_cast<const FilePacket*>(
+               &_FilePacket_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    16;
+
+  friend void swap(FilePacket& a, FilePacket& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(FilePacket* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FilePacket* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FilePacket* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<FilePacket>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const FilePacket& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const FilePacket& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(FilePacket* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "FilePacket";
+  }
+  protected:
+  explicit FilePacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kFilePathFieldNumber = 1,
+  };
+  // string FilePath = 1;
+  void clear_filepath();
+  const std::string& filepath() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_filepath(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_filepath();
+  PROTOBUF_NODISCARD std::string* release_filepath();
+  void set_allocated_filepath(std::string* filepath);
+  private:
+  const std::string& _internal_filepath() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_filepath(const std::string& value);
+  std::string* _internal_mutable_filepath();
+  public:
+
+  // @@protoc_insertion_point(class_scope:FilePacket)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr filepath_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_APIPackets_2eproto;
+};
 // ===================================================================
 
 
@@ -6362,9 +6519,66 @@ LibraryListPacket::libraries() const {
   return libraries_;
 }
 
+// -------------------------------------------------------------------
+
+// FilePacket
+
+// string FilePath = 1;
+inline void FilePacket::clear_filepath() {
+  filepath_.ClearToEmpty();
+}
+inline const std::string& FilePacket::filepath() const {
+  // @@protoc_insertion_point(field_get:FilePacket.FilePath)
+  return _internal_filepath();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void FilePacket::set_filepath(ArgT0&& arg0, ArgT... args) {
+ 
+ filepath_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:FilePacket.FilePath)
+}
+inline std::string* FilePacket::mutable_filepath() {
+  std::string* _s = _internal_mutable_filepath();
+  // @@protoc_insertion_point(field_mutable:FilePacket.FilePath)
+  return _s;
+}
+inline const std::string& FilePacket::_internal_filepath() const {
+  return filepath_.Get();
+}
+inline void FilePacket::_internal_set_filepath(const std::string& value) {
+  
+  filepath_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* FilePacket::_internal_mutable_filepath() {
+  
+  return filepath_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* FilePacket::release_filepath() {
+  // @@protoc_insertion_point(field_release:FilePacket.FilePath)
+  return filepath_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void FilePacket::set_allocated_filepath(std::string* filepath) {
+  if (filepath != nullptr) {
+    
+  } else {
+    
+  }
+  filepath_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), filepath,
+      GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (filepath_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    filepath_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:FilePacket.FilePath)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

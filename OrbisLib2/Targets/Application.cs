@@ -57,13 +57,15 @@ namespace OrbisLib2.Targets
             }
 
             var tempIsOutOfDate = false;
-            var result = API.SendCommand(Target, 5, APICommand.ApiAppsCheckVer, (Socket Sock, ResultState Result) =>
+            var result = API.SendCommand(Target, 5, APICommand.ApiAppsCheckVer, (Socket Sock) =>
             {
                 // Send the current app version.
                 Sock.SendInt32(AppBrowseVersion.GetAppBrowseVersion(databasePath));
 
                 // Get the state from API.
                 tempIsOutOfDate = Sock.RecvInt32() == 1;
+
+                return new ResultState { Succeeded = true };
             });
 
             IsOutOfDate = tempIsOutOfDate;
@@ -83,12 +85,12 @@ namespace OrbisLib2.Targets
             if (!isOutOfDate)
                 return new ResultState { Succeeded = true };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsGetDb, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsGetDb, (Socket Sock) =>
             {
                 var fileSize = Sock.RecvInt32();
                 var newDatabaseBytes = new byte[fileSize];
                 if (Sock.RecvLarge(newDatabaseBytes) < fileSize)
-                    return;
+                    return new ResultState { Succeeded = false, ErrorMessage = "Failed to recieve the data." };
 
                 var databasePath = GetAppDBPath();
                 var oldDatabasePath = @$"{databasePath}.old";
@@ -104,6 +106,8 @@ namespace OrbisLib2.Targets
 
                 // Write the new DB.
                 File.WriteAllBytes(databasePath, newDatabaseBytes);
+
+                return new ResultState { Succeeded = true };
             });
         }
 
@@ -144,13 +148,15 @@ namespace OrbisLib2.Targets
             }
 
             var tempAppState = AppState.StateNotRunning;
-            var result = API.SendCommand(Target, 5, APICommand.ApiAppsStatus, (Socket Sock, ResultState Result) => 
+            var result = API.SendCommand(Target, 5, APICommand.ApiAppsStatus, (Socket Sock) => 
             {
-                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                var result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
                 // Get the state from API.
-                if (Result.Succeeded)
+                if (result.Succeeded)
                     tempAppState = (AppState)Sock.RecvInt32();
+
+                return result;
             });
 
             State = tempAppState;
@@ -162,9 +168,9 @@ namespace OrbisLib2.Targets
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsStart, (Socket Sock, ResultState Result) => 
+            return API.SendCommand(Target, 5, APICommand.ApiAppsStart, (Socket Sock) => 
             {
-                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
         }
 
@@ -173,9 +179,9 @@ namespace OrbisLib2.Targets
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsStop, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsStop, (Socket Sock) =>
             {
-                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
         }
 
@@ -184,9 +190,9 @@ namespace OrbisLib2.Targets
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsSuspend, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsSuspend, (Socket Sock) =>
             {
-                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
         }
 
@@ -195,9 +201,9 @@ namespace OrbisLib2.Targets
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsResume, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsResume, (Socket Sock) =>
             {
-                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
         }
 
@@ -206,9 +212,9 @@ namespace OrbisLib2.Targets
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsDelete, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsDelete, (Socket Sock) =>
             {
-                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
         }
 
@@ -217,17 +223,19 @@ namespace OrbisLib2.Targets
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsSetVisibility, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiAppsSetVisibility, (Socket Sock) =>
             {
-                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                var result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
-                if (Result.Succeeded)
+                if (result.Succeeded)
                 {
                     // Send the visibility state.
                     Sock.SendInt32((int)Visibility);
 
-                    Result = API.GetState(Sock);
+                    result = API.GetState(Sock);
                 }
+
+                return result;
             });
         }
 
@@ -240,13 +248,15 @@ namespace OrbisLib2.Targets
             }
 
             var tempType = VisibilityType.VT_NONE;
-            var result = API.SendCommand(Target, 5, APICommand.ApiAppsGetVisibility, (Socket Sock, ResultState Result) =>
+            var result = API.SendCommand(Target, 5, APICommand.ApiAppsGetVisibility, (Socket Sock) =>
             {
-                Result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                var result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
                 // Get the state from API.
-                if (Result.Succeeded)
+                if (result.Succeeded)
                     tempType = (VisibilityType)Sock.RecvInt32();
+
+                return result;
             });
 
             Type = tempType;

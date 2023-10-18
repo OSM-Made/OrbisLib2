@@ -1,8 +1,12 @@
 ﻿using OrbisLib2.Common.API;
 using OrbisLib2.Common.Database;
 using OrbisLib2.Common.Helpers;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows.Controls.Primitives;
+using System.Windows.Markup;
+using static SQLite.SQLite3;
 
 namespace OrbisLib2.Targets
 {
@@ -12,7 +16,7 @@ namespace OrbisLib2.Targets
     {
         private int _SavedTargetId = 0;
 
-        public SavedTarget SavedTarget 
+        public SavedTarget SavedTarget
         {
             get
             {
@@ -115,46 +119,45 @@ namespace OrbisLib2.Targets
 
         public ResultState Notify(string Message)
         {
-            return API.SendCommand(this, 5, APICommand.ApiTargetNotify, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(this, 5, APICommand.ApiTargetNotify, (Socket Sock) =>
             {
-                Console.WriteLine($"Message: {Message}");
-                Result = API.SendNextPacket(Sock, new TargetNotifyPacket { Message = Message });
+                return API.SendNextPacket(Sock, new TargetNotifyPacket { Message = Message });
             });
         }
 
         public ResultState Notify(string IconURI, string Message)
         {
-            return API.SendCommand(this, 5, APICommand.ApiTargetNotify, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(this, 5, APICommand.ApiTargetNotify, (Socket Sock) =>
             {
-                Result = API.SendNextPacket(Sock, new TargetNotifyPacket { IconURI = IconURI, Message = Message });
+                return API.SendNextPacket(Sock, new TargetNotifyPacket { IconURI = IconURI, Message = Message });
             });
         }
 
         public ResultState Buzzer(BuzzerType Type)
         {
-            return API.SendCommand(this, 5, APICommand.ApiTargetBuzzer, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(this, 5, APICommand.ApiTargetBuzzer, (Socket Sock) =>
             {
                 Sock.SendInt32((int)Type);
 
                 // Set the result state of the call.
-                Result = API.GetState(Sock);
+                return API.GetState(Sock);
             });
         }
 
         public ResultState SetLED(ConsoleLEDColours Colour)
         {
-            return API.SendCommand(this, 5, APICommand.ApiTargetSetLed, (Socket Sock, ResultState Result) =>
+            return API.SendCommand(this, 5, APICommand.ApiTargetSetLed, (Socket Sock) =>
             {
                 Sock.SendInt32((int)Colour);
 
                 // Set the result state of the call.
-                Result = API.GetState(Sock);
+                return API.GetState(Sock);
             });
         }
 
         public bool SetSettings(bool ShowDebugTitleIdLabel, bool ShowDevkitPanel, bool ShowDebugSettings, bool ShowAppHome)
         {
-            //var result = API.SendCommand(this, 5, APICommand.ApiTargetSetSettings, (Socket Sock, ResultState Result) =>
+            //var result = API.SendCommand(this, 5, APICommand.ApiTargetSetSettings, (Socket Sock) =>
             //{
             //    Result = API.SendNextPacket(Sock, new TargetSettingsPacket()
             //    {
@@ -167,24 +170,33 @@ namespace OrbisLib2.Targets
             //
             //return result == APIResults.API_OK;
 
-            return false; 
+            return false;
         }
 
         public ResultState GetProcList(out List<ProcInfo> List)
         {
+            var result = new ResultState { Succeeded = true };
             var tempList = new List<ProcInfo>();
-            var result = API.SendCommand(this, 4, APICommand.ApiTargetGetProcList, (Socket Sock, ResultState Result) =>
-            {
-                var processCount = Sock.RecvInt32();
 
-                for (int i = 0; i < processCount; i++)
+            try
+            {
+                result = API.SendCommand(this, 4, APICommand.ApiTargetGetProcList, (Socket Sock) =>
                 {
                     var rawPacket = Sock.ReceiveSize();
-                    var Packet = ProcPacket.Parser.ParseFrom(rawPacket);
+                    var packet = ProcListPacket.Parser.ParseFrom(rawPacket);
 
-                    tempList.Add(new ProcInfo(Packet.AppId, Packet.ProcessId, Packet.Name, Packet.TitleId));
-                }
-            });
+                    foreach (var process in packet.Processes)
+                    {
+                        tempList.Add(new ProcInfo(process.AppId, process.ProcessId, process.Name, process.TitleId));
+                    }
+
+                    return new ResultState { Succeeded = true };
+                });
+            }
+            catch (Exception ex)
+            {
+                result = new ResultState { Succeeded = false, ErrorMessage = ex.Message };
+            }
 
             List = tempList;
             return result;
@@ -194,17 +206,45 @@ namespace OrbisLib2.Targets
         {
             int bytesRecieved = 0;
             var file = new byte[0];
-            API.SendCommand(this, 4, APICommand.ApiTargetSendFile, (Socket Sock, ResultState Result) =>
+            API.SendCommand(this, 4, APICommand.ApiTargetSendFile, (Socket Sock) =>
             {
-                var bytes = Encoding.ASCII.GetBytes(filePath.PadRight(10, '\0')).Take(0x200).ToArray();
-                Sock.Send(bytes);
+                var result = API.SendNextPacket(Sock, new FilePacket { FilePath = filePath });
+
+                if (!result.Succeeded)
+                    return result;
 
                 var fileSize = Sock.RecvInt32();
                 file = new byte[fileSize];
                 bytesRecieved = Sock.RecvLarge(file);
+
+                return result;
             });
 
             return bytesRecieved > 0 ? file : new byte[0];
+        }
+
+        public ResultState SendFile(byte[] data, string filePath)
+        {
+            return API.SendCommand(this, 4, APICommand.ApiTargetRecieveFile, (Socket Sock) =>
+            {
+                var result = API.SendNextPacket(Sock, new FilePacket { FilePath = filePath });
+
+                if (!result.Succeeded)
+                    return result;
+
+                // Send the file.
+                Sock.SendSize(data);
+
+                return result;
+            });
+        }
+
+        public ResultState DeleteFile(string filePath)
+        {
+            return API.SendCommand(this, 4, APICommand.ApiTargetDeleteFile, (Socket Sock) =>
+            {
+                return API.SendNextPacket(Sock, new FilePacket { FilePath = filePath });
+            });
         }
     }
 }

@@ -34,7 +34,7 @@ namespace OrbisLib2.Common.API
         /// <param name="Command">The command to be run.</param>
         /// <param name="AdditionalCommunications">Optional lambda to send/recv additional data.</param>
         /// <returns>Returns result of the communications with the API.</returns>
-        public static ResultState SendCommand(Target DesiredTarget, int TimeOut, APICommand Command, Action<Socket, ResultState>? AdditionalCommunications = null)
+        public static ResultState SendCommand(Target DesiredTarget, int TimeOut, APICommand Command, Func<Socket, ResultState>? AdditionalCommunications = null)
         {
             // If the API isnt up were just giving up here.
             if(DesiredTarget.Info.IsAPIAvailable == false)
@@ -63,7 +63,7 @@ namespace OrbisLib2.Common.API
 
                     // See if we have extra work to do.
                     if (AdditionalCommunications != null)
-                        AdditionalCommunications.Invoke(Sock, result);
+                        result = AdditionalCommunications.Invoke(Sock);
 
                     // Were done here, Clean up.
                     Sock.Close();

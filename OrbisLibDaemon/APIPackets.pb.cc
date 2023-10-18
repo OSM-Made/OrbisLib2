@@ -276,7 +276,19 @@ struct LibraryListPacketDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT LibraryListPacketDefaultTypeInternal _LibraryListPacket_default_instance_;
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_APIPackets_2eproto[16];
+constexpr FilePacket::FilePacket(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : filepath_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct FilePacketDefaultTypeInternal {
+  constexpr FilePacketDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~FilePacketDefaultTypeInternal() {}
+  union {
+    FilePacket _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FilePacketDefaultTypeInternal _FilePacket_default_instance_;
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_APIPackets_2eproto[17];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_APIPackets_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_APIPackets_2eproto = nullptr;
 
@@ -461,6 +473,13 @@ const uint32_t TableStruct_APIPackets_2eproto::offsets[] PROTOBUF_SECTION_VARIAB
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::LibraryListPacket, libraries_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::FilePacket, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::FilePacket, filepath_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::InitialPacket)},
@@ -479,6 +498,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 153, -1, -1, sizeof(::ProcListPacket)},
   { 160, -1, -1, sizeof(::LibraryInfoPacket)},
   { 173, -1, -1, sizeof(::LibraryListPacket)},
+  { 180, -1, -1, sizeof(::FilePacket)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -498,6 +518,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_ProcListPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_LibraryInfoPacket_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_LibraryListPacket_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_FilePacket_default_instance_),
 };
 
 const char descriptor_table_protodef_APIPackets_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -551,51 +572,54 @@ const char descriptor_table_protodef_APIPackets_2eproto[] PROTOBUF_SECTION_VARIA
   "\001(\004\022\017\n\007MapSize\030\004 \001(\004\022\020\n\010TextSize\030\005 \001(\004\022\020"
   "\n\010DataBase\030\006 \001(\004\022\020\n\010DataSize\030\007 \001(\004\":\n\021Li"
   "braryListPacket\022%\n\tLibraries\030\001 \003(\0132\022.Lib"
-  "raryInfoPacket*\327\013\n\nAPICommand\022\026\n\022API_APP"
-  "S_CHECK_VER\020\000\022\023\n\017API_APPS_GET_DB\020\001\022\031\n\025AP"
-  "I_APPS_GET_INFO_STR\020\002\022\023\n\017API_APPS_STATUS"
-  "\020\003\022\022\n\016API_APPS_START\020\004\022\021\n\rAPI_APPS_STOP\020"
-  "\005\022\024\n\020API_APPS_SUSPEND\020\006\022\023\n\017API_APPS_RESU"
-  "ME\020\007\022\023\n\017API_APPS_DELETE\020\010\022\033\n\027API_APPS_SE"
-  "T_VISIBILITY\020\t\022\033\n\027API_APPS_GET_VISIBILIT"
-  "Y\020\n\022\022\n\016API_DBG_ATTACH\020\013\022\022\n\016API_DBG_DETAC"
-  "H\020\014\022\027\n\023API_DBG_GET_CURRENT\020\r\022\020\n\014API_DBG_"
-  "READ\020\016\022\021\n\rAPI_DBG_WRITE\020\017\022\020\n\014API_DBG_KIL"
-  "L\020\020\022\021\n\rAPI_DBG_BREAK\020\021\022\022\n\016API_DBG_RESUME"
-  "\020\022\022\022\n\016API_DBG_SIGNAL\020\023\022\020\n\014API_DBG_STEP\020\024"
-  "\022\025\n\021API_DBG_STEP_OVER\020\025\022\024\n\020API_DBG_STEP_"
-  "OUT\020\026\022\031\n\025API_DBG_GET_CALLSTACK\020\027\022\023\n\017API_"
-  "DBG_GET_REG\020\030\022\023\n\017API_DBG_SET_REG\020\031\022\024\n\020AP"
-  "I_DBG_GET_FREG\020\032\022\024\n\020API_DBG_SET_FREG\020\033\022\026"
-  "\n\022API_DBG_GET_DBGREG\020\034\022\026\n\022API_DBG_SET_DB"
-  "GREG\020\035\022\030\n\024API_DBG_LOAD_LIBRARY\020\036\022\032\n\026API_"
-  "DBG_UNLOAD_LIBRARY\020\037\022\032\n\026API_DBG_RELOAD_L"
-  "IBRARY\020 \022\030\n\024API_DBG_LIBRARY_LIST\020!\022\027\n\023AP"
-  "I_DBG_THREAD_LIST\020\"\022\027\n\023API_DBG_THREAD_ST"
-  "OP\020#\022\031\n\025API_DBG_THREAD_RESUME\020$\022\036\n\032API_D"
-  "BG_BREAKPOINT_GETFREE\020%\022\032\n\026API_DBG_BREAK"
-  "POINT_SET\020&\022\035\n\031API_DBG_BREAKPOINT_UPDATE"
-  "\020\'\022\035\n\031API_DBG_BREAKPOINT_REMOVE\020(\022\036\n\032API"
-  "_DBG_BREAKPOINT_GETINFO\020)\022\033\n\027API_DBG_BRE"
-  "AKPOINT_LIST\020*\022\032\n\026API_DBG_WATCHPOINT_SET"
-  "\020+\022\035\n\031API_DBG_WATCHPOINT_UPDATE\020,\022\035\n\031API"
-  "_DBG_WATCHPOINT_REMOVE\020-\022\036\n\032API_DBG_WATC"
-  "HPOINT_GETINFO\020.\022\033\n\027API_DBG_WATCHPOINT_L"
-  "IST\020/\022\021\n\rAPI_KERN_BASE\0200\022\021\n\rAPI_KERN_REA"
-  "D\0201\022\022\n\016API_KERN_WRITE\0202\022\023\n\017API_TARGET_IN"
-  "FO\0203\022\027\n\023API_TARGET_RESTMODE\0204\022\027\n\023API_TAR"
-  "GET_SHUTDOWN\0205\022\025\n\021API_TARGET_REBOOT\0206\022\025\n"
-  "\021API_TARGET_NOTIFY\0207\022\025\n\021API_TARGET_BUZZE"
-  "R\0208\022\026\n\022API_TARGET_SET_LED\0209\022\033\n\027API_TARGE"
-  "T_SET_SETTINGS\020:\022\034\n\030API_TARGET_GET_PROC_"
-  "LIST\020;\022\030\n\024API_TARGET_SEND_FILE\020<*I\n\010AppS"
-  "tate\022\025\n\021STATE_NOT_RUNNING\020\000\022\021\n\rSTATE_RUN"
-  "NING\020\001\022\023\n\017STATE_SUSPENDED\020\002b\006proto3"
+  "raryInfoPacket\"\036\n\nFilePacket\022\020\n\010FilePath"
+  "\030\001 \001(\t*\220\014\n\nAPICommand\022\026\n\022API_APPS_CHECK_"
+  "VER\020\000\022\023\n\017API_APPS_GET_DB\020\001\022\031\n\025API_APPS_G"
+  "ET_INFO_STR\020\002\022\023\n\017API_APPS_STATUS\020\003\022\022\n\016AP"
+  "I_APPS_START\020\004\022\021\n\rAPI_APPS_STOP\020\005\022\024\n\020API"
+  "_APPS_SUSPEND\020\006\022\023\n\017API_APPS_RESUME\020\007\022\023\n\017"
+  "API_APPS_DELETE\020\010\022\033\n\027API_APPS_SET_VISIBI"
+  "LITY\020\t\022\033\n\027API_APPS_GET_VISIBILITY\020\n\022\022\n\016A"
+  "PI_DBG_ATTACH\020\013\022\022\n\016API_DBG_DETACH\020\014\022\027\n\023A"
+  "PI_DBG_GET_CURRENT\020\r\022\020\n\014API_DBG_READ\020\016\022\021"
+  "\n\rAPI_DBG_WRITE\020\017\022\020\n\014API_DBG_KILL\020\020\022\021\n\rA"
+  "PI_DBG_BREAK\020\021\022\022\n\016API_DBG_RESUME\020\022\022\022\n\016AP"
+  "I_DBG_SIGNAL\020\023\022\020\n\014API_DBG_STEP\020\024\022\025\n\021API_"
+  "DBG_STEP_OVER\020\025\022\024\n\020API_DBG_STEP_OUT\020\026\022\031\n"
+  "\025API_DBG_GET_CALLSTACK\020\027\022\023\n\017API_DBG_GET_"
+  "REG\020\030\022\023\n\017API_DBG_SET_REG\020\031\022\024\n\020API_DBG_GE"
+  "T_FREG\020\032\022\024\n\020API_DBG_SET_FREG\020\033\022\026\n\022API_DB"
+  "G_GET_DBGREG\020\034\022\026\n\022API_DBG_SET_DBGREG\020\035\022\030"
+  "\n\024API_DBG_LOAD_LIBRARY\020\036\022\032\n\026API_DBG_UNLO"
+  "AD_LIBRARY\020\037\022\032\n\026API_DBG_RELOAD_LIBRARY\020 "
+  "\022\030\n\024API_DBG_LIBRARY_LIST\020!\022\027\n\023API_DBG_TH"
+  "READ_LIST\020\"\022\027\n\023API_DBG_THREAD_STOP\020#\022\031\n\025"
+  "API_DBG_THREAD_RESUME\020$\022\036\n\032API_DBG_BREAK"
+  "POINT_GETFREE\020%\022\032\n\026API_DBG_BREAKPOINT_SE"
+  "T\020&\022\035\n\031API_DBG_BREAKPOINT_UPDATE\020\'\022\035\n\031AP"
+  "I_DBG_BREAKPOINT_REMOVE\020(\022\036\n\032API_DBG_BRE"
+  "AKPOINT_GETINFO\020)\022\033\n\027API_DBG_BREAKPOINT_"
+  "LIST\020*\022\032\n\026API_DBG_WATCHPOINT_SET\020+\022\035\n\031AP"
+  "I_DBG_WATCHPOINT_UPDATE\020,\022\035\n\031API_DBG_WAT"
+  "CHPOINT_REMOVE\020-\022\036\n\032API_DBG_WATCHPOINT_G"
+  "ETINFO\020.\022\033\n\027API_DBG_WATCHPOINT_LIST\020/\022\021\n"
+  "\rAPI_KERN_BASE\0200\022\021\n\rAPI_KERN_READ\0201\022\022\n\016A"
+  "PI_KERN_WRITE\0202\022\023\n\017API_TARGET_INFO\0203\022\027\n\023"
+  "API_TARGET_RESTMODE\0204\022\027\n\023API_TARGET_SHUT"
+  "DOWN\0205\022\025\n\021API_TARGET_REBOOT\0206\022\025\n\021API_TAR"
+  "GET_NOTIFY\0207\022\025\n\021API_TARGET_BUZZER\0208\022\026\n\022A"
+  "PI_TARGET_SET_LED\0209\022\033\n\027API_TARGET_SET_SE"
+  "TTINGS\020:\022\034\n\030API_TARGET_GET_PROC_LIST\020;\022\030"
+  "\n\024API_TARGET_SEND_FILE\020<\022\033\n\027API_TARGET_R"
+  "ECIEVE_FILE\020=\022\032\n\026API_TARGET_DELETE_FILE\020"
+  ">*I\n\010AppState\022\025\n\021STATE_NOT_RUNNING\020\000\022\021\n\r"
+  "STATE_RUNNING\020\001\022\023\n\017STATE_SUSPENDED\020\002b\006pr"
+  "oto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_APIPackets_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_APIPackets_2eproto = {
-  false, false, 3595, descriptor_table_protodef_APIPackets_2eproto, "APIPackets.proto", 
-  &descriptor_table_APIPackets_2eproto_once, nullptr, 0, 16,
+  false, false, 3684, descriptor_table_protodef_APIPackets_2eproto, "APIPackets.proto", 
+  &descriptor_table_APIPackets_2eproto_once, nullptr, 0, 17,
   schemas, file_default_instances, TableStruct_APIPackets_2eproto::offsets,
   file_level_metadata_APIPackets_2eproto, file_level_enum_descriptors_APIPackets_2eproto, file_level_service_descriptors_APIPackets_2eproto,
 };
@@ -672,6 +696,8 @@ bool APICommand_IsValid(int value) {
     case 58:
     case 59:
     case 60:
+    case 61:
+    case 62:
       return true;
     default:
       return false;
@@ -5995,6 +6021,209 @@ void LibraryListPacket::InternalSwap(LibraryListPacket* other) {
       file_level_metadata_APIPackets_2eproto[15]);
 }
 
+// ===================================================================
+
+class FilePacket::_Internal {
+ public:
+};
+
+FilePacket::FilePacket(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:FilePacket)
+}
+FilePacket::FilePacket(const FilePacket& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  filepath_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    filepath_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_filepath().empty()) {
+    filepath_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_filepath(), 
+      GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:FilePacket)
+}
+
+inline void FilePacket::SharedCtor() {
+filepath_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  filepath_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+FilePacket::~FilePacket() {
+  // @@protoc_insertion_point(destructor:FilePacket)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void FilePacket::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  filepath_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void FilePacket::ArenaDtor(void* object) {
+  FilePacket* _this = reinterpret_cast< FilePacket* >(object);
+  (void)_this;
+}
+void FilePacket::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void FilePacket::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void FilePacket::Clear() {
+// @@protoc_insertion_point(message_clear_start:FilePacket)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  filepath_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* FilePacket::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string FilePath = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_filepath();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "FilePacket.FilePath"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* FilePacket::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:FilePacket)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string FilePath = 1;
+  if (!this->_internal_filepath().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_filepath().data(), static_cast<int>(this->_internal_filepath().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "FilePacket.FilePath");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_filepath(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:FilePacket)
+  return target;
+}
+
+size_t FilePacket::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:FilePacket)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string FilePath = 1;
+  if (!this->_internal_filepath().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_filepath());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FilePacket::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    FilePacket::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FilePacket::GetClassData() const { return &_class_data_; }
+
+void FilePacket::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<FilePacket *>(to)->MergeFrom(
+      static_cast<const FilePacket &>(from));
+}
+
+
+void FilePacket::MergeFrom(const FilePacket& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:FilePacket)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_filepath().empty()) {
+    _internal_set_filepath(from._internal_filepath());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void FilePacket::CopyFrom(const FilePacket& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:FilePacket)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FilePacket::IsInitialized() const {
+  return true;
+}
+
+void FilePacket::InternalSwap(FilePacket* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &filepath_, lhs_arena,
+      &other->filepath_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata FilePacket::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_APIPackets_2eproto_getter, &descriptor_table_APIPackets_2eproto_once,
+      file_level_metadata_APIPackets_2eproto[16]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::InitialPacket* Arena::CreateMaybeMessage< ::InitialPacket >(Arena* arena) {
@@ -6044,6 +6273,9 @@ template<> PROTOBUF_NOINLINE ::LibraryInfoPacket* Arena::CreateMaybeMessage< ::L
 }
 template<> PROTOBUF_NOINLINE ::LibraryListPacket* Arena::CreateMaybeMessage< ::LibraryListPacket >(Arena* arena) {
   return Arena::CreateMessageInternal< ::LibraryListPacket >(arena);
+}
+template<> PROTOBUF_NOINLINE ::FilePacket* Arena::CreateMaybeMessage< ::FilePacket >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::FilePacket >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

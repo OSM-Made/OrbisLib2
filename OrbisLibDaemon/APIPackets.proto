@@ -78,6 +78,8 @@ enum APICommand
 	API_TARGET_SET_SETTINGS = 58;
 	API_TARGET_GET_PROC_LIST = 59;
 	API_TARGET_SEND_FILE = 60;
+	API_TARGET_RECIEVE_FILE = 61;
+	API_TARGET_DELETE_FILE = 62;
 }
 
 enum AppState
@@ -237,4 +239,9 @@ message LibraryInfoPacket
 message LibraryListPacket
 {
 	repeated LibraryInfoPacket Libraries = 1;
+}
+
+message FilePacket
+{
+	string FilePath = 1;
 }

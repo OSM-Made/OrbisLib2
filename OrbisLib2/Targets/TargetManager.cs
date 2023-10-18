@@ -130,15 +130,14 @@ namespace OrbisLib2.Targets
             if (Target == null)
                 return new ResultState { Succeeded = false, ErrorMessage = $"Couldn't Find Target \"{savedTarget.Name}\"." };
 
-            return API.SendCommand(Target, 5, APICommand.ApiTargetInfo, (Sock, Result) =>
+            return API.SendCommand(Target, 5, APICommand.ApiTargetInfo, (Sock) =>
             {
                 var rawPacket = Sock.ReceiveSize();
                 var Packet = TargetInfoPacket.Parser.ParseFrom(rawPacket);
 
                 if (Packet == null)
                 {
-                    Result = new ResultState { Succeeded = false, ErrorMessage = $"Protobuf packet was null." };
-                    return;
+                    return new ResultState { Succeeded = false, ErrorMessage = $"Protobuf packet was null." };
                 }
 
                 savedTarget.Info.SDKVersion = $"{(Packet.SDKVersion >> 24 & 0xFF).ToString("X1")}.{(Packet.SDKVersion >> 12 & 0xFFF).ToString("X3")}.{(Packet.SDKVersion & 0xFFF).ToString("X3")}";
@@ -185,6 +184,8 @@ namespace OrbisLib2.Targets
 
                 // Save the updated info.
                 savedTarget.Info.Save();
+
+                return new ResultState { Succeded = true };
             });
         }
     }
