@@ -9,7 +9,7 @@ void SendProtobufPacket(SceNetId sock, const google::protobuf::Message& message)
 template<class T>
 bool RecieveProtoBuf(SceNetId sock, T* output)
 {
-	auto rawPacket = Sockets::RecieveWithSize(sock);
+	auto rawPacket = Sockets::ReceiveWithSize(sock);
 
 	if (rawPacket.size() <= 0)
 	{

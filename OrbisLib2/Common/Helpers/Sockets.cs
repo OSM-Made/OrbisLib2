@@ -204,11 +204,7 @@ namespace OrbisLib2.Common.Helpers
         /// <param name="data"></param>
         public static void SendSize(this Socket s, byte[] data)
         {
-            // Send the size.
-            s.SendInt32(data.Length);
-
-            // Send the data now.
-            s.SendLarge(data);
+            s.SendLarge(BitConverter.GetBytes(data.Length).Concat(data).ToArray());
         }
     }
 }
