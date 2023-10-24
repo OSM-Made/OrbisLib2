@@ -144,7 +144,7 @@ namespace OrbisLib2.Targets
             if (Target == null)
                 return new ResultState { Succeeded = false, ErrorMessage = $"Couldn't Find Target \"{savedTarget.Name}\"." };
 
-            return API.SendCommand(Target, 5, APICommand.ApiTargetInfo, (Sock) =>
+            return API.SendCommand(Target, 5, APICommand.ApiTargetInfo, async (Sock) =>
             {
                 var rawPacket = Sock.ReceiveSize();
                 var Packet = TargetInfoPacket.Parser.ParseFrom(rawPacket);
@@ -200,7 +200,7 @@ namespace OrbisLib2.Targets
                 savedTarget.Info.Save();
 
                 return new ResultState { Succeeded = true };
-            });
+            }).Result;
         }
     }
 }

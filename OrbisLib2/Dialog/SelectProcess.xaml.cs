@@ -2,7 +2,6 @@
 using SimpleUI.Controls;
 using SimpleUI.Dialogs;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 
 namespace OrbisLib2.Dialog
 {
@@ -11,60 +10,72 @@ namespace OrbisLib2.Dialog
     /// </summary>
     public partial class SelectProcess : SimpleDialog
     {
+        private static string[] DangerList = { "SceCdlgApp", "SceRemotePlay", "klogproc", "ScePfs", "SceNKWebProcess", "SceNKNetworkProcess", "SceNKUIProcess", "SceSpkProcess", "SceSpkService", "SceVencProxy.elf", "SceVoiceAndAgent", "webrtc_daemon.self", "SceMusicCoreServer", "SceSocialScreenMgr", "SceSpZeroConf", "SceCloudClientDaemon", "SceVideoCoreServer", "ScePartyDaemon", "SceGameLiveStreaming", "SceAvCapture", "GnmCompositor.elf", "SceSysCore.elf", "SceSysAvControl.elf", "usb", "SceSwd", "SceVnlru", "SceSyncer", "SceBufdaemon0", "SceBufdaemon1", "SceBufdaemon2", "SceBtDriver", "SceTrpwCtrl", "SceTrpwIntr", "SceTrpwReq", "SceSbram", "SceDaAtcev", "SceDaThrd", "SceIccThermal", "SceMd0", "SceIccnvs", "SceXptThrd", "SceGbeMtsPhyCtrl", "SceGbeMtsCtrl", "SceSflash", "SceIccNotification", "SceHdmiEvent", "SceCameraSdma", "SceCameraDriverMain", "SceHidMain", "SceHidAuth", "SceYarrow", "geom", "intr", "idle", "mini-syscore.elf", "SceAudit", "kernel", "orbis-jsc-compiler.self", "SecureWebProcess.self", "SecureUIProcess.self", "SceVdecProxy.elf", "fs_cleaner.elf", "SceVmdaemon", "ScePagedaemonX", "orbis_audiod.elf" };
+
         public SelectProcess(Window Owner)
             : base(Owner, "Select", "Cancel", "Select Process")
         {
             InitializeComponent();
 
             // Get initial process list.
-            RefreshProcessList();
+            Task.Run(RefreshProcessList);
+
+            AdvancedMode.IsChecked = Properties.Settings.Default.ProcessAdcancedMode;
         }
 
-        public static SimpleDialogResult ShowDialog(Window Owner)
+        public static async Task<SimpleDialogResult> ShowDialog(Window Owner)
         {
             var dlg = new SelectProcess(Owner);
             dlg.ShowDialog();
 
+            // Attach to the process if one is selected and we clicked the attach button.
             var selectedProc = (ProcInfo)dlg.ProcessList.SelectedItem;
-            if(selectedProc != null)
+            if(selectedProc != null && dlg.Result == SimpleDialogResult.Button1)
             {
-                TargetManager.SelectedTarget.Debug.Attach(selectedProc.ProcessId);
+                await TargetManager.SelectedTarget.Debug.Attach(selectedProc.ProcessId);
             }
 
             return dlg.Result;
         }
 
-        private void RefreshProcessList()
+        private async Task RefreshProcessList()
         {
-            Task.Run(() =>
+            (var result, var procList) = await TargetManager.SelectedTarget.GetProcList();
+
+            // Print the error that occured if we failed to get the process list.
+            if (!result.Succeeded)
             {
-                var procList = new List<ProcInfo>();
-                var result = TargetManager.SelectedTarget.GetProcList(out procList);
+                // Reset the item list.
+                ProcessList.ItemsSource = null;
 
-                // Print the error that occured if we failed to get the process list.
-                if (!result.Succeeded)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        ProcessList.ItemsSource = null;
-                    });
+                SimpleMessageBox.ShowError(Window.GetWindow(this), result.ErrorMessage, "Failed to refresh process list.");
+                return;
+            }
 
-                    SimpleMessageBox.ShowError(Window.GetWindow(this), result.ErrorMessage, "Failed to refresh process list.");
-                    return;
-                }
+            // Remove self.
+            procList.RemoveAll(s => s.Name == "OrbisLibAPI");
 
-                // Refresh the list.
-                Dispatcher.Invoke(() =>
-                {
-                    ProcessList.ItemsSource = procList;
-                    ProcessList.Items.Refresh();
-                });
+            // Remove potentially dangerious processes.
+            if (!Properties.Settings.Default.ProcessAdcancedMode)
+                procList.RemoveAll(x => DangerList.Any(item => item.Contains(x.Name)));
+
+            // Refresh the list.
+            Dispatcher.Invoke(() => 
+            {
+                // Make the scroll bar move to the right a bit more make it look less awkward.
+                if (procList.Count >= 11)
+                    ProcessList.Margin = new Thickness(6, 6, 3, 6);
+                else
+                    ProcessList.Margin = new Thickness(6);
+
+                ProcessList.ItemsSource = procList;
+                ProcessList.Items.Refresh();
             });
         }
 
-        private void Refresh_Click(object sender, RoutedEventArgs e)
+        private async void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            RefreshProcessList();
+            await RefreshProcessList();
         }
 
         private void ProcessList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -75,6 +86,14 @@ namespace OrbisLib2.Dialog
                 Result = SimpleDialogResult.Button1;
                 Close();
             }
+        }
+
+        private async void AdvancedMode_Click(object sender, RoutedEventArgs e)
+        {
+            AdvancedMode.IsChecked = Properties.Settings.Default.ProcessAdcancedMode = !AdvancedMode.IsChecked;
+            Properties.Settings.Default.Save();
+
+            await RefreshProcessList();
         }
     }
 }

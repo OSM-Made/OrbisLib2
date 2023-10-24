@@ -3,9 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OrbisLib2.Dialog"
         xmlns:ValueConverters="clr-namespace:OrbisLib2.Common.ValueConverters"
-        xmlns:simpleControls="clr-namespace:SimpleUI.Controls;assembly=SimpleUI"
         xmlns:simpleDialogs="clr-namespace:SimpleUI.Dialogs;assembly=SimpleUI"
         mc:Ignorable="d"
         Title="Select Process" Height="440" Width="455"
@@ -18,17 +16,15 @@
     <Grid>
         <!-- Process List -->
         <ListView Grid.Row="1"
-                  Height="343"
-                  Width="417"
-                  MaxWidth="417"
-                  VerticalAlignment="Top"
+                  Margin="6"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
                   Background="{DynamicResource WindowBackground}"
                   BorderBrush="Transparent"
                   BorderThickness="0"
                   Name="ProcessList"
                   SelectionMode="Single"
                   ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                   MouseDoubleClick="ProcessList_MouseDoubleClick"
                   AlternationCount="2" Grid.ColumnSpan="2">
 
@@ -44,6 +40,8 @@
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Refresh" Click="Refresh_Click" />
+                    <Separator/>
+                    <MenuItem Name="AdvancedMode" Header="Advanced Mode" Click="AdvancedMode_Click" />
                 </ContextMenu>
             </ListView.ContextMenu>
 

@@ -12,18 +12,19 @@ namespace OrbisLib2.Common.API
         private static readonly int PacketVersion = 5;
 
         /// <summary>
-        /// Connects to the api.
+        /// Connects to the API asynchronously.
         /// </summary>
-        /// <param name="IPAddress">IP Address of the remote target.</param>
-        /// <param name="Port">The port of the remote target.</param>
-        /// <param name="TimeOut">The time we should wait before timing out represented as seconds.</param>
-        /// <param name="Sock">The socket created when connecting.</param>
-        /// <returns>Returns true if successful.</returns>
-        private static bool Connect(string IPAddress, int Port, int TimeOut, out Socket Sock)
+        /// <param name="address">IP Address of the remote target.</param>
+        /// <param name="port">The port of the remote target.</param>
+        /// <param name="timeOut">The time we should wait before timing out represented as milliseconds.</param>
+        /// <returns>Returns a Task that represents the result of the connection attempt (true if successful, false otherwise) along with the Socket created when connecting.</returns>
+        private static async Task<(bool, Socket)> ConnectAsync(string address, int port, int timeOut)
         {
-            Sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            return Sock.EasyConnect(IPAddress, Port, TimeOut);
+            bool connected = await sock.EasyConnectAsync(address, port, timeOut);
+
+            return (connected, sock);
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace OrbisLib2.Common.API
         /// <param name="Command">The command to be run.</param>
         /// <param name="AdditionalCommunications">Optional lambda to send/recv additional data.</param>
         /// <returns>Returns result of the communications with the API.</returns>
-        public static ResultState SendCommand(Target DesiredTarget, int TimeOut, APICommand Command, Func<Socket, ResultState>? AdditionalCommunications = null)
+        public static async Task<ResultState> SendCommand(Target DesiredTarget, int TimeOut, APICommand Command, Func<Socket, Task<ResultState>>? AdditionalCommunications = null)
         {
             // If the API isnt up were just giving up here.
             if(DesiredTarget.Info.IsAPIAvailable == false)
@@ -42,17 +43,18 @@ namespace OrbisLib2.Common.API
 
             try 
             {
-                if (Connect(DesiredTarget.IPAddress, Settings.CreateInstance().APIPort, TimeOut, out Socket Sock))
+                (var connectionResult, var sock) = await ConnectAsync(DesiredTarget.IPAddress, Settings.CreateInstance().APIPort, TimeOut);
+                if (connectionResult)
                 {
                     // Send the Magic Number.
-                    Sock.Send(BitConverter.GetBytes(MagicNumber));
+                    await sock.SendAsync(BitConverter.GetBytes(MagicNumber), SocketFlags.None);
 
                     // Make sure the target is happy and ready to move on.
-                    if (Sock.RecvInt32() != 1)
+                    if (await sock.RecvInt32Async() != 1)
                         return new ResultState { Succeeded = false, ErrorMessage = $"The target {DesiredTarget.Name} ({DesiredTarget.IPAddress}) has rejected our initial communications." };
 
                     // Send the Initial Packet.
-                    var initialResult = SendNextPacket(Sock, new InitialPacket { Command = (int)Command, PacketVersion = PacketVersion });
+                    var initialResult = await SendNextPacket(sock, new InitialPacket { Command = (int)Command, PacketVersion = PacketVersion });
 
                     // Check to see if we failed here and report back the message.
                     if (!initialResult.Succeeded)
@@ -63,10 +65,10 @@ namespace OrbisLib2.Common.API
 
                     // See if we have extra work to do.
                     if (AdditionalCommunications != null)
-                        result = AdditionalCommunications.Invoke(Sock);
+                        result = await AdditionalCommunications.Invoke(sock);
 
                     // Were done here, Clean up.
-                    Sock.Close();
+                    sock.Close();
 
                     // Return either the default response or the edited response from the additional communications.
                     return result;
@@ -81,49 +83,67 @@ namespace OrbisLib2.Common.API
         }
 
         /// <summary>
-        /// Gets the result state of the API.
+        /// Asynchronously gets the result state of the API.
         /// </summary>
         /// <param name="s">The socket open to the API.</param>
-        /// <returns>The result state.</returns>
-        public static ResultState GetState(Socket s)
-        {
-            // Recieve the result state.
-            var rawResult = s.ReceiveSize();
-
-            // Return the parsed state.
-            return ResultState.Parser.ParseFrom(rawResult);
-        }
-
-        /// <summary>
-        /// Sends the next protobuf packet.
-        /// </summary>
-        /// <param name="s">The socket to send the proto packet on.</param>
-        /// <param name="Packet">The packet that contains the data.</param>
-        /// <returns>The result state of the packet request.</returns>
-        public static ResultState SendNextPacket(Socket s, IMessage Packet)
-        {
-            // Send the packet.
-            s.SendSize(Packet.ToByteArray());
-
-            // Return the result state.
-            return GetState(s);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Sock"></param>
-        /// <param name="Value"></param>
-        /// <returns></returns>
-        public static ResultState SendInt32(Socket Sock, int Value)
+        /// <returns>The Task that represents the asynchronous operation and returns the result state.</returns>
+        public static async Task<ResultState> GetState(Socket s)
         {
             try
             {
-                // Send Next Packet.
-                Sock.Send(BitConverter.GetBytes(Value));
+                // Asynchronously receive the result state.
+                var rawResult = await s.ReceiveSizeAsync();
 
-                // Return the parsed state.
-                return GetState(Sock);
+                // Parse and return the result state.
+                return ResultState.Parser.ParseFrom(rawResult);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new ResultState { Succeeded = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously sends the next protobuf packet and receives the result state.
+        /// </summary>
+        /// <param name="s">The Socket to send the proto packet on.</param>
+        /// <param name="Packet">The packet that contains the data.</param>
+        /// <returns>The Task that represents the asynchronous operation and returns the result state of the packet request.</returns>
+        public static async Task<ResultState> SendNextPacket(Socket s, IMessage Packet)
+        {
+            try
+            {
+                // Asynchronously send the packet.
+                await s.SendSizeAsync(Packet.ToByteArray());
+
+                // Asynchronously receive the result state.
+                ResultState result = await GetState(s);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new ResultState { Succeeded = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously sends an integer (Int32) to the socket.
+        /// </summary>
+        /// <param name="Sock">The socket to send the integer to.</param>
+        /// <param name="Value">The integer value to send.</param>
+        /// <returns>A Task that represents the asynchronous operation and returns the result state of the operation.</returns>
+        public static async Task<ResultState> SendInt32Async(Socket Sock, int Value)
+        {
+            try
+            {
+                // Asynchronously send the integer.
+                await Sock.SendAsync(BitConverter.GetBytes(Value), SocketFlags.None);
+
+                // Asynchronously return the parsed state.
+                return await GetState(Sock);
             }
             catch (SocketException ex)
             {

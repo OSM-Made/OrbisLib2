@@ -121,6 +121,10 @@ void Debug::Detach(SceNetId sock)
 
 		//if (TryDetach(CurrentPID))
 		{
+			// Reset vars.
+			IsDebugging = false;
+			CurrentPID = -1;
+
 			Events::SendEvent(Events::EVENT_DETACH);
 			SendStatePacket(sock, true, "");
 		}
@@ -157,7 +161,17 @@ void Debug::RWMemory(SceNetId s, bool write)
 	}
 
 	// Allocate space for our read / write.
-	auto buffer = std::make_unique<unsigned char[]>(packet.length());
+	std::unique_ptr<unsigned char[]> buffer;
+	try
+	{
+		
+		buffer = std::make_unique<unsigned char[]>(packet.length());
+	}
+	catch (const std::exception& ex)
+	{
+		SendStatePacket(s, false, "Failed to allocate enough memory.");
+		return;
+	}
 
 	// TODO: Might be a good idea to make sure we are landing in the right memory regions. Should be good to check the vmmap and the library list.
 	//		 Pretty sure we can use the syscall from the kernel context and specify the debug proc to achieve the same. 

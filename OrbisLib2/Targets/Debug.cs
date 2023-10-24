@@ -1,6 +1,8 @@
 ﻿using OrbisLib2.Common.API;
 using OrbisLib2.Common.Helpers;
+using System.ComponentModel;
 using System.Net.Sockets;
+using System.Windows.Media.Animation;
 
 namespace OrbisLib2.Targets
 {
@@ -15,135 +17,106 @@ namespace OrbisLib2.Targets
             this.Target = Target;
         }
 
-        public bool IsDebugging
+        public async Task<bool> IsDebugging()
         {
-            get 
-            {
-                int currentTarget;
-                return GetCurrentProcessId(out currentTarget).Succeeded && currentTarget != -1; 
-            }
+            (var result, var currentTarget) = await GetCurrentProcessId();
+            return result.Succeeded && currentTarget != -1;
         }
 
-        public ResultState Attach(int pid)
+        public async Task<ResultState> Attach(int pid)
         {
-            return API.SendCommand(Target, 3, APICommand.ApiDbgAttach, (Socket Sock) =>
+            return await API.SendCommand(Target, 1000, APICommand.ApiDbgAttach, async (Socket Sock) =>
             {
-                Sock.SendInt32(pid);
+                await Sock.SendInt32Async(pid);
 
-                return API.GetState(Sock);
+                return await API.GetState(Sock);
             });
         }
 
-        public ResultState Detach()
+        public async Task<ResultState> Detach()
         {
-            if(!IsDebugging)
-                return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
-
-            return API.SendCommand(Target, 3, APICommand.ApiDbgDetach, (Socket Sock) =>
+            return await API.SendCommand(Target, 400, APICommand.ApiDbgDetach, async (Socket Sock) =>
             {
-                return API.GetState(Sock);
+                return await API.GetState(Sock);
             });
         }
 
-        public ResultState GetCurrentProcessId(out int ProcessId)
+        public async Task<(ResultState, int ProcessId)> GetCurrentProcessId()
         {
             var tempProcessId = -1;
-            var result = API.SendCommand(Target, 3, APICommand.ApiDbgGetCurrent, (Socket Sock) =>
+            var result = await API.SendCommand(Target, 400, APICommand.ApiDbgGetCurrent, async (Socket Sock) =>
             {
-                tempProcessId = Sock.RecvInt32();
+                tempProcessId = await Sock.RecvInt32Async();
 
                 return new ResultState { Succeeded = true };
             });
 
-            ProcessId = tempProcessId;
-            return result;
+            return (result, tempProcessId);
         }
 
-        public ResultState LoadLibrary(string Path, out int Handle)
+        public async Task<(ResultState, int)> LoadLibrary(string Path)
         {
-            if (!IsDebugging)
-            {
-                Handle = -1;
-                return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
-            }
-
             int tempHandle = -1;
-            var result = API.SendCommand(Target, 3, APICommand.ApiDbgLoadLibrary, (Socket Sock) =>
+
+            var result = await API.SendCommand(Target, 4000, APICommand.ApiDbgLoadLibrary, async (Socket Sock) =>
             {
-                if (Sock.RecvInt32() != 1)
+                if (await Sock.RecvInt32Async() != 1)
                     return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    var result = API.SendNextPacket(Sock, new SPRXPacket { Path = Path });
+                    var result = await API.SendNextPacket(Sock, new SPRXPacket { Path = Path });
 
                     if (result.Succeeded)
-                        tempHandle = Sock.RecvInt32();
+                        tempHandle = await Sock.RecvInt32Async();
 
                     return result;
                 }
             });
 
-            Handle = tempHandle;
-            return result;
+            return (result, tempHandle);
         }
 
-        public ResultState UnloadLibrary(int Handle)
+        public async Task<ResultState> UnloadLibrary(int Handle)
         {
-            if (!IsDebugging)
-                return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
-
-            return API.SendCommand(Target, 3, APICommand.ApiDbgUnloadLibrary, (Socket Sock) =>
+            return await API.SendCommand(Target, 4000, APICommand.ApiDbgUnloadLibrary, async (Socket Sock) =>
             {
-                if (Sock.RecvInt32() != 1)
+                if (await Sock.RecvInt32Async() != 1)
                     return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
-                    return API.SendNextPacket(Sock, new SPRXPacket { Handle = Handle });
+                    return await API.SendNextPacket(Sock, new SPRXPacket { Handle = Handle });
             });
         }
 
-        public ResultState ReloadLibrary(int Handle, string Path, out int NewHandle)
+        public async Task<(ResultState, int)> ReloadLibrary(int Handle, string Path)
         {
-            if (!IsDebugging)
-            {
-                NewHandle = -1;
-                return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
-            }
-
             int tempHandle = -1;
-            var result = API.SendCommand(Target, 3, APICommand.ApiDbgReloadLibrary, (Socket Sock) =>
+            var result = await API.SendCommand(Target, 4000, APICommand.ApiDbgReloadLibrary, async (Socket Sock) =>
             {
-                if (Sock.RecvInt32() != 1)
+                if (await Sock.RecvInt32Async() != 1)
                     return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    var result = API.SendNextPacket(Sock, new SPRXPacket { Path = Path, Handle = Handle });
+                    var result = await API.SendNextPacket(Sock, new SPRXPacket { Path = Path, Handle = Handle });
                     tempHandle = Sock.RecvInt32();
 
                     return result;
                 }
             });
 
-            NewHandle = tempHandle;
-            return result;
+            return (result, tempHandle);
         }
 
-        public ResultState GetLibraries(out List<LibraryInfo> LibraryList)
+        public async Task<(ResultState, List<LibraryInfo>)> GetLibraries()
         {
             var tempLibraryList = new List<LibraryInfo>();
 
-            if (!IsDebugging)
+            var result = await API.SendCommand(Target, 400, APICommand.ApiDbgLibraryList, async (Socket Sock) =>
             {
-                LibraryList = tempLibraryList;
-                return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
-            }
-
-            var result = API.SendCommand(Target, 6, APICommand.ApiDbgLibraryList, (Socket Sock) =>
-            {
-                if (Sock.RecvInt32() != 1)
+                if (await Sock.RecvInt32Async() != 1)
                     return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    var rawPacket = Sock.ReceiveSize();
+                    var rawPacket = await Sock.ReceiveSizeAsync();
                     var Packet = LibraryListPacket.Parser.ParseFrom(rawPacket);
 
                     foreach(var library in Packet.Libraries)
@@ -155,57 +128,46 @@ namespace OrbisLib2.Targets
                 }
             });
 
-            LibraryList = tempLibraryList;
-            return result;
+            return (result, tempLibraryList);
         }
 
 
-        public ResultState ReadMemory(ulong Address, out byte[] Data, ulong Length)
+        public async Task<(ResultState, byte[])> ReadMemory(ulong address, ulong length)
         {
-            if (!IsDebugging)
+            var tempData = new byte[length];
+            var result = await API.SendCommand(Target, 1000, APICommand.ApiDbgRead, async (Socket Sock) =>
             {
-                Data = new byte[Length];
-                return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
-            }
-
-            var data = new byte[Length];
-            var result = API.SendCommand(Target, 6, APICommand.ApiDbgRead, (Socket Sock) =>
-            {
-                if (Sock.RecvInt32() != 1)
+                if (await Sock.RecvInt32Async() != 1)
                     return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    var result = API.SendNextPacket(Sock, new RWPacket { Address = Address, Length = Length });
+                    var result = await API.SendNextPacket(Sock, new RWPacket { Address = address, Length = length });
 
                     if (result.Succeeded)
-                        Sock.RecvLarge(data);
+                        await Sock.RecvLargeAsync(tempData);
 
                     return result;
                 }
             });
 
-            Data = data;
-            return result;
+            return (result, tempData);
         }
 
-        public ResultState WriteMemory(ulong Address, byte[] Data)
+        public async Task<ResultState> WriteMemory(ulong Address, byte[] Data)
         {
-            if (!IsDebugging)
-                return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
-
-            return API.SendCommand(Target, 6, APICommand.ApiDbgWrite, (Socket Sock) =>
+            return await API.SendCommand(Target, 2000, APICommand.ApiDbgWrite, async (Socket Sock) =>
             {
-                if (Sock.RecvInt32() != 1)
+                if (await Sock.RecvInt32Async() != 1)
                     return new ResultState { Succeeded = false, ErrorMessage = $"The target {Target.Name} ({Target.IPAddress}) is not currently debugging any process." };
                 else
                 {
-                    var result = API.SendNextPacket(Sock, new RWPacket { Address = Address, Length = (ulong)Data.Length });
+                    var result = await API.SendNextPacket(Sock, new RWPacket { Address = Address, Length = (ulong)Data.Length });
 
                     if (result.Succeeded)
                     {
-                        Sock.SendLarge(Data);
+                        await Sock.SendLargeAsync(Data);
 
-                        result = API.GetState(Sock);
+                        result = await API.GetState(Sock);
                     }
 
                     return result;

@@ -46,36 +46,33 @@ namespace OrbisLib2.Targets
             return @$"{targetFolder}\app.db";
         }
 
-        public ResultState IsOutOfDate(out bool IsOutOfDate)
+        public async Task<(ResultState, bool)> IsOutOfDate()
         {
+            bool tempIsOutOfDate = false;
             var databasePath = GetAppDBPath();
 
             if (!File.Exists(databasePath))
             {
-                IsOutOfDate = true;
-                return new ResultState { Succeeded = true };
+                return (new ResultState { Succeeded = true, ErrorMessage = "Database file does not exist." }, true);
             }
 
-            var tempIsOutOfDate = false;
-            var result = API.SendCommand(Target, 5, APICommand.ApiAppsCheckVer, (Socket Sock) =>
+            var result = await API.SendCommand(Target, 400, APICommand.ApiAppsCheckVer, async (Socket Sock) =>
             {
                 // Send the current app version.
                 Sock.SendInt32(AppBrowseVersion.GetAppBrowseVersion(databasePath));
 
                 // Get the state from API.
-                tempIsOutOfDate = Sock.RecvInt32() == 1;
+                var tempIsOutOfDate = await Sock.RecvInt32Async() == 1;
 
                 return new ResultState { Succeeded = true };
             });
 
-            IsOutOfDate = tempIsOutOfDate;
-            return result;
+            return (result, tempIsOutOfDate);
         }
 
-        public ResultState UpdateLocalDB()
+        public async Task<ResultState> UpdateLocalDB()
         {
-            bool isOutOfDate;
-            var result = IsOutOfDate(out isOutOfDate);
+            (var result, var isOutOfDate) = await IsOutOfDate();
 
             // If the out of date check failed we need to abort.
             if (!result.Succeeded)
@@ -85,11 +82,11 @@ namespace OrbisLib2.Targets
             if (!isOutOfDate)
                 return new ResultState { Succeeded = true };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsGetDb, (Socket Sock) =>
+            return await API.SendCommand(Target, 400, APICommand.ApiAppsGetDb, async (Socket Sock) =>
             {
-                var fileSize = Sock.RecvInt32();
+                var fileSize = await Sock.RecvInt32Async();
                 var newDatabaseBytes = new byte[fileSize];
-                if (Sock.RecvLarge(newDatabaseBytes) < fileSize)
+                if (await Sock.RecvLargeAsync(newDatabaseBytes) < fileSize)
                     return new ResultState { Succeeded = false, ErrorMessage = "Failed to recieve the data." };
 
                 var databasePath = GetAppDBPath();
@@ -111,12 +108,12 @@ namespace OrbisLib2.Targets
             });
         }
 
-        public List<AppBrowse> GetAppList()
+        public async Task<List<AppBrowse>> GetAppListAsync()
         {
             var databasePath = GetAppDBPath();
 
             // Update the DB if needed.
-            UpdateLocalDB();
+            await UpdateLocalDB();
 
             // Make sure we actually have a DB now.
             if (!File.Exists(databasePath))
@@ -139,128 +136,126 @@ namespace OrbisLib2.Targets
             return AppInfo.GetStringFromAppInfo(databasePath, TitleId, Key);
         }
 
-        public ResultState GetAppState(string TitleId, out AppState State)
+        public async Task<(ResultState, AppState State)> GetAppState(string TitleId)
         {
+            var tempAppState = AppState.StateNotRunning;
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
             {
-                State = AppState.StateNotRunning;
-                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
+                return (new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" }, tempAppState);
             }
 
-            var tempAppState = AppState.StateNotRunning;
-            var result = API.SendCommand(Target, 5, APICommand.ApiAppsStatus, (Socket Sock) => 
+            var result = await API.SendCommand(Target, 400, APICommand.ApiAppsStatus, async (Socket Sock) => 
             {
-                var result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                var result = await API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
                 // Get the state from API.
                 if (result.Succeeded)
-                    tempAppState = (AppState)Sock.RecvInt32();
+                    tempAppState = (AppState)await Sock.RecvInt32Async();
 
                 return result;
             });
 
-            State = tempAppState;
-            return result;
+            return (result, tempAppState);
         }
 
-        public ResultState Start(string TitleId)
+        public async Task<ResultState> Start(string TitleId)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsStart, (Socket Sock) => 
+            return await API.SendCommand(Target, 400, APICommand.ApiAppsStart, async (Socket Sock) => 
+            {
+                return await API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+            });
+        }
+
+        public async Task<ResultState> Stop(string TitleId)
+        {
+            if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
+
+            return await API.SendCommand(Target, 400, APICommand.ApiAppsStop, async (Socket Sock) =>
+            {
+                return await API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+            });
+        }
+
+        public async Task<ResultState> Suspend(string TitleId)
+        {
+            if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
+
+            return await API.SendCommand(Target, 400, APICommand.ApiAppsSuspend, async (Socket Sock) =>
+            {
+                return await API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+            });
+        }
+
+        public async Task<ResultState> Resume(string TitleId)
+        {
+            if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
+                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
+
+            return await API.SendCommand(Target, 400, APICommand.ApiAppsResume, (Socket Sock) =>
             {
                 return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
         }
 
-        public ResultState Stop(string TitleId)
+        public async Task<ResultState> Delete(string TitleId)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsStop, (Socket Sock) =>
+            return await API.SendCommand(Target, 5, APICommand.ApiAppsDelete, async (Socket Sock) =>
             {
-                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                return await API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
             });
         }
 
-        public ResultState Suspend(string TitleId)
+        public async Task<ResultState> SetVisibility(string TitleId, VisibilityType Visibility)
         {
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
                 return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
 
-            return API.SendCommand(Target, 5, APICommand.ApiAppsSuspend, (Socket Sock) =>
+            return await API.SendCommand(Target, 400, APICommand.ApiAppsSetVisibility, async (Socket Sock) =>
             {
-                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
-            });
-        }
-
-        public ResultState Resume(string TitleId)
-        {
-            if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
-                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
-
-            return API.SendCommand(Target, 5, APICommand.ApiAppsResume, (Socket Sock) =>
-            {
-                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
-            });
-        }
-
-        public ResultState Delete(string TitleId)
-        {
-            if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
-                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
-
-            return API.SendCommand(Target, 5, APICommand.ApiAppsDelete, (Socket Sock) =>
-            {
-                return API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
-            });
-        }
-
-        public ResultState SetVisibility(string TitleId, VisibilityType Visibility)
-        {
-            if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
-                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
-
-            return API.SendCommand(Target, 5, APICommand.ApiAppsSetVisibility, (Socket Sock) =>
-            {
-                var result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                var result = await API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
                 if (result.Succeeded)
                 {
                     // Send the visibility state.
-                    Sock.SendInt32((int)Visibility);
+                    await Sock.SendInt32Async((int)Visibility);
 
-                    result = API.GetState(Sock);
+                    result = await API.GetState(Sock);
                 }
 
                 return result;
             });
         }
 
-        public ResultState GetVisibility(string TitleId, out VisibilityType Type)
+        public async Task<(ResultState, VisibilityType)> GetVisibility(string TitleId)
         {
+            var tempType = VisibilityType.VT_NONE;
+
             if (!Regex.IsMatch(TitleId, @"[a-zA-Z]{4}\d{5}"))
             {
-                Type = VisibilityType.VT_NONE;
-                return new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" };
+                return (new ResultState { Succeeded = false, ErrorMessage = $"Invaild titleId format {TitleId}" }, tempType);
             }
 
-            var tempType = VisibilityType.VT_NONE;
-            var result = API.SendCommand(Target, 5, APICommand.ApiAppsGetVisibility, (Socket Sock) =>
+            
+            var result = await API.SendCommand(Target, 400, APICommand.ApiAppsGetVisibility, async (Socket Sock) =>
             {
-                var result = API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
+                var result = await API.SendNextPacket(Sock, new AppPacket { TitleId = TitleId });
 
                 // Get the state from API.
                 if (result.Succeeded)
-                    tempType = (VisibilityType)Sock.RecvInt32();
+                    tempType = (VisibilityType)await Sock.RecvInt32Async();
 
                 return result;
             });
 
-            Type = tempType;
-            return result;
+            return (result, tempType);
         }
     }
 }
