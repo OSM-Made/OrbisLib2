@@ -12,22 +12,6 @@ namespace OrbisLib2.Common.API
         private static readonly int PacketVersion = 5;
 
         /// <summary>
-        /// Connects to the API asynchronously.
-        /// </summary>
-        /// <param name="address">IP Address of the remote target.</param>
-        /// <param name="port">The port of the remote target.</param>
-        /// <param name="timeOut">The time we should wait before timing out represented as milliseconds.</param>
-        /// <returns>Returns a Task that represents the result of the connection attempt (true if successful, false otherwise) along with the Socket created when connecting.</returns>
-        private static async Task<(bool, Socket)> ConnectAsync(string address, int port, int timeOut)
-        {
-            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            bool connected = await sock.EasyConnectAsync(address, port, timeOut);
-
-            return (connected, sock);
-        }
-
-        /// <summary>
         /// Makes an API call to the remote target.
         /// </summary>
         /// <param name="DesiredTarget">The desired target to recieve the command.</param>
@@ -43,7 +27,7 @@ namespace OrbisLib2.Common.API
 
             try 
             {
-                (var connectionResult, var sock) = await ConnectAsync(DesiredTarget.IPAddress, Settings.CreateInstance().APIPort, TimeOut);
+                (var connectionResult, var sock) = await Sockets.ConnectAsync(DesiredTarget.IPAddress, Settings.CreateInstance().APIPort, TimeOut);
                 if (connectionResult)
                 {
                     // Send the Magic Number.

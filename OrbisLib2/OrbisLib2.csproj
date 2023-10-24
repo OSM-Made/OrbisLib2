@@ -41,7 +41,7 @@
       <HintPath>..\External\SimpleUI\SimpleUI\bin\Release\net6.0-windows\Microsoft.Expression.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="SimpleUI">
-      <HintPath>..\External\SimpleUI\SimpleUI\bin\Release\net6.0-windows\SimpleUI.dll</HintPath>
+      <HintPath>..\..\SimpleUI\SimpleUI\bin\Release\net7.0-windows10.0.22621.0\SimpleUI.dll</HintPath>
     </Reference>
   </ItemGroup>
 

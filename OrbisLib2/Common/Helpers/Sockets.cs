@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Data;
-using System.Net.NetworkInformation;
+﻿using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 
@@ -8,6 +6,22 @@ namespace OrbisLib2.Common.Helpers
 {
     public static class Sockets
     {
+        /// <summary>
+        /// Connects to the socket asynchronously.
+        /// </summary>
+        /// <param name="address">IP Address of the remote.</param>
+        /// <param name="port">The port of the remote.</param>
+        /// <param name="timeOut">The time we should wait before timing out represented as milliseconds.</param>
+        /// <returns>Returns a Task that represents the result of the connection attempt (true if successful, false otherwise) along with the Socket created when connecting.</returns>
+        public static async Task<(bool, Socket)> ConnectAsync(string address, int port, int timeOut)
+        {
+            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            bool connected = await sock.EasyConnectAsync(address, port, timeOut);
+
+            return (connected, sock);
+        }
+
         /// <summary>
         /// Recieve large amounts of data from a socket that is larger than the recieve buffer size.
         /// </summary>

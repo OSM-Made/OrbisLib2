@@ -40,8 +40,10 @@
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Refresh" Click="Refresh_Click" />
+                    <MenuItem Header="Add to Favourites" Click="AddToFavourites_Click" />
                     <Separator/>
                     <MenuItem Name="AdvancedMode" Header="Advanced Mode" Click="AdvancedMode_Click" />
+                    <MenuItem Name="ShowOnlyFavourites" Header="Show Only Favourites" Click="ShowOnlyFavourites_Click" />
                 </ContextMenu>
             </ListView.ContextMenu>
 
