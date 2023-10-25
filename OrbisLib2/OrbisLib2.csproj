@@ -27,12 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ftp.dll" Version="2.0.23025.1902" />
-    <PackageReference Include="Google.Protobuf" Version="3.24.3" />
-    <PackageReference Include="H.Pipes" Version="2.0.45" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Ftp.dll" Version="2.0.23268.1746" />
+    <PackageReference Include="Google.Protobuf" Version="3.24.4" />
+    <PackageReference Include="H.Pipes" Version="2.0.53" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
     <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
     <PackageReference Include="System.Json" Version="4.7.1" />
   </ItemGroup>
 

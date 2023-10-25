@@ -34,5 +34,17 @@ namespace OrbisLib2.Properties {
                 this["ProcessAdcancedMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastLoadPath {
+            get {
+                return ((string)(this["LastLoadPath"]));
+            }
+            set {
+                this["LastLoadPath"] = value;
+            }
+        }
     }
 }

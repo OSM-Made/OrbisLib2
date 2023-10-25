@@ -3,6 +3,7 @@ using OrbisLib2.Common.Helpers;
 using System.ComponentModel;
 using System.Net.Sockets;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace OrbisLib2.Targets
 {
@@ -52,6 +53,29 @@ namespace OrbisLib2.Targets
             });
 
             return (result, tempProcessId);
+        }
+
+        public async Task<(ResultState, ProcInfo)> GetCurrentProcess()
+        {
+            // Check if were debugging.
+            (var result, var currentProcessId) = await GetCurrentProcessId();
+
+            if (!result.Succeeded || currentProcessId == -1)
+                return (result, null);
+
+            // Pull the process list.
+            (result, var procList) = await Target.GetProcList();
+
+            // If for what ever reason getting the proc list fails just abort.
+            if (!result.Succeeded)
+                return (result, null);
+
+            // Try to find the process in the process list and if by some reason we cant abort.
+            var proc = procList.Find(x => x.ProcessId == currentProcessId);
+            if (proc == null)
+                return (new ResultState { Succeeded = false }, null); ;
+
+            return (result, proc);
         }
 
         public async Task<(ResultState, int)> LoadLibrary(string Path)
